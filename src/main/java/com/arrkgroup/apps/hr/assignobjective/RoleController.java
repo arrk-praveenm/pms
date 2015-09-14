@@ -24,7 +24,7 @@ import com.arrkgroup.apps.form.RoleObjectivesBean;
 import com.arrkgroup.apps.hr.managesections.CreateSectionController;
 import com.arrkgroup.apps.hr.managesections.SectionService;
 import com.arrkgroup.apps.model.Objective;
-import com.arrkgroup.apps.model.ObjectivesModel;
+
 import com.arrkgroup.apps.model.Section;
 
 @Controller
@@ -38,8 +38,7 @@ public class RoleController {
 	@Autowired
 	RoleService roleService;
 
-	@Autowired
-	SectionService sectionService;
+
 
 	@Autowired
 	RoleDao roleDao;
@@ -119,7 +118,7 @@ public class RoleController {
 
 		}
 
-		List<Section> allSections = sectionService.getAllSections();
+		List<Section> allSections =  roleService.showSections();
 		model.addAttribute("allSections", allSections);
 		model.addAttribute("roleList", roleService.showRole());
 		model.addAttribute("objectiveSelectedList", roleService
@@ -132,7 +131,7 @@ public class RoleController {
 	// Ajax call for populating objectives on section selection
 	@RequestMapping(value = "/hr/showObjective_Section", method = RequestMethod.GET)
 	public @ResponseBody
-	java.util.List<ObjectivesModel> getObjective_Section(
+	java.util.List<Objective> getObjective_Section(
 			@RequestParam(value = "section_id") String section_id) {
 
 		return roleService.showObjectives_By_Section(Integer
@@ -144,11 +143,11 @@ public class RoleController {
 	// selection
 	@RequestMapping(value = "/hr/showSelectedObjectiveAjax", method = RequestMethod.GET)
 	public @ResponseBody
-	java.util.List<ObjectivesModel> getSelectedObjective_Ajax(
+	java.util.List<Objective> getSelectedObjective_Ajax(
 			@RequestParam(value = "section_id") String section_id,
 			@RequestParam(value = "role_id") String role_id) {
 
-		java.util.List<ObjectivesModel> objectives = new ArrayList<ObjectivesModel>();
+		java.util.List<Objective> objectives = new ArrayList<Objective>();
 
 		if (!section_id.equals(null) && !role_id.equals(null)) {
 			objectives = roleService.showObjectives_By_Section_Role(
@@ -160,17 +159,17 @@ public class RoleController {
 
 	private void loadDefaultModel(Model model, int sectionIDtoLoad) {
 
-		List<Section> allSections = sectionService.getAllSections();
+		List<Section> allSections = roleService.showSections();
 		model.addAttribute("allSections", allSections);
 
 		if (sectionIDtoLoad == 0) {
 			sectionIDtoLoad = ((Section) allSections.get(0)).getId();
 			model.addAttribute("objectiveList",
-				roleDao.getObjectivesBySection(sectionIDtoLoad));
+				roleDao.objective_from_section_id(sectionIDtoLoad));
 		} else {
 			// model.addAttribute("sectionId", sectionIDtoLoad);
 			model.addAttribute("objectiveList",
-				roleDao.getObjectivesBySection(sectionIDtoLoad));
+				roleDao.objective_from_section_id(sectionIDtoLoad));
 
 		}
 
