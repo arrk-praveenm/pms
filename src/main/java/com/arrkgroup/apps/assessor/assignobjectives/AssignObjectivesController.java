@@ -66,10 +66,47 @@ public class AssignObjectivesController {
 		model.put("copyObjectivesBean", new CopyObjectivesBean());
 		
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
-	}	
+	}
+	
+	@RequestMapping(value = "/assessor/copyobjectives", method = RequestMethod.POST)
+	public String copyObjectives(
+			@ModelAttribute("copyObjectivesBean") CopyObjectivesBean copyObjectivesBean,
+			@ModelAttribute("addObjectiveBean") AddObjectiveBean addObjectiveBean,
+			BindingResult result, Map<String, Object> model,
+			HttpServletRequest request, Principal principal, Errors errors, 
+			@RequestParam(value="type", required=true) String type) {
+		log.info("action performed...........:"+ type);
+		
+		log.info("inside copy role objectives........");
+		log.info("Assessor: "+copyObjectivesBean.getAssessor());
+		log.info("Assessee: "+copyObjectivesBean.getAssessee());
+		log.info("Role: "+copyObjectivesBean.getAssesseeRole());
+		log.info("Project: "+copyObjectivesBean.getProjectName());
+		log.info("from_date is: "+copyObjectivesBean.getAssessmentFromDate());
+		log.info("end_date is: "+copyObjectivesBean.getAssessmentToDate());
+		
+		if(type.equals("role")){
+			assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
+		}
+		if(type.equals("assessee")){
+			assignObjectivesService.copyAssesseObjectives(copyObjectivesBean);
+		}
+		
+		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
+		List<Employee> assesses = assignObjectivesService.getAllAssesses();
+		List<Role> roles = assignObjectivesService.getAllRoles();
+		model.put("assessmentcycles", assessmentCycles);
+		model.put("assesses", assesses);
+		model.put("roles", roles);
+		model.put("copyObjectivesBean", copyObjectivesBean);
+		log.info("after copy role objectives........");
+		
+		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
+		
+	}
 
 	
-	@RequestMapping(value = "/assessor/copyroleobjectives", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/assessor/copyroleobjectives", method = RequestMethod.POST)
 	public String copyRoleObjectives(
 			@ModelAttribute("copyObjectivesBean") CopyObjectivesBean copyObjectivesBean,
 			BindingResult result, Map<String, Object> model,
@@ -81,7 +118,7 @@ public class AssignObjectivesController {
 		log.info("Project: "+copyObjectivesBean.getProjectName());
 		log.info("from_date is: "+copyObjectivesBean.getAssessmentFromDate());
 		log.info("end_date is: "+copyObjectivesBean.getAssessmentToDate());
-		log.info("copyObjectivesBean: "+copyObjectivesBean.toString());
+		
 		assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
 		
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
@@ -96,11 +133,31 @@ public class AssignObjectivesController {
 		
 	}
 	
-	@RequestMapping(value = "/assessor/copyassesseobjectives", method = RequestMethod.GET)
-	public List<Objective> copyAssesseObjectives() {
-		return null;
+	@RequestMapping(value = "/assessor/copyassesseobjectives", method = RequestMethod.POST)
+	public String copyAssesseObjectives(
+			@ModelAttribute("copyObjectivesBean") CopyObjectivesBean copyObjectivesBean,
+			BindingResult result, Map<String, Object> model,
+			HttpServletRequest request, Principal principal, Errors errors) {		
+		log.info("inside copy assessee objectives........");
+		log.info("Assessor: "+copyObjectivesBean.getAssessor());
+		log.info("Assessee: "+copyObjectivesBean.getAssessee());
+		log.info("Role: "+copyObjectivesBean.getAssesseeRole());
+		log.info("Project: "+copyObjectivesBean.getProjectName());
+		log.info("from_date is: "+copyObjectivesBean.getAssessmentFromDate());
+		log.info("end_date is: "+copyObjectivesBean.getAssessmentToDate());
 		
-	}
+		assignObjectivesService.copyAssesseObjectives(copyObjectivesBean);
+		
+		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
+		List<Employee> assesses = assignObjectivesService.getAllAssesses();
+		List<Role> roles = assignObjectivesService.getAllRoles();
+		model.put("assessmentcycles", assessmentCycles);
+		model.put("assesses", assesses);
+		model.put("roles", roles);
+		model.put("copyObjectivesBean", copyObjectivesBean);
+		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
+		
+	}*/
 	
 	
 	// Adding New Objective to section specified

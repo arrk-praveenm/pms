@@ -45,16 +45,13 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 	}
 
 	@Override
-	public List<Objective> copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {
-	
+	public void copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {	
 		assignObjectivesDao.copyRoleObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
-		return null;
 	}
 
 	@Override
-	public List<Objective> copyAssesseObjectives() {
-		// TODO Auto-generated method stub
-		return null;
+	public void copyAssesseObjectives(CopyObjectivesBean copyObjectivesBean) {
+		assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
 	}
 
 	@Override

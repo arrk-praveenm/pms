@@ -15,6 +15,6 @@ public interface AssignObjectivesDao {
 	public List<Employee> getAllAssesses();
 	public List<Role> getAllRoles();
 	public boolean copyRoleObjectives(AssesseesAssessor assesseesAssessor);
-	public List<Objective> copyAssesseObjectives();
+	public boolean copyAssesseObjectives(AssesseesAssessor assesseesAssessor);
 	public List<AssesseeObjectives> getAssesseObjectives(CopyObjectivesBean copyObjectivesBean,int sectionId);
 }

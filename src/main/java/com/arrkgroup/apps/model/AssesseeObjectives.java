@@ -17,16 +17,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "assessee_objectives")
 @NamedQueries({
-	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assesseeId.id=:employeeId and  aa.project_name=:projectName and aa.start_date=:StartDate) and section.id=:id")
-
-	
-
+	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assesseeId.id=:employeeId and  aa.project_name=:projectName and aa.start_date=:StartDate) and section.id=:id"),
+	@NamedQuery(name= AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id = (SELECT id FROM AssesseesAssessor aa WHERE aa.assesseeId.id=:assesseeId AND aa.cycleId.id=:cycleId AND aa.roleId.id=:roleId)")
 })
 public class AssesseeObjectives {
 	 
 	//@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION, query = "FROM AssesseeObjectives s where s.assesseeAssessor.assesseeId.id=(select id from Employee ee where ee.id= :employeeId) and s.section.id=:sectionId orderby s.assesseeAssessor.start_date , s.assesseeAssessor.end_date ")
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION";
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION";
+	public static final String GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
