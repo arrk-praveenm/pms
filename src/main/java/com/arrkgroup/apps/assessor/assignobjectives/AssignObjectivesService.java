@@ -1,5 +1,6 @@
 package com.arrkgroup.apps.assessor.assignobjectives;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.arrkgroup.apps.form.CopyObjectivesBean;
@@ -17,4 +18,8 @@ public interface AssignObjectivesService {
 	public List<Objective> copyAssesseObjectives();
 	public List<AssesseeObjectives> getAssesseObjectives(CopyObjectivesBean copyObjectivesBean,int sectionId);
 	public boolean addAssesseeObjective(CopyObjectivesBean copyObjectivesBean,String sectionId, String Description);
+	public boolean saveAssesseeObjectivebySection(AssesseeObjectives assesseeObjectives);
+	public boolean deleteAssesseeObjectivebySection(int sectionId)  throws SQLException ;
+	public AssesseeObjectives getAssesseeAssessorId(int assesseeObjectiveId);
+	public List<AssesseeObjectives> getALLAssesseObjectivesBySectionId(AssesseeObjectives assesseeObjectives);
 }

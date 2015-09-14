@@ -1,6 +1,7 @@
 package com.arrkgroup.apps.assessor.assignobjectives;
 
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -46,8 +47,18 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 
 	@Override
 	public List<Objective> copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {
+		AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
+		assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));
+		assesseesAssessor.setStart_date(copyObjectivesBean.getAssessmentFromDate());
+		assesseesAssessor.setEnd_date(copyObjectivesBean.getAssessmentToDate());
+		assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
+		assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
+		assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
+		assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
+		assesseesAssessor.setPeriod_edit_flag(EDIT_FLAG);
+		assesseesAssessor.setStatus(STATUS);
 	
-		assignObjectivesDao.copyRoleObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+		assignObjectivesDao.copyRoleObjectives(assesseesAssessor);
 		return null;
 	}
 
@@ -69,27 +80,41 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 		// TODO Auto-generated method stub
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		//get Assesseesor by ID and 
-		assesseeObjectives.setAssesseeAssessor(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+		assesseeObjectives.setAssesseeAssessor(assignObjectivesDao.getAssesseeAssessor(copyObjectivesBean));
 		assesseeObjectives.setDescription(description);
 		assesseeObjectives.setLastModifiedDate(new Date());
 		assesseeObjectives.setWeightage(0);
 		assesseeObjectives.setSection(modelObjectiveDao.findSectionById(Integer.parseInt(sectionId)));
-		return false;
+	System.out.println("Request to add Objective");
+		return assignObjectivesDao.addAssesseeObjective(assesseeObjectives);
+	}
+
+	@Override
+	public boolean saveAssesseeObjectivebySection(
+			AssesseeObjectives assesseeObjectives) {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.saveAssesseeObjectivebySection(assesseeObjectives);
+	}
+
+	@Override
+	public boolean deleteAssesseeObjectivebySection(int objectiveId)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.deleteAssesseeObjectivebySection(objectiveId);
+	}
+
+	@Override
+	public AssesseeObjectives getAssesseeAssessorId(int assesseeObjectiveId) {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.getAssesseeAssessorId(assesseeObjectiveId);
+	}
+
+	@Override
+	public List<AssesseeObjectives> getALLAssesseObjectivesBySectionId(AssesseeObjectives assesseeObjectives) {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.getALLAssesseObjectivesBySectionId(assesseeObjectives);
 	}
 	
-	public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBean, String editFlag,String Status)
-	{
-		AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
-		assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));		
-		assesseesAssessor.setStart_date(copyObjectivesBean.getAssessmentFromDate());
-		assesseesAssessor.setEnd_date(copyObjectivesBean.getAssessmentToDate());
-		assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
-		assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
-		assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
-		assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
-		assesseesAssessor.setPeriod_edit_flag(editFlag);
-		assesseesAssessor.setStatus(Status);
-		return assesseesAssessor;
-	}
+	
 
 }

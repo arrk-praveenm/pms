@@ -19,12 +19,16 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
 
-	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id  from  Employee ee where ee.email= :email) ")
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id  from  Employee ee where ee.email= :email) "),
+	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
+			   + "and s.start_date=:start_date and s.end_date=:end_date and s.project_name=:project_name "
+			   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)")
 
 })
 public class AssesseesAssessor {
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_ASSESSEES_BY_EMAIL = "AssesseeAssessor.FIND_ASSESSEES_BY_EMAIL";
+	public static final String FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

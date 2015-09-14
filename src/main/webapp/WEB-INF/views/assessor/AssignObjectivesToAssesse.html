@@ -29,7 +29,84 @@
 
  $("#addObjectiveSectionName").val($('li[name="'+selectedSection+'"]').text());
 
- 
+
+ $("#assessee").on('change',function(){
+		if($(this).val()!="0")
+			{
+			if($("#assessmentFromDate").val()!="")
+				{
+				if($("#projectName").val()!="")
+					{
+					
+				 	var	sectionLoad={
+				              sectionLoad:"0",
+				              assesseeid: $(this).val(),
+				              assessmentFromDate: $("#assessmentFromDate").val(),
+				              projectName: $("#projectName").val(),
+				             assessmentCycle: $("#assessmentCycle").val()
+				              
+				             } 
+						ajaxcall(sectionLoad); 
+				      
+					}
+				}
+			} 
+			
+		});
+	var count=1;
+	$("#assessmentFromDate").click(function(){
+		count =1;
+		
+		});
+	$("#assessmentFromDate").change( function(){
+		if(count==1)
+			{
+			count=2;
+
+			if($("#assessee").val()!="0")
+			{
+			if($(this).val()!="")
+				{
+				if($("#projectName").val()!="")
+					{
+				
+				 	var	sectionLoad={
+				              sectionLoad:"0",
+				              assesseeid:$("#assessee").val(),
+				              assessmentFromDate: $(this).val(),
+				              projectName: $("#projectName").val(),
+				             assessmentCycle: $("#assessmentCycle").val()
+				              
+				             } 
+						ajaxcall(sectionLoad); 
+					}
+				}
+			} 
+			}
+		}) ;
+	
+	$("#projectName").on('change', function(){
+
+		if($("#assessee").val()!="0")
+		{
+		if($("#assessmentFromDate").val()!="")
+			{
+			if($(this).val()!="")
+				{
+			
+				 var	sectionLoad={
+			              sectionLoad:"0",
+			              assesseeid:$("#assessee").val(),
+			              assessmentFromDate: $("#assessmentFromDate").val(),
+			              projectName: $(this).val(),
+			             assessmentCycle: $("#assessmentCycle").val()
+			              
+			             } 
+					ajaxcall(sectionLoad); 
+				}
+			}
+		} 
+		});
  
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
@@ -44,7 +121,7 @@
     			+'<div 	class="panel panel-default marginbottom10 panel-objective" 	id="objective-one">'
     			+'<div class="panel-body">'
     			+'<p class="pull-left" id="objectiveDesc">'
-    			+'<span id="'+spanDescId+'" text="'+objectiveDesc.objectiveDesc+'">'+objectiveDesc.objectiveDesc+'</span>'
+    			+'<span id="'+spanDescId+'" text="'+objectiveDesc.description+'">'+objectiveDesc.description+'</span>'
     			+'</p>'
     			+'<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>'
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
@@ -87,20 +164,36 @@
 			
 			
 			$("#messageBlock").empty();
-			
+			alert("Test1");
 		var	sectionLoad={
               sectionLoad:$(id).attr("name"),
+              assesseeid:$("#assessee").val(),
+              assessmentFromDate: $("#assessmentFromDate").val(),
+              projectName: $("#projectName").val(),
+             assessmentCycle: $("#assessmentCycle").val()
+              
              } 
-
+		
 		//Error Message removal for add objective text box
 			$("#hasError").removeClass("has-error");
 			$("#span").empty();
 
-
+			ajaxcall(sectionLoad);
 
 		
 			
 //making ajax call to laod objectives for selected section
+	
+	
+
+		
+			});
+
+		
+
+
+		function ajaxcall(sectionLoad)
+		{
 			   $.ajax({
 	                url: 'ajax/sectionLoad',
 	                type: 'GET',
@@ -110,15 +203,17 @@
 					if(response=="")
 	                {
 						 $("#sectionObjectives-prnt").empty();
+						
 	                }else{
 
 	                	 $("#sectionObjectives-prnt").empty();
+	                	 
 	                jQuery.each( response, function( iterStat, objectiveDesc ) {
-                     var section=sectionLoad.sectionLoad;
+                    var section=sectionLoad.sectionLoad;
 	                
 	                    LodaObjectives(iterStat,objectiveDesc, section);
 	              
-	}); 
+				}); 
 	                } 
 
 	                 
@@ -128,13 +223,25 @@
 	                    alert(errorThrown);
 	                }
 				}); 
+			};
 
-	
 
-		
-			});
+
+			$("#objectiveDesc").on('click',function()
+					{
+//alert($("#assesseeRole").val());
+				$("#inputAssessmentCycle").val($("#assessmentCycle").val()); 
+				 $("#inputAssesseeRole").val($("#assesseeRole").val()); 
+				 $("#inputAssessor").val($("#assessor").val()); 
+				 $("#inputProjectName").val($("#projectName").val()); 
+				 $("#inputAssessmentToDate").val($("#assessmentToDate").val()); 
+				 $("#inputAssessmentFromDate").val($("#assessmentFromDate").val());//
+				 $("#inputAssessee").val($("#assessee").val());
+						});
+			//alert($("#inputAssessmentCycle").val());
 });
 
+	
 	
 </script>
 </head>
@@ -330,8 +437,14 @@
 													type="hidden" placeholder="Add objectives"
 													class="form-control" id="addObjectiveSectionName"
 													name="addObjectiveSectionName" th:value="1" />
-													class="input-group-btn">
-													<button type="submit" class="btn btn-info btn-lg button">
+								<input type="hidden"  	class="form-control" id="inputAssessmentCycle" 	name="assessmentCycle" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentFromDate" 	name="assessmentFromDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentToDate" 	name="assessmentToDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputProjectName" 	name="projectName" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessor" 	name="assessor" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssesseeRole" 	name="assesseeRole" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessee" 	name="assessee" th:value="1" />
+													<button type="submit" id="addObjective" class="btn btn-info btn-lg button">
 														<i class="fa fa-plus">&nbsp;</i>
 													</button>
 												</span>
@@ -444,6 +557,7 @@
 											name="updateSectionid" value="text" />
 											 <input type="hidden"
 											id="updateobjectiveId" name="updateobjectiveId" value="text" />
+							
 									</div>
 								</div>
 							</div>
