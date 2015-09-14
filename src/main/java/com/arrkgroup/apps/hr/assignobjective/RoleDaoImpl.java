@@ -15,12 +15,12 @@ import com.arrkgroup.apps.form.RoleObjectivesBean;
 import com.arrkgroup.apps.hr.managesections.CreateSectionController;
 
 import com.arrkgroup.apps.model.Objective;
-import com.arrkgroup.apps.model.ObjectivesModel;
+
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
 
-import com.arrkgroup.apps.model.SectionModel;
+
 
 
 @Repository("RoleDao")@Transactional
@@ -42,16 +42,16 @@ public class RoleDaoImpl implements RoleDao {
 
 
 	@Override
-	public ObjectivesModel objective_from_id(int id) {
+	public Objective objective_from_id(int id) {
 
-		return entityManager.createNamedQuery(ObjectivesModel.FIND_BY_ID, ObjectivesModel.class)
+		return entityManager.createNamedQuery(Objective.GET_BY_ID, Objective.class)
 			.setParameter("id", id).getSingleResult();
 
 	}
 
-	public List < ObjectivesModel > objective_from_section_id(int id) {
-		return entityManager.createNamedQuery(ObjectivesModel.FIND_BY_SECTION_ID,
-		ObjectivesModel.class).setParameter("section_id", id)
+	public List < Objective > objective_from_section_id(int id) {
+		return entityManager.createNamedQuery(Objective.GET_ALL_SECTION_OBJECTIVES,
+				Objective.class).setParameter("section", id)
 			.getResultList();
 
 	}
@@ -146,10 +146,10 @@ public class RoleDaoImpl implements RoleDao {
 
 	}
 	//list all section present in db
-	public List < SectionModel > showSections() {
+	public List < Section > showSections() {
 
-		return entityManager.createNamedQuery(SectionModel.GET_ALL_SECTIONS,
-		SectionModel.class).getResultList();
+		return entityManager.createNamedQuery(Section.GET_ALL_SECTIONS,
+		Section.class).getResultList();
 	}
 
 	@Override
@@ -163,21 +163,21 @@ public class RoleDaoImpl implements RoleDao {
 
 
 
-	public List < ObjectivesModel > showObjectives_By_Notin_Section_Role(int section_id,
+	public List < Objective > showObjectives_By_Notin_Section_Role(int section_id,
 	int role_id) {
 
 	
 
-		List < ObjectivesModel > ObjectivesList = new ArrayList < ObjectivesModel > ();
+		List < Objective > ObjectivesList = new ArrayList < Objective> ();
 
-		ObjectivesList = entityManager.createNamedQuery(ObjectivesModel.FIND_BY_SECTION_ID_NOT_PRESENT,
-		ObjectivesModel.class).setParameter("role_id", role_id)
+		ObjectivesList = entityManager.createNamedQuery(Objective.FIND_BY_SECTION_ID_NOT_PRESENT,
+				Objective.class).setParameter("role_id", role_id)
 			.setParameter("section_id", section_id).getResultList();
 	
 		return ObjectivesList;
 	}
 
-
+/*
 	@Override
 	public List < ObjectivesModel > getObjectivesBySection(int sectionId) {
 		// TODO Auto-generated method stub
@@ -185,7 +185,7 @@ public class RoleDaoImpl implements RoleDao {
 		ObjectivesModel.class).setParameter("section_id", sectionId)
 			.getResultList();
 
-	}
+	}*/
 	public List<RoleModel> Objectives_to_Role_Id(RoleObjectivesBean bean) {
 
 		return entityManager

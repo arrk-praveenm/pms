@@ -35,7 +35,7 @@
                             $('#multiselect').append(
                                 $('<option></option>').attr('value',
                                     data[row].id).text(
-                                    data[row].description));
+                                    data[row].objectiveDesc));
 
                         }
                         if ($('#selectrole').val() > 0) {
@@ -62,7 +62,7 @@
                                                     'value',
                                                     SectionObjectives[row].id)
                                                 .text(
-                                                    SectionObjectives[row].description));
+                                                    SectionObjectives[row].objectiveDesc));
 
                                     }
 
@@ -76,7 +76,7 @@
                                                     'value',
                                                     data[row].id)
                                                 .text(
-                                                    data[row].description));
+                                                    data[row].objectiveDesc));
                                        
                                         $(
                                             '#multiselect option[value=' + data[row].id + ']').remove();
@@ -234,7 +234,7 @@
 													name="to" id="multiselect" class="form-control" size="8"
 													multiple="multiple">
 													<option th:each="objectives : ${objectiveList}"
-														th:text="${objectives.description}"
+														th:text="${objectives.objectiveDesc}"
 														th:value="${objectives.id}">Assistant General
 														Manager</option>
 
@@ -257,7 +257,7 @@
 													name="from" id="multiselect_to" class="form-control"
 													size="8" multiple="multiple" th:field="*{multiselect_to}">
 													<option th:each="Objectives : ${objectiveSelectedList}"
-														th:text="${Objectives.description}"
+														th:text="${Objectives.objectiveDesc}"
 														th:value="${Objectives.id}">Developer</option>
 												</select> <span class="help-block"
 													th:if="${#fields.hasErrors('multiselect_to')}"
