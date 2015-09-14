@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+<head>
+
+</head>
+<body>
+	<!-- Create super admin block starts -->
+	<div layout:fragment="content">
+	
+   
+<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">Create New Cycle</h3>
+					</div>
+					<div class="box-body">
+					
+					     
+     		  <th:block th:if="${successMessage != null}">
+       
+        <div th:replace="fragments/alert :: alert (type='success', message=${successMessage })">&nbsp;</div>
+    </th:block>
+					
+					
+					  <th:block th:if="${errorMessage != null}">
+       
+        <div th:replace="fragments/alert :: alert (type='danger', message=${errorMessage })">&nbsp;</div>
+    </th:block>
+     
+
+     
+     
+					
+					<form action="#" method="post" th:action="@{/hr/addCycle}" th:object="${cycle}" >
+					
+						<div class="row">
+							<div class="col-md-6">									
+								<div class="form-group" th:classappend="${#fields.hasErrors('start_date')}? 'has-error'">
+									
+									<label for="cyclestartdate">Start Date</label>
+									
+									<div class="input-group">
+									
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										
+										</div>
+										
+										<input type="text"  name="start_date"   placeholder="start_date"  class="form-control pull-right" id="start_date" th:field="*{start_date}" />
+									
+									
+									
+									<!-- <p th:if="${#fields.hasErrors('start_date')}" th:errors="*{start_date}">Incorrect date</p> -->
+									</div>
+									<span class="help-block" th:if="${#fields.hasErrors('start_date')}" th:errors="*{start_date}">Incorrect email</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group" th:classappend="${#fields.hasErrors('end_date')}? 'has-error'">
+									<label for="cycleenddate">End date</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" id="end_date"  name="end_date"  placeholder="end_date" class="form-control pull-right"  th:field="*{end_date}"/>
+									
+										
+									</div>
+								<span class="help-block" th:if="${#fields.hasErrors('end_date')}" th:errors="*{end_date}">Incorrect email</span>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+								<label for="newcyclesave" class="label-newcycle sr-only">&nbsp;</label>
+									<div class="input-group">
+										<button type="submit" id="newcyclesave" class="btn btn-primary">Save</button>
+
+										
+									</div>
+								</div>
+							</div>			
+						</div>
+						</form>
+					<form action="#" method="post" th:action="@{/hr/doDelete}" th:object="${cycle}" >	
+						<div id="newcycle_datagrid_container">
+							<hr/>
+							<table class="table table-bordered table-striped" id="create_newcycle"  th:if="${not #lists.isEmpty(cycleList)}">
+								<thead>
+									<tr>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Status</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="cycle : ${cycleList}">
+										<td th:text="${cycle.start_date}">01-04-2014</td>
+										<td th:text="${cycle.end_date}">30-10-2014</td>
+										<td ><span class="label label-warning" th:text="${cycle.status}">Pending</span></td>
+										
+							 
+										<td   th:if="${cycle.status} == current">
+										 <input type="hidden" id="id" name="id" th:value="${cycle.id}" />
+										
+										<button type="submit"  class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+																													
+									</tr>
+								
+								</tbody>
+							</table>
+						</div> 
+						</form>
+						
+					</div>
+				</div>
+    
+    
+    
+    
+
+<script>
+	$(document).ready(function(){
+		$("#menu_adminmodule").addClass("active");
+		$("#menu_adminmodule").next().next("ul").css("display","block");
+	});
+</script>
+	</div>
+</body>
+</html>
+

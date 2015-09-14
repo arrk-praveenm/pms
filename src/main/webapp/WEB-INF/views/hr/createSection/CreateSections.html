@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+<head>
+
+
+</head>
+<body>
+	<div layout:fragment="content">
+
+
+
+
+		<!-- Content Header starts -->
+		<section class="content-header">
+			<h1>
+				Human Resource - Organisation Objectives
+				<!--<small>Optional description</small>-->
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+				<li class="active">Here</li>
+			</ol>
+		</section>
+		<!-- Content Header ends -->
+
+		<!-- Main content starts -->
+		<section class="content">
+
+
+			<!-- Create super admin block starts -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Create Sections</h3>
+				</div>
+				<div class="box-body">
+					<form action="#" id="section" method="post"
+						th:action="@{/hr/addSection}" th:object="${createSectionBean}">
+						<div class="form-horizontal">
+							<div class="form-group"
+								th:classappend="${#fields.hasErrors('sectionName')}? 'has-error'">
+								<label class="sr-only control-label text-left"
+									for="hrsectionname">Section Name</label>
+								<div class="col-sm-8">
+									<div class="input-group input-group-lg">
+										<input type="text" placeholder="Add objectives"
+											class="form-control" id="sectionName"
+											th:field="*{sectionName}" /> <span class="input-group-btn">
+											<button type="submit" class="btn btn-primary btn-lg"
+												id="submitSection">
+												<i class="fa fa-plus">&nbsp;</i>
+											</button>
+										</span>
+
+									</div>
+									<span class="help-block"
+										th:if="${#fields.hasErrors('sectionName')}"
+										th:errors="*{sectionName}">Incorrect Section</span>
+								</div>
+								<div class="col-sm-4"></div>
+							</div>
+						</div>
+					</form>
+					<th:block th:if="${sectionMessage != null}">
+						<!-- /* The message code is returned from the @Controller */ (${messages.name})-->
+						<!-- <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(statusmsg)}, message=#{${statusmsg}(${useradded})} )">&nbsp;</div> -->
+						<div
+							th:replace="fragments/alert :: alert (type=${sectionMessage.type}, message=#{${sectionMessage.text}  })">&nbsp;</div>
+					</th:block>
+					<div class="nav-tabs-custom margintop10 noboxshadow">
+
+						<hr class="margintop10 marginbottom20" />
+						
+						<div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+						<div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+						<div class="wrapper-tabs">
+							<ul class="nav nav-tabs list" id="myTab">
+								<th:block th:each="sectionName, iterStat  : ${allSections}">
+									<!-- th:each= "sectionName : ${allSections}"  th:text="${sectionName.getSection()}"	-->
+	
+	
+	
+									<th:block th:if="${iterStat.index}==0">
+	
+										<li class="active test" th:id="${iterStat.index}" th:name="${sectionName.getId()}"><a
+											data-toggle="tab" th:text="${sectionName.getSection()}"
+											th:id="'section'+${iterStat.index}" href="#par"
+											th:name="${sectionName.getId()}">Performance</a></li>
+	
+									</th:block>
+									<th:block th:if="${iterStat.index}!=0">
+	
+										<li class=" test" th:id="${iterStat.index}" th:name="${sectionName.getId()}"><a
+											data-toggle="tab" th:text="${sectionName.getSection()}"
+											th:id="'section'+${iterStat.index}" href="#par"
+											th:name="${sectionName.getId()}">Competancy</a></li>
+	
+									</th:block>
+	
+								</th:block>
+								<!-- <li ><a data-toggle="tab" href="#pqar" >Personal Qualities</a></li> -->
+	
+							</ul>
+						</div>						
+
+						<div class="tab-content">
+							<div id="par" class="tab-pane active">
+
+								<div class="box-body">
+
+									<form action="#" id="objective" method="post"
+										th:action="@{/hr/addObjective}"
+										th:object="${addObjectiveBean}">
+										<div id="hasError" class="form-group margintop10 marginbottom30"
+											th:classappend="${#fields.hasErrors('objectiveDesc')}? 'has-error'">
+											<div class="input-group input-group-lg">
+												<input type="text" placeholder="Add objectives"
+													class="form-control" id="objectiveDesc"
+													th:field="*{objectiveDesc}" />
+													 <input type="hidden"
+													placeholder="Add objectives" class="form-control"
+													id="addObjectiveSectionID" name="addObjectiveSectionID"
+													th:value="${sectionToLoad}" /> <span class="input-group-btn"> 
+													<input
+													type="hidden" placeholder="Add objectives"
+													class="form-control" id="addObjectiveSectionName"
+													name="addObjectiveSectionName" th:value="1" />
+													class="input-group-btn">
+													<button type="submit" class="btn btn-info btn-lg button">
+														<i class="fa fa-plus">&nbsp;</i>
+													</button>
+												</span>
+											</div>
+											<span id="span" class="help-block"
+												th:if="${#fields.hasErrors('objectiveDesc')}"
+												th:errors="*{objectiveDesc}">Incorrect Section</span>
+										</div>
+									</form>
+									<div id="messageBlock">
+										<th:block th:if="${objectiveMessage != null}">
+											<!-- /* The message code is returned from the @Controller */ (${messages.name})-->
+											<!-- <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(statusmsg)}, message=#{${statusmsg}(${useradded})} )">&nbsp;</div> -->
+											<div
+												th:replace="fragments/alert :: alert (type=${objectiveMessage.type}, message=#{${objectiveMessage.text}  })">&nbsp;</div>
+										</th:block>
+									</div>
+									<div>
+										<input type="hidden" id="SelectedSectionObjectives"
+											th:value="${allObjectives}" /> <input type="hidden"
+											id="SelectedSection" th:value="66" />
+									</div>
+									<div id="sectionObjectives-prnt">
+										<div id="sectionObjectives"
+											th:each="objectiveDesc, iterStat  : ${allObjectives}">
+											<form action="#" id="deleteObjective" method="post"
+												th:action="@{/hr/deleteObjective}">
+												<div
+													class="panel panel-default marginbottom10 panel-objective"
+													id="objective-one">
+													<div class="panel-body">
+														<p class="pull-left" id="objectiveDesc">
+															<span th:id="'objectiveDesc'+${iterStat.index}"
+																th:text="${objectiveDesc.getObjectiveDesc()}">Delivering
+																to the Customer's satisfaction/ expectation.</span>
+														</p>
+
+														<input type="hidden"
+															th:id="'objectiveId'+${iterStat.index}"
+															name="deleteObjectiveId"
+															th:value="${objectiveDesc.getId()}" /> <input
+															type="hidden" th:id="'sectionId'+${iterStat.index}"
+															name="SectionIdSelected" value="1" />
+														<div class="pull-right">
+															<button type="button" th:id="${iterStat.index}"
+																data-target="#editobjective" data-toggle="modal"
+																class="btn btn-info btn-edit">
+																<i class="fa fa-pencil"></i>
+															</button>
+															<button style="padding: 0px 6px;" type="submit"
+																data-target="#objective-one" aria-label="Close"
+																class="btn btn-danger btn-close">
+																<i class="fa fa-times"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<script th:inline="javascript">
+	$(document).ready(function(){
+
+		//getting the attributes from request object
+		var allObjectives = [[${allObjectives}]];
+
+		var selectedSection =[[${sectionToLoad}]];
+
+
+		//making div empty
+		$("#sectionObjectives-prnt").empty();
+
+		
+//on Load setting objectives
+ $.each( allObjectives, function( iterStat, objectiveDesc ) {
+           LodaObjectives(iterStat,objectiveDesc,selectedSection)
+});
+
+ //To select active tabs on load
+ $('.test').removeClass( "active test" ).addClass("test");
+
+ $('li[name="'+selectedSection+'"]').addClass( "active test" );
+
+ $("#addObjectiveSectionName").val($('li[name="'+selectedSection+'"]').text());
+
+ 
+ 
+ //to Load objectives into div
+ function LodaObjectives(iterStat,objectiveDesc,selectedSection)
+{
+	
+	  
+		var spanDescId="objectiveDesc"+iterStat;
+    	var hiddenObjectiveId="objectiveId"+iterStat;
+    	$("#sectionObjectives-prnt").append('<div id="sectionObjectives" >'
+    			
+    			+'<form action="#" id="deleteObjective" method="post" 	th:action="@{/hr/deleteObjective}">'
+    			+'<div 	class="panel panel-default marginbottom10 panel-objective" 	id="objective-one">'
+    			+'<div class="panel-body">'
+    			+'<p class="pull-left" id="objectiveDesc">'
+    			+'<span id="'+spanDescId+'" text="'+objectiveDesc.objectiveDesc+'">'+objectiveDesc.objectiveDesc+'</span>'
+    			+'</p>'
+    			+'<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>'
+    			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
+    			+'<div class="pull-right">'
+    			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
+    			+'<i class="fa fa-pencil"></i>'
+    			+'</button>'
+    			+'<button style="padding: 0px 6px;" type="submit" data-target="#objective-one" aria-label="Close" class="btn btn-danger btn-close">'
+    			+'<i class="fa fa-times"></i>'
+    			+'</button></div></div></div></form></div>');
+
+    //setting the data to text areas on click of edit button 	
+    	var valId='#'+'objectiveDesc'+iterStat;
+    	$(valId).text(objectiveDesc.objectiveDesc);
+    	$(".btn-edit").on( "click", function(){
+    		var id='#'+'objectiveDesc'+$(this).attr("id");
+    		var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
+    		$("#textAreas").val($(id).text());
+    		$("#updateobjectiveId").val($(hiddenObjectiveid).val());
+    		
+    		$("#updateSectionid").val($('#sectionIdSelected').val());
+    		});	
+	}; 
+
+
+		$(".btn-edit").on( "click", function(){
+		
+			var id='#'+'objectiveDesc'+$(this).attr("id");
+			var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
+			$("#textAreas").val($(id).text());
+			$("#updateobjectiveId").val($(hiddenObjectiveid).val());
+			});
+
+		$(".test").on("click",function(){
+			var id='#'+'section'+$(this).attr("id");
+
+			$("#addObjectiveSectionID").val($(id).attr("name"));
+			
+			$("#addObjectiveSectionName").val($(id).text());
+			
+			
+			$("#messageBlock").empty();
+			
+		var	sectionLoad={
+              sectionLoad:$(id).attr("name"),
+             } 
+
+
+		//Error Message removal for add objective text box
+			$("#hasError").removeClass("has-error");
+			$("#span").empty();
+		
+			
+//making ajax call to laod objectives for selected section
+			   $.ajax({
+	                url: 'ajax/sectionLoad',
+	                type: 'GET',
+	                data: sectionLoad,
+	                success: function(response) {
+		              
+					if(response=="")
+	                {
+						 $("#sectionObjectives-prnt").empty();
+	                }else{
+
+	                	 $("#sectionObjectives-prnt").empty();
+	                jQuery.each( response, function( iterStat, objectiveDesc ) {
+                     var section=sectionLoad.sectionLoad;
+	                
+	                    LodaObjectives(iterStat,objectiveDesc, section);
+	              
+	}); 
+	                } 
+
+	                 
+	                },
+	                error: function(jqXHr, reponse, errorThrown) {
+	                    // ... Process the result ...
+	                    alert(errorThrown);
+	                }
+				}); 
+
+	
+
+		
+			});
+});
+
+	
+</script>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Create super admin block ends -->
+
+
+		</section>
+		<!-- Main content ends -->
+
+
+
+
+
+
+		<!-- Modal Starts -->
+		<div class="modal fade" id="editobjective" tabindex="-1" role="dialog"
+			aria-labelledby="editobjectivemodal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<form action="#" id="objective" method="post"
+						th:action="@{/hr/saveObjective}">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="editobjectivemodal">Edit
+								Objectives</h4>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="sr-only">Edit Objective</label>
+										<textarea id="textAreas" name="textAreas" th:row="2"
+											class="form-control"></textarea>
+										<input type="hidden" id="updateSectionid"
+											name="updateSectionid" value="text" />
+											 <input type="hidden"
+											id="updateobjectiveId" name="updateobjectiveId" value="text" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary saveEdit">Save</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- Modal ends -->
+
+	</div>
+</body>
+</html>

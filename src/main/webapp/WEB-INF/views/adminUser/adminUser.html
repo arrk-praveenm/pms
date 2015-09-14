@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+<head>
+
+</head>
+<body>
+	<!-- Create super admin block starts -->
+	<div layout:fragment="content">
+		<section class="content-header">
+			<h1>Admin</h1>
+		</section>
+		<section class="content">
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Create HR</h3>
+				</div>
+				<div class="box-body">
+
+					<form action="#" method="post" th:action="@{/admin/addHr}"
+						th:object="${addHrFormBean}">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group"
+									th:classappend="${#fields.hasErrors('firstName')}? 'has-error'">
+									<label for="createhrfirstname">First Name</label> <input
+										type="text" id="firstName" th:field="*{firstName}"
+										class="form-control" /> <span class="help-block"
+										th:if="${#fields.hasErrors('firstName')}"
+										th:errors="*{firstName}">Incorrect password</span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"
+									th:classappend="${#fields.hasErrors('lastName')}? 'has-error'">
+									<label for="createhrlastname">last Name</label> <input
+										type="text" class="form-control" id="lastName"
+										th:field="*{lastName}" /> <span class="help-block"
+										th:if="${#fields.hasErrors('lastName')}"
+										th:errors="*{lastName}">Incorrect password</span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group"
+									th:classappend="${#fields.hasErrors('emailId')}? 'has-error'">
+									<label for="createhremailid">Email ID</label> <input
+										type="email" id="emailId" th:field="*{emailId}"
+										class="form-control" /> <span class="help-block"
+										th:if="${#fields.hasErrors('emailId')}" th:errors="*{emailId}">Incorrect
+										email</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<input class="btn btn-primary" type="submit" value="Add HR" />
+							</div>
+						</div>
+					</form>
+					<th:block th:if="${messages != null}">
+						<!-- /* The message code is returned from the @Controller */ -->
+						<!-- <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(statusmsg)}, message=#{${statusmsg}(${useradded})} )">&nbsp;</div> -->
+						<div
+							th:replace="fragments/alert :: alert (type='${#strings.toLowerCase(messages.type)}', message=#{${messages.text} (${messages.name}) })">&nbsp;</div>
+					</th:block>
+					<table id="hrperson"
+						class="table table-bordered table-striped margintop20">
+						<thead>
+							<tr>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email ID</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="created_hr_row" th:each="hrUsers : ${allHrUsers}">
+
+								<td th:text="${hrUsers.getFname()}">NA</td>
+								<td th:text="${hrUsers.getLname()}">NA</td>
+								<td th:text="${hrUsers.getEmail()}">NA</td>
+								<td>
+									<form th:action="@{/admin/deleteHrUser}" method="post">
+										<input type="hidden" id="email" name="email"
+											th:value="${hrUsers.email}" />
+										<button type="submit" class="btn btn-danger btn-delete-hr">
+											<i class="fa fa-trash-o"> </i>
+										</button>
+									</form>
+								</td>
+
+							</tr>
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+			<!-- Create super admin block ends -->
+		</section>
+		<script>
+	$(document).ready(function(){
+		$("#menu_adminmodule").addClass("active");
+		$("#menu_adminmodule").next().next("ul").css("display","block");
+	});
+</script>
+	</div>
+</body>
+</html>

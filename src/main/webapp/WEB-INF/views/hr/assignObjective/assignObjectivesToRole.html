@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+
+<head>
+
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<script>
+        $(function() {
+
+
+            var SectionObjectives;
+
+            $(".test").on("click", function() {
+                var id = '#' + 'section' + $(this).attr("id");
+
+                $("#section_id").val($(id).attr("name"));
+                $.ajax({
+                    url: '../hr/showObjective_Section',
+                    type: 'GET',
+                    // This is query string i.e. country_id=123
+                    data: {
+                        section_id: $(id).attr("name")
+                    },
+                    success: function(data) {
+                        SectionObjectives = data;
+
+                        //$("#selectrole").val($("#target option:second").val());
+                        $('#multiselect_to').empty();
+                        $('#multiselect').empty(); // clear the current elements in select box
+                        for (row in data) {
+                            $('#multiselect').append(
+                                $('<option></option>').attr('value',
+                                    data[row].id).text(
+                                    data[row].description));
+
+                        }
+                        if ($('#selectrole').val() > 0) {
+
+
+                            $.ajax({
+                                url: '../hr/showSelectedObjectiveAjax',
+                                type: 'GET',
+                                // This is query string i.e. country_id=123
+                                data: {
+                                    role_id: $('#selectrole').val(),
+                                    section_id: $(id).attr("name")
+                                },
+                                success: function(data) {
+
+                                    // clear the current elements in select box
+                                    $('#multiselect').empty();
+                                    for (row in SectionObjectives) {
+                                        $('#multiselect')
+                                            .append(
+                                                $(
+                                                    '<option></option>')
+                                                .attr(
+                                                    'value',
+                                                    SectionObjectives[row].id)
+                                                .text(
+                                                    SectionObjectives[row].description));
+
+                                    }
+
+                                    $('#multiselect_to').empty(); // clear the current elements in select box
+                                    for (row in data) {
+                                        $('#multiselect_to')
+                                            .append(
+                                                $(
+                                                    '<option></option>')
+                                                .attr(
+                                                    'value',
+                                                    data[row].id)
+                                                .text(
+                                                    data[row].description));
+                                       
+                                        $(
+                                            '#multiselect option[value=' + data[row].id + ']').remove();
+                                    }
+
+                                    
+                                },
+                                error: function(jqXHR, textStatus,
+                                    errorThrown) {
+                                    alert(errorThrown);
+                                }
+                            });
+
+
+                        }
+
+
+
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+
+
+            });
+
+
+
+            $('#selectrole')
+                .change(
+                    function() {
+
+                        $("#section0").trigger("click");
+
+
+                    });
+
+
+
+
+        });
+    </script>
+
+
+</head>
+
+<body>
+	<!-- Create super admin block starts -->
+	<div layout:fragment="content">
+		<section class="content-header">
+			<h1>Human Resource - Assign Objectives to Role</h1>
+		</section>
+		<section class="content">
+
+			<div class="box">
+				<div class="box-body">
+
+
+					<th:block th:if="${successMessage != null}">
+
+						<div
+							th:replace="fragments/alert :: alert (type='success', message=${successMessage })">&nbsp;</div>
+					</th:block>
+
+
+					<th:block th:if="${errorMessage != null}">
+
+						<div
+							th:replace="fragments/alert :: alert (type='danger', message=${errorMessage })">&nbsp;</div>
+					</th:block>
+
+
+
+
+					<form id="objectivesToRole" action="#" method="post"
+						th:action="@{/hr/obj_to_role}" th:object="${RoleObjectivesBean}">
+						<input type="hidden" id="section_id" name="section_id"
+							th:field="*{section_id}" /> <input type="hidden"
+							id="First_section_id" name="First_section_id"
+							th:value="${sectionToLoad}" />
+
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label for="selectrole" class="sr-only">Role</label> <select
+										id="selectrole" class="form-control" th:field="*{role_id}">
+										<option selected="selected" value="0">Select Role</option>
+										<option th:each="role : ${roleList}" th:text="${role.title}"
+											th:value="${role.id}">Developer</option>
+
+
+									</select>
+								</div>
+							</div>
+
+						</div>
+
+
+						<hr class="margintop10 marginbottom10" />
+
+
+						<div class="nav-tabs-custom margintop10 noboxshadow">
+
+							<hr class="margintop10 marginbottom20" />
+
+							<div class="scroller scroller-left">
+								<i class="glyphicon glyphicon-chevron-left"></i>
+							</div>
+							<div class="scroller scroller-right">
+								<i class="glyphicon glyphicon-chevron-right"></i>
+							</div>
+							<div class="wrapper-tabs">
+								<ul id="tabs" class="nav nav-tabs">
+									<th:block th:each="sectionName, iterStat  : ${allSections}"
+										th:field="*{section_id}">
+										<!-- th:each= "sectionName : ${allSections}"  th:text="${sectionName.getSection()}"	-->
+
+										<th:block th:if="${iterStat.index}==0">
+
+											<li class="active test" th:id="${iterStat.index}"
+												th:name="${sectionName.getId()}"><a data-toggle="tab"
+												th:text="${sectionName.getSection()}"
+												th:id="'section'+${iterStat.index}" href="#par"
+												th:name="${sectionName.getId()}">Performance</a></li>
+
+										</th:block>
+										<th:block th:if="${iterStat.index}!=0">
+
+											<li class=" test" th:id="${iterStat.index}"
+												th:name="${sectionName.getId()}"><a data-toggle="tab"
+												th:text="${sectionName.getSection()}"
+												th:id="'section'+${iterStat.index}" href="#par"
+												th:name="${sectionName.getId()}">Competancy</a></li>
+
+										</th:block>
+
+
+
+									</th:block>
+									<!-- <li ><a data-toggle="tab" href="#pqar" >Personal Qualities</a></li> -->
+
+								</ul>
+							</div>
+
+
+
+							<div class="tab-content">
+								<div id="par" class="tab-pane active">
+									<div class="box-body">
+										<div class="row">
+											<div class="col-xs-5">
+												<label for="selectrole">Organisation Objectives</label> <select
+													name="to" id="multiselect" class="form-control" size="8"
+													multiple="multiple">
+													<option th:each="objectives : ${objectiveList}"
+														th:text="${objectives.description}"
+														th:value="${objectives.id}">Assistant General
+														Manager</option>
+
+												</select>
+											</div>
+											<div class="col-xs-2 margintop30">
+												<label for="selectrole">&nbsp;</label>
+												<button type="button" id="multiselect_rightSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-right"></i>
+												</button>
+												<button type="button" id="multiselect_leftSelected"
+													class="btn btn-block">
+													<i class="glyphicon glyphicon-chevron-left"></i>
+												</button>
+											</div>
+											<div class="col-xs-5"
+												th:classappend="${#fields.hasErrors('multiselect_to')}? 'has-error'">
+												<label for="selectrole">Role Objectives</label> <select
+													name="from" id="multiselect_to" class="form-control"
+													size="8" multiple="multiple" th:field="*{multiselect_to}">
+													<option th:each="Objectives : ${objectiveSelectedList}"
+														th:text="${Objectives.description}"
+														th:value="${Objectives.id}">Developer</option>
+												</select> <span class="help-block"
+													th:if="${#fields.hasErrors('multiselect_to')}"
+													th:errors="*{multiselect_to}">Incorrect email</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 margintop30 marginbottom20 text-center">
+								<button class="btn btn-primary btn-lg" type="submit">
+									<i class="fa fa-check"></i> Save
+								</button>
+								<!-- <button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-eye"></i>
+
+ Preview</button> -->
+							</div>
+						</div>
+					</form>
+				</div>
+
+
+
+			</div>
+
+			<script th:inline="javascript">
+                $(document).ready(function() {
+                  
+                    var selectedSection = $('#First_section_id').val();
+                    
+                    if (selectedSection > 0) {
+
+                        $('.test').removeClass("active test").addClass("test");
+
+                        $('li[name="' + selectedSection + '"]').addClass("active test");
+
+                    }
+
+
+
+
+                });
+            </script>
+
+			<!-- Create super admin block ends -->
+		</section>
+		<script>
+            $(document).ready(
+                function() {
+                    $("#menu_adminmodule").addClass("active");
+                    $("#menu_adminmodule").next().next("ul").css("display",
+                        "block");
+                });
+        </script>
+	</div>
+</body>
+
+</html>

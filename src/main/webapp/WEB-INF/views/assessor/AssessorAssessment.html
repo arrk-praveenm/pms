@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+<head>
+<script th:inline="javascript">
+$(document).ready(function(){
+
+
+//var 
+
+ 
+
+	// on select of Assessee
+$("#selectAssessee").on('change', function(){
+
+	alert($("#0").attr("name"));
+	var data={selectedAsseesseID:$("#selectAssessee").val(),
+			sectionToLoad:$("#0").attr("name")
+			};
+	 ajaxCall(data);
+
+	//alert($("#selectAssessee").val());
+	});
+
+$(".test").on("click",function(){
+
+	//alert("Hello"+$(this).attr("name"));
+
+	//alert(""+);
+	//$("#selectAssessee").val()
+	 $("#tbody").empty();
+	
+	var data={selectedAsseesseID:$("#selectAssessee").val(),
+			sectionToLoad:$(this).attr("name")
+			};
+	 ajaxCall(data);
+});
+	
+
+function ajaxCall(data)
+{
+
+	   $.ajax({
+           url: "ajax/assesseeObjectives",
+           type: 'GET',
+           data: data,
+           success: function(response) {
+              alert("Hello ");
+			if(response=="")
+           {
+				 $("#tbody").empty();
+           }else{
+
+           	 $("#tbody").empty();
+           	 if($("#selectAssessee").val()==0)
+               	 {
+           	 $("#tbody").append('<h1>Please Select Assessee</h1>');
+               	}
+            jQuery.each( response, function( iterStat, objectiveDesc ) {
+            var section=sectionLoad.sectionLoad;
+                            
+         
+			}); 
+           } 
+
+            
+           },
+           error: function(jqXHr, reponse, errorThrown) {
+               // ... Process the result ...
+               alert(errorThrown);
+           }
+		}); 
+		//ajax function ends 
+	};
+
+
+$(".text-center").on('click',function(){
+	alert($(this).attr("id"));
+	var objectiveDesc="objectiveDesc"+$(this).attr("id");
+	var wightage="wightage"+$(this).attr("id");
+	var selfRating="selfRating"+$(this).attr("id");
+	var selfScore="selfScore"+$(this).attr("id");
+	var managerRating="managerRating"+$(this).attr("id");
+	var managerScore="managerScore"+$(this).attr("id");
+
+	 if([[${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}]])
+		 {
+		$("#objectiveSection").children().prop('disabled',true);
+		$("#employeeSection").find("input,textarea").prop("disabled",true);
+		alert("Hello");
+		 }
+});
+
+
+
+
+
+	//Document close
+});
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+	
+	 <!-- Content Wrapper starts -->
+      <div >
+        <!-- Content Header starts -->
+        <section class="content-header">
+          <h1>Manager</h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>
+		<!-- Content Header ends -->
+
+        <!-- Main content starts -->
+        <section class="content">
+			
+
+			<!-- Manager header panel starts -->
+			<div class="box">
+				<div class="box-body">
+					<div class="row margintop15">
+							<div class="col-md-6">
+								<div class="form-group">
+									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}">
+										<option selected="selected" value="0">Select Employee</option>
+										<option th:each="assesse : ${assessorAssessees}" th:text="${assesse.fullname}" th:value="${assesse.id}">Employee one</option>
+										
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+
+							</div>
+						</div>
+					
+					<hr class="margintop10" />
+						<div class="form-group text-right">
+							<button class="btn btn-info btn-green" type="button" data-target="#summaryrating" data-toggle="modal"><i class="fa fa-file-text">&nbsp;</i> Summary Ratings</button>
+						</div>
+					
+					<div class="nav-tabs-custom margintop10 noboxshadow">
+						<div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+						<div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+						<div class="wrapper-tabs">
+							<ul class="nav nav-tabs list" id="myTab" >
+							<th:block th:each="section, iterStat : ${allSections}">
+								<li th:if="${iterStat.index}==0" class="test active" th:id="${iterStat.index}" th:name="${section.getId()}"><a data-toggle="tab" href="#par" th:text="${section.getSection()}">Performance</a></li>
+							
+								<li th:if="${iterStat.index}!=0" th:id="${iterStat.index}" th:name="${section.getId()}" class="test"><a data-toggle="tab" href="#car" th:text="${section.getSection()}">Competancy</a></li>
+								</th:block>
+								<!-- <li><a data-toggle="tab" href="#pqar">Personal Qualities</a></li> -->
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div id="par" class="tab-pane active">
+								
+								<div class="box-body table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Objectives</th>
+												<th>Weightage</th>
+												<th>Self Rating</th>
+												<th>Self Score</th>
+												<th>Manager Rating</th>
+												<th>Manager Score</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody id="tbody">
+										<th:block th:each="objective,itrIndex: ${allObjectives}">
+											<tr id="tRow" th:name="${objective.getId()}">
+												<td class="col-md-10 col-xs-7" th:text="${objective.getObjectiveDesc()}" th:id="'objectiveDesc'+${objective.getId()}">
+													Delivering to the Customer's satisfaction/ expectation
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'wightage'+${objective.getId()}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfRating'+${objective.getId()}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfScore'+${objective.getId()}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerRating'+${objective.getId()}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerScore'+${objective.getId()}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-1 text-center" th:id="${objective.getId()}">
+													<button class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>
+												</td>
+											</tr>
+										</th:block>
+										</tbody>
+									</table>
+								</div>
+
+							<div class="clearfix"></div>
+							</div>
+							
+
+						
+							
+							
+						</div>
+						
+						<div class="form-group margintop30 text-center">
+								<!-- <button class="btn btn-danger btn-lg" type="submit"><i class="fa fa-times"></i> Close</button> -->
+								<button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-check"></i>
+ Submit</button>
+							</div>
+							
+							
+						
+					</div>
+				</div>
+			</div>
+			<!-- Manager header panel ends -->
+			  
+
+        </section>
+		<!-- Main content ends -->
+      </div>
+	<!-- Content Wrapper ends -->
+	<!-- Manager Modal Starts -->
+		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Add Ratings and Comments</h4>
+					</div>
+					  <div class="modal-body">
+						  <div class="row" id="objectiveSection">
+							<div class="col-md-9">
+								<div class="form-group" id="objectiveDesc">
+									<label class="sr-only">Objectives</label>
+									<textarea row="2" class="form-control" Placeholder="Objectives"></textarea>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group" id="wightage">
+									<label class="sr-only">Weightage</label>
+									<input type="text" class="form-control" Placeholder="weightage" />
+								</div>
+							</div>
+						  </div>
+						  
+						 
+						  <div class="row" id="employeeSection">
+							<div class="col-md-12">
+								<h4>Employee Self Rating</h4>
+								<hr class="marginbottom15 margintop5"/>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Self Rating</label>
+									<input type="text" class="form-control" Placeholder="Self Rating" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Self Score</label>
+									<input type="text" class="form-control" Placeholder="Self Score" />
+								</div>
+							</div>
+							<div class="col-md-6"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="sr-only">Employee Comments</label>
+									<textarea row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+								</div>
+							</div>
+						  </div>
+						 
+						   <div class="row" id="managerSection">
+							<div class="col-md-12">
+								<h4>Manager Rating</h4>
+								<hr class="marginbottom15 margintop5"/>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Manager Rating</label>
+									<input type="text" class="form-control" Placeholder="Manager Rating" />
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Manager Score</label>
+									<input type="text" class="form-control" Placeholder="Manager Score" />
+								</div>
+							</div>
+							<div class="col-md-6"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="sr-only">Manager Comments</label>
+									<textarea row="2" class="form-control" Placeholder="Manager Comments"></textarea>
+								</div>
+							</div>
+						  </div>
+						  
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+						<button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+					  </div>
+				</div>
+			</div>
+		</div>
+		<!-- Manager Modal ends -->
+
+
+
+	<!-- Summary Rating Modal Starts -->
+		<div class="modal fade" id="summaryrating" tabindex="-1" role="dialog" aria-labelledby="summaryratinglabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="summaryratinglabel">Summary Rating</h4>
+					</div>
+					  <div class="modal-body">
+							<div class="row margintop0">
+								<div class="padding10">
+									<h4 class="margintop0 marginbottom5"><strong>Organisation weightage of different parameters</strong></h4>
+									
+									<p class="label label-info score-container">
+										<em class="score-title">Performance</em>
+										<em class="score">0.4</em>
+									</p>
+									<p class="label label-info score-container">
+										<em class="score-title">Competency</em>
+										<em class="score">0.4</em>
+									</p>
+									<p class="label label-info score-container">
+										<em class="score-title">Personal Qualities</em>
+										<em class="score">0.2</em>
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="padding10">
+								
+								<h4 class="margintop0 marginbottom5"><strong>Summary Score</strong></h4>
+									<p class="label label-success score-container">
+										<em style="word-wrap: break-word; white-space: normal;" class="score-title">Performance Assessment</em>
+										<em class="score">0.4</em>
+									</p>
+									<p class="label label-success score-container">
+										<em class="score-title">Competency Assessment</em>
+										<em class="score">0.4</em>
+									</p>
+									<p class="label label-success score-container">
+										<em class="score-title">Personal Qualities Accessment</em>
+										<em class="score">0.2</em>
+									</p>
+									<p class="label label-success score-container">
+										<em class="score-title">Weightage Score</em>
+										<em class="score">0.2</em>
+									</p>
+									<p class="label label-success score-container">
+										<em class="score-title">Normalised Score</em>
+										<em class="score">0.3</em>
+									</p>
+								</div>
+							</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+					  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+	</html>

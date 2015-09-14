@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Performance Management System</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
+    <!-- Bootstrap 3.3.4 -->
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}" />
+    <!-- Font Awesome Icons -->
+    <link href="../../../resources/css/font-awesome.min.css" rel="stylesheet" th:href="@{/resources/css/font-awesome.min.css}" />
+    <!-- Ionicons -->
+    <link href="../../../resources/css/ionicons.min.css" rel="stylesheet" th:href="@{/resources/css/ionicons.min.css}" />
+    <!-- Theme style -->
+    <link href="../../../resources/css/pmsadmin.min.css" rel="stylesheet" th:href="@{/resources/css/pmsadmin.min.css}" />
+	<!-- Skin style -->
+    <link href="../../../resources/css/skins/_all-skins.min.css" rel="stylesheet" th:href="@{/resources/css/skins/_all-skins.min.css}" />	
+	<!-- Bootstrap datepicker CSS -->
+	<link href="../../../resources/css/datepicker.css" rel="stylesheet" th:href="@{/resources/css/datepicker.css}" />	
+	<!-- iCheck CSS -->
+	<link href="../../../resources/plugins/iCheck/square/blue.css" rel="stylesheet" th:href="@{/resources/plugins/iCheck/square/blue.css}" />	
+	<!-- CSS for datatables -->
+	<link href="../../../resources/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" th:href="@{/resources/plugins/datatables/dataTables.bootstrap.css}" />	
+	<!-- CSS for impromptu modal window -->
+	<link href="../../../resources/css/jquery-impromptu.min.css" rel="stylesheet" th:href="@{/resources/css/jquery-impromptu.min.css}" />
+	
+	<!-- Custom CSS -->
+	<link href="../../../resources/css/pms.css" rel="stylesheet" th:href="@{/resources/css/pms.css}" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="../../../resources/js/html5shiv.min.js"></script>
+        <script src="../../../resources/js/respond.min.js"></script>
+    <![endif]-->
+	
+	
+	<!-- REQUIRED JS SCRIPTS -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="../../../resources/plugins/jQuery/jQuery-2.1.4.min.js" th:src="@{/resources/plugins/jQuery/jQuery-2.1.4.min.js}"></script>	
+    <!-- Bootstrap 3.3.2 JS -->
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>	
+    <!-- AdminLTE App -->
+    <script src="../../../resources/js/app.min.js" th:src="@{/resources/js/app.min.js}"></script>	
+	<!-- date-range-picker -->
+    <script src="../../../resources/js/moment.min.js" th:src="@{/resources/js/moment.min.js}"></script>
+    <script src="../../../resources/plugins/daterangepicker/daterangepicker.js" th:src="@{/resources/plugins/daterangepicker/daterangepicker.js}"></script>	
+	<!-- Bootstrap datapicker -->
+	<script src="../../../resources/js/bootstrap-datepicker.js" th:src="@{/resources/js/bootstrap-datepicker.js}"></script>	
+	<!-- DATA TABES SCRIPT -->
+    <script src="../../../resources/plugins/datatables/jquery.dataTables.min.js" th:src="@{/resources/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script src="../../../resources/plugins/datatables/dataTables.bootstrap.min.js" th:src="@{/resources/plugins/datatables/dataTables.bootstrap.min.js}"></script>	
+	<!-- iCheck -->
+    <script src="../../../resources/plugins/iCheck/icheck.min.js" th:src="@{/resources/plugins/iCheck/icheck.min.js}"></script>	
+	<!-- jQuery impromptu -->
+    <script src="../../../resources/js/jquery-impromptu.min.js" th:src="@{/resources/js/jquery-impromptu.min.js}"></script>
+	<!-- Multiselect -->
+    <script src="../../../resources/plugins/multiselect/multiselect.min.js" th:src="@{/resources/plugins/multiselect/multiselect.min.js}"></script>
+	<!-- Multiselect -->
+    <script src="../../../resources/plugins/typeahead/typeahead.js" th:src="@{/resources/plugins/typeahead/typeahead.js}"></script>
+	
+	<!-- Custom JS -->
+	<script src="../../../resources/js/custom.js" th:src="@{/resources/js/custom.js}"></script>
+	
+	
+  </head>
+  <body class="skin-purple-light login-page">
+	<header class="main-header">
+        <!-- Logo -->
+        <a class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>PMS</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg logo-mobile"><b>Performance Management System</b></span>
+		  <span class="logo-lg logo-desktop"><img src="../../../pms/resources/images/logo-pms.jpg" /></span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav role="navigation" class="navbar navbar-static-top">
+ 
+        </nav>
+    </header>
+    <div class="login-box">
+      <div class="login-logo">
+           <img src="../../../pms/resources/images/arrklogo.png" alt="Arrk Logo" width="144" height="55" />
+      </div>
+      <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
+        <form action="#" method="post" th:action="@{/authenticate}">
+        	<th:block th:if="${param.error != null}">
+        		<div th:replace="fragments/alert :: alert (type='danger', message='Invalid Username or Password. Please try again.')">Alert</div>
+    		</th:block>
+			<div class="form-group has-feedback">
+				<input class="form-control" placeholder="Userid" type="text" name="username"/>
+				<span class="glyphicon glyphicon-user form-control-feedback"></span>
+				<span class="forgot-link"><a href="#" id="forgotuserid" class="pull-right">Forgot User ID?</a></span>
+			</div>
+			<div class="form-group has-feedback">
+				<input class="form-control" placeholder="Password" type="password" name="password"/>
+				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+				<span class="forgot-link"><a href="#" id="forgotpassword" class="pull-right">Forgot Password?</a></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+				<!--<div class="checkbox icheck">
+					<label>
+					  <input type="checkbox"> Remember Me
+					</label>
+				</div>-->
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            </div><!-- /.col -->
+          </div>
+        </form>
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+    
+    <!-- Footer starts -->
+		  <footer class="main-footer" style="margin-left: 0;position:absolute;bottom:0;width:100%;">
+			<strong>&copy; 2015 Arrk Group </strong>
+		  </footer>
+	<!-- Footer ends -->
+</body>
+</html>

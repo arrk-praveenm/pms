@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>  
+  </head>
+  <body>
+      <!-- Sidebar menu starts -->
+      <aside class="main-sidebar" th:fragment="sidebarmenus">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel">
+		    <div class="brand-logo image">
+				<img src="../../../pms/resources/images/arrklogo.png" alt="Arrk Logo" class="logo-big" />
+				<img src="../../../pms/resources/images/logo-arrksmall.png" alt="Arrk Logo" class="logo-small" />
+			</div>
+          </div>
+          
+          
+          <ul class="sidebar-menu">
+			<li class="treeview main-heading" id="menu_adminmodule" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a href="#"><i class='fa fa-cogs icon-configuration'></i><span>Admin</span> <i class="fa fa-angle-left pull-right"></i></a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="/admin" th:href="@{/admin}"><i class="fa fa-long-arrow-right"></i><span>Create HR</span></a>
+
+					</li>
+				</ul>
+			</li>
+
+		  <!-- Sidebar for admin module ends -->
+
+          <!-- Sidebar Menu for hr module starts -->
+
+			<li class="treeview main-heading" id="menu_hrmodule" th:if="${#authorization.expression('hasRole(''HR'')')}">
+				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Human Resource</span> <i class="fa fa-angle-left pull-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a href="/upload" th:href="@{/upload}"><i class='fa fa-upload icon-umd'></i><span>Upload Master Data</span></a></li>
+					<li>
+						<a href="#">
+							<em class="fa-stack">
+							<i style="top: 2px; left: 0px;" class="fa fa-arrow-circle-right fa-stack-1x"></i>
+							<i style="left: -5px; top: 5px;" class="fa  fa-list-alt fa-stack-2x"></i>
+							</em><span>Initiate Self Reporting</span>
+						</a>
+					</li>
+					
+					<li><a href="/hr/createSections" th:href="@{/hr/createSections}"><i class='fa fa-pencil-square-o icon-vesf'></i><span>CreateSections</span></a></li>
+					<li><a href="/hr/obj_to_role" th:href="@{/hr/obj_to_role}"><i class="fa fa-long-arrow-right"></i><span>Assign Objectives to role</span></a></li>
+					<li><a href="#"><i class='fa fa-history icon-veh'></i><span>View Employee History</span></a></li>
+					<li><a href="#"><i class='fa fa-hand-o-right icon-dr'></i><span>Dispute Resolution</span></a></li>
+					<li class="treeview">
+						<a href="#"><i class='fa fa-file-text-o icon-reports'></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
+						<ul class="treeview-menu">
+							<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>Reports</span></a></li>
+							<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>View Employee PMS</span></a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+
+		  <!-- Sidebar Menu for hr module ends -->
+		  
+		  <!-- Sidebar Menu for manager module starts -->
+
+			<li class="treeview main-heading" id="menu_managermodule" th:if="${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}">
+				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Manager</span> <i class="fa fa-angle-left pull-right"></i></a>
+					
+							<ul class="treeview-menu">
+								<li th:if="${#authorization.expression('hasRole(''MANAGER'')')}"><a href="/assessor/assignobjectives" th:href="@{/assessor/assignobjectives}"><i class="fa fa-long-arrow-right"></i><span>Assign Weightage</span></a></li>
+								<li th:if="${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}"><a href="/assessor/assessorAssessment" th:href="@{/assessor/assessorAssessment}"><i class="fa fa-long-arrow-right"></i><span>Assess Employee</span></a></li>
+								<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>View Employee History</span></a></li>
+							</ul>
+					
+			</li>
+
+		  <!-- Sidebar Menu for manager module ends -->
+		  
+		  <!-- Sidebar Menu for employee module starts -->
+
+			<li class="treeview main-heading" id="menu_employeemodule" th:if="${#authorization.expression('hasRole(''ASSESSEE'')')}">
+				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Employee</span> <i class="fa fa-angle-left pull-right"></i></a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<em class="fa-stack">
+								<i style="top: 2px; left: 0px;" class="fa fa-user fa-stack-1x"></i>
+								<i style="left: -5px; top: 5px;" class="fa fa-list-alt fa-stack-2x"></i>
+							</em><span>Self Reporting</span>
+						</a>
+					</li>
+					<li><a href="#"><i class='fa fa fa-star icon-isf'></i><span>Self Rating</span></a></li>
+					<li><a href="#"><i class='fa fa-check-circle icon-isf'></i><span>Accept/Disagree/Print</span></a></li>
+					<li>
+						<a href="#">
+							<em class="fa-stack">
+							<i style="top: 2px; left: 0px;" class="fa fa-history fa-stack-1x"></i>
+							<i style="left: -5px; top: 5px;" class="fa fa-list-alt fa-stack-2x"></i>
+							</em><span>View Historical Reports</span>
+						</a>
+					</li>
+					<li><a href="#"><i class='fa fa fa-book icon-isf'></i><span>See Definitions</span></a></li>
+				</ul>
+			</li>
+		  </ul>
+          
+        </section>
+      </aside>
+	  <!-- Sidebar menu ends -->
+	</body>
+</html>
