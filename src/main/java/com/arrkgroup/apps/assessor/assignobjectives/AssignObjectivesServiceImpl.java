@@ -45,28 +45,33 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 		return assignObjectivesDao.getAllRoles();
 	}
 
-	@Override
-	public List<Objective> copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {
-		AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
-		assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));
-		assesseesAssessor.setStart_date(copyObjectivesBean.getAssessmentFromDate());
-		assesseesAssessor.setEnd_date(copyObjectivesBean.getAssessmentToDate());
-		assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
-		assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
-		assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
-		assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
-		assesseesAssessor.setPeriod_edit_flag(EDIT_FLAG);
-		assesseesAssessor.setStatus(STATUS);
-	
-		assignObjectivesDao.copyRoleObjectives(assesseesAssessor);
-		return null;
-	}
 
 	@Override
-	public List<Objective> copyAssesseObjectives() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {    
+           assignObjectivesDao.copyRoleObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+    }
+
+    @Override
+    public void copyAssesseObjectives(CopyObjectivesBean copyObjectivesBean) {
+           assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+    }
+
+
+public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBean, String editFlag,String Status)
+    {
+           AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
+           assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));              
+           assesseesAssessor.setStart_date(copyObjectivesBean.getAssessmentFromDate());
+           assesseesAssessor.setEnd_date(copyObjectivesBean.getAssessmentToDate());
+           assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
+           assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
+           assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
+           assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
+           assesseesAssessor.setPeriod_edit_flag(editFlag);
+           assesseesAssessor.setStatus(Status);
+           return assesseesAssessor;
+    }
+
 
 	@Override
 	public List<AssesseeObjectives> getAssesseObjectives(

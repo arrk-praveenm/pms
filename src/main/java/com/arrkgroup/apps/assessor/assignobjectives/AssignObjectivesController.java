@@ -66,15 +66,17 @@ public class AssignObjectivesController {
 		model.put("copyObjectivesBean", new CopyObjectivesBean());
 		
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
-	}	
-
+	}
 	
-	@RequestMapping(value = "/assessor/copyroleobjectives", method = RequestMethod.POST)
-	public String copyRoleObjectives(
+	@RequestMapping(value = "/assessor/copyobjectives", method = RequestMethod.POST)
+	public String copyObjectives(
 			@ModelAttribute("copyObjectivesBean") CopyObjectivesBean copyObjectivesBean,
 			@ModelAttribute("addObjectiveBean") AddObjectiveBean addObjectiveBean,
 			BindingResult result, Map<String, Object> model,
-			HttpServletRequest request, Principal principal, Errors errors) {
+			HttpServletRequest request, Principal principal, Errors errors, 
+			@RequestParam(value="type", required=true) String type) {
+		log.info("action performed...........:"+ type);
+		
 		log.info("inside copy role objectives........");
 		log.info("Assessor: "+copyObjectivesBean.getAssessor());
 		log.info("Assessee: "+copyObjectivesBean.getAssessee());
@@ -82,8 +84,13 @@ public class AssignObjectivesController {
 		log.info("Project: "+copyObjectivesBean.getProjectName());
 		log.info("from_date is: "+copyObjectivesBean.getAssessmentFromDate());
 		log.info("end_date is: "+copyObjectivesBean.getAssessmentToDate());
-		log.info("copyObjectivesBean: "+copyObjectivesBean.toString());
-		assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
+		
+		if(type.equals("role")){
+			assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
+		}
+		if(type.equals("assessee")){
+			assignObjectivesService.copyAssesseObjectives(copyObjectivesBean);
+		}
 		
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
 		List<Employee> assesses = assignObjectivesService.getAllAssesses();
@@ -100,13 +107,8 @@ public class AssignObjectivesController {
 		
 	}
 	
-	@RequestMapping(value = "/assessor/copyassesseobjectives", method = RequestMethod.GET)
-	public List<Objective> copyAssesseObjectives() {
-		return null;
-		
-	}
 	
-	
+
 	// Adding New Objective to section specified
 	@RequestMapping(value = "/assessor/addObjective", method = RequestMethod.POST)
 	public String addObjective(

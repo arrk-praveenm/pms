@@ -67,7 +67,7 @@
 				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Manager</span> <i class="fa fa-angle-left pull-right"></i></a>
 					
 							<ul class="treeview-menu">
-								<li th:if="${#authorization.expression('hasRole(''MANAGER'')')}"><a href="/assessor/assignobjectives" th:href="@{/assessor/assignobjectives}"><i class="fa fa-long-arrow-right"></i><span>Assign Weightage</span></a></li>
+								<li th:if="${#authorization.expression('hasRole(''MANAGER'')')}"><a href="/assessor/assignobjectives" th:href="@{/assessor/assignobjectives}"><i class="fa fa-long-arrow-right"></i><span>Assign Objectives</span></a></li>
 								<li th:if="${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}"><a href="/assessor/assessorAssessment" th:href="@{/assessor/assessorAssessment}"><i class="fa fa-long-arrow-right"></i><span>Assess Employee</span></a></li>
 								<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>View Employee History</span></a></li>
 							</ul>

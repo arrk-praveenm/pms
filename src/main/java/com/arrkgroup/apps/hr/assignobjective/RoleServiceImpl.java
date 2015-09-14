@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.arrkgroup.apps.form.RoleObjectivesBean;
 import com.arrkgroup.apps.hr.managesections.CreateSectionController;
-import com.arrkgroup.apps.model.ObjectivesModel;
+import com.arrkgroup.apps.model.Objective;
+
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
-import com.arrkgroup.apps.model.SectionModel;
+import com.arrkgroup.apps.model.Section;
+
 
 @Service("RoleService")
 @Transactional
@@ -55,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
 
 	}
 
-	public List<ObjectivesModel> showObjectives_By_Section(int section_id) {
+	public List<Objective> showObjectives_By_Section(int section_id) {
 
 		return roleDao.objective_from_section_id(section_id);
 
@@ -67,17 +69,17 @@ public class RoleServiceImpl implements RoleService {
 
 	}
 
-	public List<SectionModel> showSections() {
+	public List<Section> showSections() {
 
 		return roleDao.showSections();
 
 	}
 
 	// populate objectives by selected section and role
-	public List<ObjectivesModel> showObjectives_By_Section_Role(int section_id,
+	public List<Objective> showObjectives_By_Section_Role(int section_id,
 			int role_id) {
 
-		List<ObjectivesModel> ObjectivesList = new ArrayList<ObjectivesModel>();
+		List<Objective> ObjectivesList = new ArrayList<Objective>();
 
 		for (RoleModel objectives : roleDao.showObjectives_By_Section_Role(
 				section_id, role_id)) {
