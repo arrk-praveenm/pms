@@ -1,6 +1,9 @@
 package com.arrkgroup.apps.assessor.assignobjectives;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +21,6 @@ import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
-import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 
@@ -121,10 +123,28 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	public List<AssesseeObjectives> getAssesseObjectives(
 			CopyObjectivesBean copyObjectivesBean, int sectionId) {
 		// TODO Auto-generated method stub
+		
 		return entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, AssesseeObjectives.class)
-				.setParameter("employeeId", copyObjectivesBean.getAssessee()).setParameter("projectName", copyObjectivesBean.getProjectName()).setParameter("StartDate", copyObjectivesBean.getAssessmentFromDate())
-				.setParameter("id",sectionId).setParameter("Cycle", copyObjectivesBean.getAssessmentCycle()).getResultList();
+				.setParameter("employeeId", copyObjectivesBean.getAssessee()).setParameter("projectName", copyObjectivesBean.getProjectName()).setParameter("StartDate", convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)))
+				.setParameter("id",sectionId).setParameter("Cycle", copyObjectivesBean.getAssessmentCycle()).setParameter("assessorId", copyObjectivesBean.getAssessor()).setParameter("roleId",copyObjectivesBean.getAssesseeRole()).setParameter("endDate", convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10))).getResultList();
 	}//
+	
+	
+	
+	private Date convertStringToDate(String datestring)
+	{
+	
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date date=null ;
+		try {
+			 date = format.parse(datestring);
+			System.out.println("date "+date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date;
+	}
 	
 	@Override
 	public boolean addAssesseeObjective(AssesseeObjectives assesseeObjectives) {
@@ -144,10 +164,11 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Override
 	public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBean) {
 		// TODO Auto-generated method stub
+		System.out.println("getAssesseeAssessor");
 		return entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 				.setParameter("cycleId", modelObjectDao.findCycleById(copyObjectivesBean.getAssessmentCycle()).getId())
-			     .setParameter("start_date", copyObjectivesBean.getAssessmentFromDate())
-			     .setParameter("end_date", copyObjectivesBean.getAssessmentToDate())
+			     .setParameter("start_date", convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)))
+			     .setParameter("end_date", convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10)))
 			     .setParameter("project_name", copyObjectivesBean.getProjectName())
 			     .setParameter("assesseeId", modelObjectDao.findEmployeeById(copyObjectivesBean.getAssessee()).getId())
 			     .setParameter("assessorId", modelObjectDao.findEmployeeById(copyObjectivesBean.getAssessor()).getId())

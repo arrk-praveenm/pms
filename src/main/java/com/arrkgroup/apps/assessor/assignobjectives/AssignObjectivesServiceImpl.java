@@ -2,6 +2,9 @@ package com.arrkgroup.apps.assessor.assignobjectives;
 
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +18,6 @@ import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
-import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Role;
 
 @Service("AssignObjectivesService")
@@ -61,8 +63,8 @@ public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBe
     {
            AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
            assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));              
-           assesseesAssessor.setStart_date(copyObjectivesBean.getAssessmentFromDate());
-           assesseesAssessor.setEnd_date(copyObjectivesBean.getAssessmentToDate());
+           assesseesAssessor.setStart_date(convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)));
+           assesseesAssessor.setEnd_date(convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10)));
            assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
            assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
            assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
@@ -73,6 +75,19 @@ public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBe
     }
 
 
+private Date convertStringToDate(String datestring)
+{
+	DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	Date date=null ;
+	try {
+		 date = format.parse(datestring);
+		System.out.println("date "+date);
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return date;
+}
 	@Override
 	public List<AssesseeObjectives> getAssesseObjectives(
 			CopyObjectivesBean copyObjectivesBean, int sectionId) {
@@ -81,10 +96,11 @@ public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBe
 	}
 
 	@Override
-	public boolean addAssesseeObjective(CopyObjectivesBean copyObjectivesBean,String sectionId, String description) {
+	public boolean addAssesseeObjective(CopyObjectivesBean copyObjectivesBean, String sectionId, String description) {
 		// TODO Auto-generated method stub
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		//get Assesseesor by ID and 
+		System.out.println(sectionId +" sectionId");
 		assesseeObjectives.setAssesseeAssessor(assignObjectivesDao.getAssesseeAssessor(copyObjectivesBean));
 		assesseeObjectives.setDescription(description);
 		assesseeObjectives.setLastModifiedDate(new Date());

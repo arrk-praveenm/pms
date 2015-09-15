@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class CopyObjectivesBean {
 	int assessmentCycle;
-	Date assessmentFromDate;
-	Date assessmentToDate;
+	String assessmentFromDate;
+	String assessmentToDate;
 	String projectName;
 	String action;
 	int assessor;
@@ -18,16 +18,17 @@ public class CopyObjectivesBean {
 	public void setAssessmentCycle(int assessmentCycle) {
 		this.assessmentCycle = assessmentCycle;
 	}
-	public Date getAssessmentFromDate() {
+	
+	public String getAssessmentFromDate() {
 		return assessmentFromDate;
 	}
-	public void setAssessmentFromDate(Date assessmentFromDate) {
+	public void setAssessmentFromDate(String assessmentFromDate) {
 		this.assessmentFromDate = assessmentFromDate;
 	}
-	public Date getAssessmentToDate() {
+	public String getAssessmentToDate() {
 		return assessmentToDate;
 	}
-	public void setAssessmentToDate(Date assessmentToDate) {
+	public void setAssessmentToDate(String assessmentToDate) {
 		this.assessmentToDate = assessmentToDate;
 	}
 	public String getProjectName() {

@@ -6,7 +6,7 @@
 <head>
 <script th:inline="javascript">
 	$(document).ready(function(){
-
+$("#copyObjectiveBlock").hide();
 		//getting the attributes from request object
 		var allObjectives = [[${allObjectives}]];
 
@@ -18,10 +18,20 @@
 
 		
 //on Load setting objectives
- $.each( allObjectives, function( iterStat, objectiveDesc ) {
-           LodaObjectives(iterStat,objectiveDesc,selectedSection)
-});
 
+if(allObjectives!=null)
+	{
+ $.each( allObjectives, function( iterStat, objectiveDesc ) {
+           LodaObjectives(iterStat,objectiveDesc,selectedSection);
+});
+ $("#copyObjectives").find("button").prop("disabled",true);
+	}else{
+		$("#sectionObjectives-prnt").hide();
+		$(".wrapper-tabs").hide();
+		$("#sectionsBody").hide();
+		
+		$("#addObjectiveform").hide();
+		}
  //To select active tabs on load
  $('.test').removeClass( "active test" ).addClass("test");
 
@@ -31,82 +41,76 @@
 
 
  $("#assessee").on('change',function(){
-		if($(this).val()!="0")
-			{
-			if($("#assessmentFromDate").val()!="")
-				{
-				if($("#projectName").val()!="")
-					{
-					
-				 	var	sectionLoad={
-				              sectionLoad:"0",
-				              assesseeid: $(this).val(),
-				              assessmentFromDate: $("#assessmentFromDate").val(),
-				              projectName: $("#projectName").val(),
-				             assessmentCycle: $("#assessmentCycle").val()
-				              
-				             } 
-						ajaxcall(sectionLoad); 
-				      
-					}
-				}
-			} 
-			
+	 triggerToObjectives();
 		});
+	//set to count value to one which will restrict to call the multiple time of on change of assessmentFromDate
 	var count=1;
 	$("#assessmentFromDate").click(function(){
 		count =1;
-		
+		});
+	$("#assessmentToDate").click(function(){
+		count =1;
 		});
 	$("#assessmentFromDate").change( function(){
 		if(count==1)
 			{
 			count=2;
-
-			if($("#assessee").val()!="0")
-			{
-			if($(this).val()!="")
-				{
-				if($("#projectName").val()!="")
-					{
-				
-				 	var	sectionLoad={
-				              sectionLoad:"0",
-				              assesseeid:$("#assessee").val(),
-				              assessmentFromDate: $(this).val(),
-				              projectName: $("#projectName").val(),
-				             assessmentCycle: $("#assessmentCycle").val()
-				              
-				             } 
-						ajaxcall(sectionLoad); 
-					}
-				}
-			} 
+			triggerToObjectives();
 			}
 		}) ;
 	
 	$("#projectName").on('change', function(){
+		triggerToObjectives();
+		});
 
-		if($("#assessee").val()!="0")
+	$("#assessmentToDate").on('change', function(){
+		if(count==1)
 		{
-		if($("#assessmentFromDate").val()!="")
-			{
-			if($(this).val()!="")
-				{
-			
-				 var	sectionLoad={
-			              sectionLoad:"0",
-			              assesseeid:$("#assessee").val(),
-			              assessmentFromDate: $("#assessmentFromDate").val(),
-			              projectName: $(this).val(),
-			             assessmentCycle: $("#assessmentCycle").val()
-			              
-			             } 
-					ajaxcall(sectionLoad); 
+		count=2;
+		triggerToObjectives();
+		}
+				});
+	$("#assessor").on('change', function(){
+		triggerToObjectives();
+				});
+
+	$("#assesseeRole").on('change', function(){
+		triggerToObjectives();
+				});
+	$("#assessmentCycle").on('change', function(){
+		triggerToObjectives();
+				});
+	
+	function triggerToObjectives() {
+		//$("#modal_alert_messages").modal('show');
+
+		if($("#assessee").val()!="0") {
+		if($("#assessmentFromDate").val()!="") {
+			if($("#projectName").val()!="") {
+			if($("#assessmentCycle").val()!="0"){
+				if($("#assessor").val()!="0") {
+					if($("#assesseeRole").val()!="0") {
+						if($("#assessmentToDate").val()!=""){
+							    var	sectionLoad={
+						              sectionLoad:"0",
+						              assesseeid:$("#assessee").val(),
+						              assessmentFromDate: $("#assessmentFromDate").val(),
+						              projectName: $("#projectName").val(),
+						              assessmentCycle: $("#assessmentCycle").val(),
+						              assessmentToDate: $("#assessmentToDate").val(),
+						              assessor:  $("#assessor").val(),
+						              assesseeRole: $("#assesseeRole").val()
+						             } 
+							    
+								  ajaxcall(sectionLoad, false); 
+							    }
+							}
+						}
+					}
 				}
 			}
-		} 
-		});
+		}
+	};
  
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
@@ -156,6 +160,7 @@
 			});
 
 		$(".test").on("click",function(){
+			
 			var id='#'+'section'+$(this).attr("id");
 
 			$("#addObjectiveSectionID").val($(id).attr("name"));
@@ -164,21 +169,26 @@
 			
 			
 			$("#messageBlock").empty();
-			alert("Test1");
+		
 		var	sectionLoad={
               sectionLoad:$(id).attr("name"),
               assesseeid:$("#assessee").val(),
               assessmentFromDate: $("#assessmentFromDate").val(),
               projectName: $("#projectName").val(),
-             assessmentCycle: $("#assessmentCycle").val()
+             assessmentCycle: $("#assessmentCycle").val(),
+            assessmentToDate: $("#assessmentToDate").val(),
+             assessor:  $("#assessor").val(),
+             assesseeRole:  $("#assesseeRole").val()
               
              } 
+        
 		
 		//Error Message removal for add objective text box
 			$("#hasError").removeClass("has-error");
 			$("#span").empty();
-
-			ajaxcall(sectionLoad);
+			
+			
+			ajaxcall(sectionLoad,true);
 
 		
 			
@@ -192,21 +202,43 @@
 		
 
 
-		function ajaxcall(sectionLoad)
+		function ajaxcall(sectionLoad,status)
 		{
 			   $.ajax({
 	                url: 'ajax/sectionLoad',
 	                type: 'GET',
 	                data: sectionLoad,
 	                success: function(response) {
+	                	
 		              
 					if(response=="")
 	                {
+		                
+		                if(!status)
+			                {
+						$("#sectionObjectives-prnt").hide();
+						$(".wrapper-tabs").hide();
+						$("#sectionsBody").hide();
+						$("#addObjectiveform").hide();
+						$("#copyObjectives").find("button").prop("disabled",false);
+						//$("#alertMessage").text("No objectives for selected combination. Please assign objectives by clicking on button 'Copy Role objectives' or 'Copy Other Employee'  ")
+					//	$("#modal_alert_messages").modal('show');
+						$("#copyObjectiveBlock").show();
+			                }
 						 $("#sectionObjectives-prnt").empty();
 						
 	                }else{
-
+	                	$("#copyObjectiveBlock").hide();
+	                	if(!status)
+		                {					
+					$("#copyObjectives").find("button").prop("disabled",true);
+		                }
 	                	 $("#sectionObjectives-prnt").empty();
+	                	$("#sectionObjectives-prnt").show();
+	            		$(".wrapper-tabs").show();
+	            		$("#sectionsBody").show();
+	            		$("#addObjectiveform").show();
+	                	 $("#sectionObjectives-prnt").show();
 	                	 
 	                jQuery.each( response, function( iterStat, objectiveDesc ) {
                     var section=sectionLoad.sectionLoad;
@@ -265,8 +297,11 @@
 			<!-- Manager header panel starts -->
 			<div class="box">
 				<div class="box-body">
+				<div id="copyObjectiveBlock">
+					<div th:replace="fragments/alert :: alert (type='danger', message='No Objectives for selected combination')">Alert</div>
+					</div>
 					<form method="post" action="#"
-						th:action="@{/assessor/copyobjectives}"
+						th:action="@{/assessor/copyroleobjectives}"
 						th:object="${copyObjectivesBean}">
 						<div class="greybg-container">
 							<div class="greybg-fields-container paddingleft0 paddingright0">
@@ -294,7 +329,7 @@
 											</div>
 											<input type="text" id="assessmentFromDate"
 												th:field="*{assessmentFromDate}" class="form-control"
-												placeholder="From" />
+												placeholder="From" readonly="readonly" style="background:#fff;" />
 										</div>
 									</div>
 								</div>
@@ -306,7 +341,7 @@
 												<i class="fa fa-calendar"></i>
 											</div>
 											<input type="text" class="form-control" id="assessmentToDate"
-												th:field="*{assessmentToDate}" placeholder="To" />
+												th:field="*{assessmentToDate}" placeholder="To" readonly="readonly" style="background:#fff;" />
 										</div>
 									</div>
 								</div>
@@ -362,21 +397,22 @@
 
 						</div>
 
-						<div class="form-inline margintop30 text-center">
+						<div class="form-inline margintop30 text-center" id="copyObjectives">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" name="type" value="role" type="submit" >
+								<button class="btn btn-primary btn-lg" type="submit" id="roleObjectives">
 									<i class="fa fa-files-o"></i> Copy Role Objectives
 								</button>
 							</div>
+							
 							<div class="form-group">
-								<button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit">
+								<button class="btn btn-info btn-green btn-lg" type="submit" id="employeeObjectives">
 									<i class="fa fa-files-o"></i> Copy Other Employee
 								</button>
 							</div>
 						</div>
 					</form>
 
-					<div class="box-body">
+					<div class="box-body" id="sectionsBody">
 
 						<hr class="margintop5 marginbottom20" />
 
@@ -469,7 +505,7 @@
 											id="SelectedSection" th:value="66" />
 									</div>
 									<div id="sectionObjectives-prnt">
-										<div id="sectionObjectives"
+										<div id="sectionObjectives" th:if="${allObjectives != null}"
 											th:each="objectiveDesc, iterStat  : ${allObjectives}">
 											<form action="#" id="deleteObjective" method="post"
 												th:action="@{/assessor/deleteObjective}">
@@ -479,7 +515,7 @@
 													<div class="panel-body">
 														<p class="pull-left" id="objectiveDesc">
 															<span th:id="'objectiveDesc'+${iterStat.index}"
-																th:text="${objectiveDesc.getObjectiveDesc()}">Delivering
+																th:text="${objectiveDesc.getDescription()}">Delivering
 																to the Customer's satisfaction/ expectation.</span>
 														</p>
 
@@ -572,6 +608,25 @@
 			</div>
 		</div>
 		<!-- Modal ends -->
+		
+		<!-- Alert popup starts -->
+
+		<div class="modal fade" id="modal_alert_messages" tabindex="-1" role="dialog"
+			aria-labelledby="alertmodal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body" id="alertmodal">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<p id="alertMessage">Alert Text csdc vsdvcsdc vsdvcsd</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+					  </div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Alert popup ends -->
 		
 		
 		
