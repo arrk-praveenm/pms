@@ -233,9 +233,10 @@ public class AssignObjectivesController {
 
 		log.info("Delete objective for  section ID " + deleteObjectiveId);
 		boolean deleteObjectiveStatus = false;
+		AssesseeObjectives assesseeObjectives = 	assignObjectivesService.getAssesseeAssessorId(Integer.parseInt(deleteObjectiveId));
 		try {
 
-			AssesseeObjectives assesseeObjectives = 	assignObjectivesService.getAssesseeAssessorId(Integer.parseInt(deleteObjectiveId));
+			
 			
 			
 			
@@ -243,13 +244,13 @@ public class AssignObjectivesController {
 			
 			deleteObjectiveStatus = assignObjectivesService.deleteAssesseeObjectivebySection(Integer
 							.parseInt(deleteObjectiveId));
-			setModelLoad(model, Integer.parseInt(sectionIdSelected),assesseeObjectives);
+			
 		} catch (Exception e) {
 			log.error("You delete the record " + e);
 		}
 		log.info("objective delete status " + deleteObjectiveStatus);
 		request.setAttribute("deleteObjectiveStatus", deleteObjectiveStatus);
-	
+		setModelLoad(model, Integer.parseInt(sectionIdSelected),assesseeObjectives);
 		if (deleteObjectiveStatus) {
 			model.put("objectiveMessage",setMessageStatus(SUCCESS,"deleteObjectiveStatus.success",""));
 			} else {
