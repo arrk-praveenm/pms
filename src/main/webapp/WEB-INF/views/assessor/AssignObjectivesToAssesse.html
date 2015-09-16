@@ -120,6 +120,7 @@ if(allObjectives!=null)
 	  
 		var spanDescId="objectiveDesc"+iterStat;
     	var hiddenObjectiveId="objectiveId"+iterStat;
+    	var weightageId="weightageId"+iterStat;
     	$("#sectionObjectives-prnt").append('<div id="sectionObjectives" >'
     			
     			+'<form action="#" id="deleteObjective" method="post" onsubmit="button'+objectiveDesc.id+'.disabled = true; return true;"	th:action="@{/assessor/deleteObjective}">'
@@ -130,6 +131,7 @@ if(allObjectives!=null)
     			+'</p>'
     			+'<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>'
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
+    			+'<input type="hidden" id="'+weightageId+'" name="'+objectiveDesc.weightage.id+'" value="'+objectiveDesc.weightage.weightage+'"/>'
     			+'<div class="pull-right">'
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
@@ -149,6 +151,20 @@ if(allObjectives!=null)
     		
     		$("#updateSectionid").val($('#sectionIdSelected').val());
     		
+    		var weightageID='#weightageId'+$(this).attr("id");
+    		
+    		
+    		
+    		if($(weightageID).attr('name')==1)
+        		{
+    			
+    		    		$("#weightage").val(0);
+        		}else{
+        			
+        			
+        			$("#weightage").val($(weightageID).attr('name'));
+            		}
+    		
     		});	
 
     	 $("btn-danger").click(function(e){
@@ -165,6 +181,18 @@ if(allObjectives!=null)
 			var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
 			$("#textAreas").val($(id).text());
 			$("#updateobjectiveId").val($(hiddenObjectiveid).val());
+	var weightageID='#weightageId'+$(this).attr("id");
+    		
+    		
+    		
+    		if($(weightageID).attr('name')==1)
+        		{
+    			 		    		$("#weightage").val(0);
+        		}else{
+        			
+        			$("#weightage").val($(weightageID).attr('name'));
+            		}
+			
 			});
 
 		$(".test").on("click",function(){
@@ -362,7 +390,7 @@ if(allObjectives!=null)
 											Name</label> <select class="form-control" id="projectName"
 											th:field="*{projectName}"
 											style="padding-left: 0px; padding-right: 5px;">
-											<option selected="selected" value="0">Projects
+											<option selected="selected" value="0">Project Name 
 												</option>
 											<option th:each="projects : ${projectList}"
 												th:text="${projects.project_name}" th:value="${projects.id}">PMS
@@ -607,10 +635,16 @@ if(allObjectives!=null)
 											class="form-control"></textarea>
 										<input type="hidden" id="updateSectionid"
 											name="updateSectionid" value="text" />
-											 <input type="hidden"
-											id="updateobjectiveId" name="updateobjectiveId" value="text" />
-							
 									</div>
+									<div class="form-group">
+										<label for="accessmentperiodmanager" class="sr-only">Weightage</label>
+									 	<select class="form-control" id="weightage" name="weightage">
+											<option selected="selected" value="0">Select Weightage</option>
+											<option th:each="weight : ${allWeightages}" th:text="${weight.weightage}" th:value="${weight.id}">1</option>
+												
+										</select>
+									</div>
+								 	<input type="hidden" id="updateobjectiveId" name="updateobjectiveId" value="text" />
 								</div>
 							</div>
 						</div>

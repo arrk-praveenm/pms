@@ -43,6 +43,7 @@ public class AssignObjectivesController {
 	private final String DANGER="danger";
 	private final String ASSIGNONJECTIVESTOASSESSE="/assessor/AssignObjectivesToAssesse";
 	private final String LOGIN="login/login";
+	private static final int DEFAULT_WEIGHTAGE_ID = 1;
 	
 	@Autowired
 	AssignObjectivesService assignObjectivesService;
@@ -78,6 +79,8 @@ public class AssignObjectivesController {
 		model.put("sectionToLoad", sectionIDtoLoad);
 		List<Project> projectList=modelObjectService.getAllProjects();
 		model.put("projectList", projectList);
+		model.put("allWeightages", modelObjectService.getAllWeightages());
+		
 		
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
 	}
@@ -201,10 +204,17 @@ public class AssignObjectivesController {
 			@ModelAttribute("textAreas") String saveObjectDesc,
 			@ModelAttribute("updateobjectiveId") String saveObjectiveId,
 			@ModelAttribute("updateSectionid") String updateSectionid,
+			@RequestParam("weightage") String weightage,
 			Principal principal,
 			BindingResult result, Map<String, Object> model) {
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		assesseeObjectives.setDescription(saveObjectDesc);
+		if(Integer.parseInt(weightage)!=0)
+		{
+		assesseeObjectives.setWeightage(modelObjectService.findWeightageById(Integer.parseInt(weightage)));
+		}else{
+			assesseeObjectives.setWeightage(modelObjectService.findWeightageById(DEFAULT_WEIGHTAGE_ID));
+		}
 		assesseeObjectives.setId(Integer.parseInt(saveObjectiveId));
 		
 		log.info("edited objective for section id  " + updateSectionid);
@@ -367,6 +377,7 @@ public class AssignObjectivesController {
 		//projectList
 		List<Project> projectList=modelObjectService.getAllProjects();
 		model.put("projectList", projectList);
+		model.put("allWeightages", modelObjectService.getAllWeightages());
 
 	}
 	
@@ -397,6 +408,7 @@ public class AssignObjectivesController {
 		model.put("allObjectives", allAssesseeObjectives);
 		List<Project> projectList=modelObjectService.getAllProjects();
 		model.put("projectList", projectList);
+		model.put("allWeightages", modelObjectService.getAllWeightages());
 
 	}
 	

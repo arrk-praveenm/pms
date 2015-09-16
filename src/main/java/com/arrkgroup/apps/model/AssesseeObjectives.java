@@ -21,7 +21,7 @@ import javax.persistence.Table;
 	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assessorId.id=:assessorId and aa.assesseeId.id=:employeeId and  aa.projectId.id=:projectName and aa.start_date=:StartDate and aa.cycleId.id=:Cycle and aa.roleId.id=:roleId and aa.end_date=:endDate) and section.id=:id"),
 	@NamedQuery(name= AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id = (SELECT id FROM AssesseesAssessor aa WHERE aa.assesseeId.id=:assesseeId and aa.cycleId.id=:cycleId and aa.roleId.id=:roleId)"),
 	@NamedQuery(name = AssesseeObjectives.DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID, query = "delete from AssesseeObjectives a where a.id = :assessebjectiveId"),
-	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID, query = "update AssesseeObjectives set description=:description  where id = :assessebjectiveId"),
+	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID, query = "update AssesseeObjectives set description=:description , weightage.id=:weightageId  where id = :assessebjectiveId"),
 	@NamedQuery(name = AssesseeObjectives.GET_ALL_SECTION_ASSESSEE_OBJECTIVES, query = "from AssesseeObjectives a where a.section.id=:section"),
 	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_ASSESSOR_ID, query = "from AssesseeObjectives a where a.id=:assessebjectiveId"),
 	@NamedQuery(name = AssesseeObjectives.GET_ALL_ASSESSEE_SECTION_ID, query = "from AssesseeObjectives a where a.assesseeAssessor.id=:assesseeAssessorId and a.section.id=:sectionId")

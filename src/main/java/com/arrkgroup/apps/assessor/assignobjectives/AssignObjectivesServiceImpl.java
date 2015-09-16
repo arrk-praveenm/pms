@@ -31,7 +31,7 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 	
 	private static final String STATUS = "Initiated";
 	private static final String EDIT_FLAG = "false";
-	private static final int DEFAULT_WEIGHTAGE_ID = 7;
+	private static final int DEFAULT_WEIGHTAGE_ID = 1;
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {

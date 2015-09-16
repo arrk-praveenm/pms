@@ -31,7 +31,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Autowired
 	private ModelObjectDao modelObjectDao;
 	
-	private static final int DEFAULT_WEIGHTAGE_ID = 7;
+	private static final int DEFAULT_WEIGHTAGE_ID = 1;
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -234,7 +234,8 @@ try{
 		
 		entityManager
 		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID
-				).setParameter("description", assesseeObjectives.getDescription()).setParameter("assessebjectiveId", assesseeObjectives.getId()).executeUpdate()
+				).setParameter("description", assesseeObjectives.getDescription()).setParameter("weightageId", assesseeObjectives.getWeightage().getId())
+				.setParameter("assessebjectiveId", assesseeObjectives.getId()).executeUpdate()
 		;
 		return false;
 	}

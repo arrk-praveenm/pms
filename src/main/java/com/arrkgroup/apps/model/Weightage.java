@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NamedQueries({
 
 	@NamedQuery(name = Weightage.GET_Weightage_ID, query = "FROM Weightage where id=:id "),
-	@NamedQuery(name= Weightage.GET_ALL_Weightage, query = "FROM Weightage")
+	@NamedQuery(name= Weightage.GET_ALL_Weightage, query = "FROM Weightage where weightage != 0")
 	
 })
 public class Weightage {
