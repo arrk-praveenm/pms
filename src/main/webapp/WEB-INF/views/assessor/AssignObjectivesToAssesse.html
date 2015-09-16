@@ -24,7 +24,7 @@ if(allObjectives!=null)
  $.each( allObjectives, function( iterStat, objectiveDesc ) {
            LodaObjectives(iterStat,objectiveDesc,selectedSection);
 });
- $("#copyObjectives").find("button").prop("disabled",true);
+
 	}else{
 		$("#sectionObjectives-prnt").hide();
 		$(".wrapper-tabs").hide();
@@ -60,6 +60,7 @@ if(allObjectives!=null)
 		}) ;
 	
 	$("#projectName").on('change', function(){
+	
 		triggerToObjectives();
 		});
 
@@ -220,19 +221,12 @@ if(allObjectives!=null)
 						$(".wrapper-tabs").hide();
 						$("#sectionsBody").hide();
 						$("#addObjectiveform").hide();
-						$("#copyObjectives").find("button").prop("disabled",false);
-						//$("#alertMessage").text("No objectives for selected combination. Please assign objectives by clicking on button 'Copy Role objectives' or 'Copy Other Employee'  ")
-					//	$("#modal_alert_messages").modal('show');
-						$("#copyObjectiveBlock").show();
-			                }
+					}
 						 $("#sectionObjectives-prnt").empty();
 						
 	                }else{
 	                	$("#copyObjectiveBlock").hide();
-	                	if(!status)
-		                {					
-					$("#copyObjectives").find("button").prop("disabled",true);
-		                }
+	                	
 	                	 $("#sectionObjectives-prnt").empty();
 	                	$("#sectionObjectives-prnt").show();
 	            		$(".wrapper-tabs").show();
@@ -259,9 +253,10 @@ if(allObjectives!=null)
 
 
 
-			$("#objectiveDesc").on('click',function()
+			$("#addObjective").on('click',function()
 					{
 //alert($("#assesseeRole").val());
+
 				$("#inputAssessmentCycle").val($("#assessmentCycle").val()); 
 				 $("#inputAssesseeRole").val($("#assesseeRole").val()); 
 				 $("#inputAssessor").val($("#assessor").val()); 
@@ -297,12 +292,10 @@ if(allObjectives!=null)
 			<!-- Manager header panel starts -->
 			<div class="box">
 				<div class="box-body">
-				<div id="copyObjectiveBlock">
-					<div th:replace="fragments/alert :: alert (type='danger', message='No Objectives for selected combination')">Alert</div>
-					</div>
+			
 					<form method="post" action="#"
-						th:action="@{/assessor/copyroleobjectives}"
-						th:object="${copyObjectivesBean}">
+      th:action="@{/assessor/copyobjectives}"
+      th:object="${copyObjectivesBean}">
 						<div class="greybg-container">
 							<div class="greybg-fields-container paddingleft0 paddingright0">
 								<div class="col-md-4">
@@ -352,10 +345,23 @@ if(allObjectives!=null)
 						<div class="row margintop20">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label for="managerprojectname" class="sr-only">Project
+									<!-- <label for="managerprojectname" class="sr-only">Project
 										Name</label> <input type="text" id="projectName"
 										th:field="*{projectName}" class="form-control"
-										placeholder="Project Name" />
+										placeholder="Project Name" /> -->
+										
+										
+										<label for="managerprojectname" class="sr-only">Project
+											Name</label> <select class="form-control" id="projectName"
+											th:field="*{projectName}"
+											style="padding-left: 0px; padding-right: 5px;">
+											<option selected="selected" value="0">Projects
+												</option>
+											<option th:each="projects : ${projectList}"
+												th:text="${projects.project_name}" th:value="${projects.id}">PMS
+												</option>
+										</select>
+									
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -399,13 +405,13 @@ if(allObjectives!=null)
 
 						<div class="form-inline margintop30 text-center" id="copyObjectives">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" type="submit" id="roleObjectives">
+								<button class="btn btn-primary btn-lg" name="type" value="role" type="submit" id="roleObjectives">
 									<i class="fa fa-files-o"></i> Copy Role Objectives
 								</button>
 							</div>
 							
 							<div class="form-group">
-								<button class="btn btn-info btn-green btn-lg" type="submit" id="employeeObjectives">
+								<button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit" id="employeeObjectives">
 									<i class="fa fa-files-o"></i> Copy Other Employee
 								</button>
 							</div>
@@ -459,6 +465,14 @@ if(allObjectives!=null)
 									<form action="#" id="objective" method="post"
 										th:action="@{/assessor/addObjective}"
 										th:object="${addObjectiveBean}">
+										<input type="hidden"  	class="form-control" id="inputAssessmentCycle" 	name="assessmentCycle" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentFromDate" 	name="assessmentFromDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentToDate" 	name="assessmentToDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputProjectName" 	name="projectName" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessor" 	name="assessor" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssesseeRole" 	name="assesseeRole" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessee" 	name="assessee" th:value="1" />
+								
 										<div id="hasError" class="form-group margintop10 marginbottom30"
 											th:classappend="${#fields.hasErrors('objectiveDesc')}? 'has-error'">
 											<div class="input-group input-group-lg">
@@ -469,17 +483,12 @@ if(allObjectives!=null)
 													placeholder="Add objectives" class="form-control"
 													id="addObjectiveSectionID" name="addObjectiveSectionID"
 													th:value="${sectionToLoad}" /> <span class="input-group-btn"> 
+										
 													<input
 													type="hidden" placeholder="Add objectives"
 													class="form-control" id="addObjectiveSectionName"
 													name="addObjectiveSectionName" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssessmentCycle" 	name="assessmentCycle" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssessmentFromDate" 	name="assessmentFromDate" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssessmentToDate" 	name="assessmentToDate" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputProjectName" 	name="projectName" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssessor" 	name="assessor" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssesseeRole" 	name="assesseeRole" th:value="1" />
-								<input type="hidden"  	class="form-control" id="inputAssessee" 	name="assessee" th:value="1" />
+													class="input-group-btn">
 													<button type="submit" id="addObjective" class="btn btn-info btn-lg button">
 														<i class="fa fa-plus">&nbsp;</i>
 													</button>

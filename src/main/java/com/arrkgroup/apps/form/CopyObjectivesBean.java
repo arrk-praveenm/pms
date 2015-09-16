@@ -6,7 +6,7 @@ public class CopyObjectivesBean {
 	int assessmentCycle;
 	String assessmentFromDate;
 	String assessmentToDate;
-	String projectName;
+	int projectName;
 	String action;
 	int assessor;
 	int assessee;
@@ -31,10 +31,11 @@ public class CopyObjectivesBean {
 	public void setAssessmentToDate(String assessmentToDate) {
 		this.assessmentToDate = assessmentToDate;
 	}
-	public String getProjectName() {
+
+	public int getProjectName() {
 		return projectName;
 	}
-	public void setProjectName(String projectName) {
+	public void setProjectName(int projectName) {
 		this.projectName = projectName;
 	}
 	public int getAssessor() {

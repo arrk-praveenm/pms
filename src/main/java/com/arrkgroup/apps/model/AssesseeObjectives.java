@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "assessee_objectives")
 @NamedQueries({
 
-	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assessorId.id=:assessorId and aa.assesseeId.id=:employeeId and  aa.project_name=:projectName and aa.start_date=:StartDate and aa.cycleId.id=:Cycle and aa.roleId.id=:roleId and aa.end_date=:endDate) and section.id=:id"),
+	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assessorId.id=:assessorId and aa.assesseeId.id=:employeeId and  aa.projectId.id=:projectName and aa.start_date=:StartDate and aa.cycleId.id=:Cycle and aa.roleId.id=:roleId and aa.end_date=:endDate) and section.id=:id"),
 	@NamedQuery(name= AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id = (SELECT id FROM AssesseesAssessor aa WHERE aa.assesseeId.id=:assesseeId and aa.cycleId.id=:cycleId and aa.roleId.id=:roleId)"),
 	@NamedQuery(name = AssesseeObjectives.DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID, query = "delete from AssesseeObjectives a where a.id = :assessebjectiveId"),
 	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID, query = "update AssesseeObjectives set description=:description  where id = :assessebjectiveId"),
@@ -44,8 +44,10 @@ public class AssesseeObjectives {
 	
 	String description;
 	
-	@Column(name="weightage")
-	int weightage;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "weightage")
+	Weightage weightage;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assessee_assessor_id")
@@ -74,11 +76,13 @@ public class AssesseeObjectives {
 		this.description = description;
 	}		
 
-	public int getWeightage() {
+	
+
+	public Weightage getWeightage() {
 		return weightage;
 	}
 
-	public void setWeightage(int weightage) {
+	public void setWeightage(Weightage weightage) {
 		this.weightage = weightage;
 	}
 

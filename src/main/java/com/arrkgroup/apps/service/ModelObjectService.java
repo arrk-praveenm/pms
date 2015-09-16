@@ -5,9 +5,11 @@ import java.util.List;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
+import com.arrkgroup.apps.model.Project;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.Weightage;
 
 public interface ModelObjectService {
 	public Cycle findCycleById(int id);
@@ -21,6 +23,10 @@ public interface ModelObjectService {
 	public List<Section> getAllSections();
 	public List<Role> getAllRoles();
 	public List<Cycle> getAllCycles();
+	public Project findProjectById(int id);
+	public List<Project> getAllProjects();
+	public Weightage findWeightageById(int id);
+	public List<Weightage> getAllWeightages();
 	
 
 }

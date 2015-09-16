@@ -30,7 +30,8 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 	ModelObjectDao modelObjectiveDao;
 	
 	private static final String STATUS = "Initiated";
-	private static final String EDIT_FLAG = "False";
+	private static final String EDIT_FLAG = "false";
+	private static final int DEFAULT_WEIGHTAGE_ID = 7;
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -50,12 +51,12 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 
 	@Override
     public void copyRoleObjectives(CopyObjectivesBean copyObjectivesBean) {    
-           assignObjectivesDao.copyRoleObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+           assignObjectivesDao.copyRoleObjectives(getAssesseeAssessor(copyObjectivesBean,EDIT_FLAG,STATUS));
     }
 
     @Override
     public void copyAssesseObjectives(CopyObjectivesBean copyObjectivesBean) {
-           assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,"false",STATUS));
+           assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,EDIT_FLAG,STATUS));
     }
 
 
@@ -65,7 +66,7 @@ public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBe
            assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));              
            assesseesAssessor.setStart_date(convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)));
            assesseesAssessor.setEnd_date(convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10)));
-           assesseesAssessor.setProject_name(copyObjectivesBean.getProjectName());
+           assesseesAssessor.setProjectId(modelObjectiveDao.findProjectById(copyObjectivesBean.getProjectName()));
            assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
            assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
            assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
@@ -81,7 +82,7 @@ private Date convertStringToDate(String datestring)
 	Date date=null ;
 	try {
 		 date = format.parse(datestring);
-		System.out.println("date "+date);
+		
 	} catch (ParseException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -100,13 +101,12 @@ private Date convertStringToDate(String datestring)
 		// TODO Auto-generated method stub
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		//get Assesseesor by ID and 
-		System.out.println(sectionId +" sectionId");
 		assesseeObjectives.setAssesseeAssessor(assignObjectivesDao.getAssesseeAssessor(copyObjectivesBean));
 		assesseeObjectives.setDescription(description);
 		assesseeObjectives.setLastModifiedDate(new Date());
-		assesseeObjectives.setWeightage(0);
+		assesseeObjectives.setWeightage(modelObjectiveDao.findWeightageById(DEFAULT_WEIGHTAGE_ID));
 		assesseeObjectives.setSection(modelObjectiveDao.findSectionById(Integer.parseInt(sectionId)));
-	System.out.println("Request to add Objective");
+	
 		return assignObjectivesDao.addAssesseeObjective(assesseeObjectives);
 	}
 

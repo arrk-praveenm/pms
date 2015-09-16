@@ -30,6 +30,8 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	private EntityManager entityManager;
 	@Autowired
 	private ModelObjectDao modelObjectDao;
+	
+	private static final int DEFAULT_WEIGHTAGE_ID = 7;
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -53,29 +55,40 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Override
 	@Transactional
 	public boolean copyRoleObjectives(AssesseesAssessor assesseesAssessor) {
-		try {
-			entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+		try{
+			
+			AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
-					.setParameter("start_date", assesseesAssessor.getStart_date())
-					.setParameter("end_date", assesseesAssessor.getEnd_date())
-					.setParameter("project_name", assesseesAssessor.getProject_name())
+					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+			entityManager
+			.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
+					).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
+			copyingRoleObjectives( assesseesAssessorUpdate);
+			
+				}catch(NoResultException re){
+		try {
+			
+			AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
+					.setParameter("start_date", assesseesAssessor.getStart_date())
+					.setParameter("end_date", assesseesAssessor.getEnd_date())
+					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
+					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
+					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+			
+			copyingRoleObjectives( assesseesAssessor1);
+			
 		}catch (NoResultException nre){
+		
+			
 			entityManager.persist(assesseesAssessor);
-			List<RoleModel> roleObjectives = entityManager.createNamedQuery(RoleModel.FIND_BY_ROLE_ID, RoleModel.class)
-					.setParameter("role_id", assesseesAssessor.getRoleId().getId())
-					.getResultList();
-			for(RoleModel roleModel : roleObjectives){
-				AssesseeObjectives assesseeObjective = new AssesseeObjectives();
-				assesseeObjective.setAssesseeAssessor(assesseesAssessor);
-				assesseeObjective.setDescription(roleModel.getObjectives().getObjectiveDesc());
-				assesseeObjective.setSection(roleModel.getSection());
-				assesseeObjective.setWeightage(0);
-				assesseeObjective.setLastModifiedDate(new Date());
-				entityManager.persist(assesseeObjective);
-			}
+			copyingRoleObjectives( assesseesAssessor);
+			
+		}
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,33 +96,54 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 		}
 		return true;		
 	}
+	private void copyingRoleObjectives(AssesseesAssessor assesseesAssessor)
+	{
+		List<RoleModel> roleObjectives = entityManager.createNamedQuery(RoleModel.FIND_BY_ROLE_ID, RoleModel.class)
+				.setParameter("role_id", assesseesAssessor.getRoleId().getId())
+				.getResultList();
+		
+		
+		for(RoleModel roleModel : roleObjectives){
+			AssesseeObjectives assesseeObjective = new AssesseeObjectives();
+			assesseeObjective.setAssesseeAssessor(assesseesAssessor);
+			assesseeObjective.setDescription(roleModel.getObjectives().getObjectiveDesc());
+			assesseeObjective.setSection(roleModel.getSection());
+			assesseeObjective.setWeightage(modelObjectDao.findWeightageById(DEFAULT_WEIGHTAGE_ID));
+			assesseeObjective.setLastModifiedDate(new Date());
+			entityManager.persist(assesseeObjective);
+		}
+	}
 
 	@Override
 	public boolean copyAssesseObjectives(AssesseesAssessor assesseesAssessor) {
+try{
+	
+	AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+			.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
+			.setParameter("project_name", assesseesAssessor.getProjectId().getId())
+			.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
+			.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+			.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+	entityManager
+	.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
+			).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
+	copyingAssesseeObjectives(assesseesAssessorUpdate);
+		}catch(NoResultException re){
 		try {
-			entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+		
+			AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 					.setParameter("start_date", assesseesAssessor.getStart_date())
 					.setParameter("end_date", assesseesAssessor.getEnd_date())
-					.setParameter("project_name", assesseesAssessor.getProject_name())
+					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+			copyingAssesseeObjectives(assesseesAssessor1);
 		}catch(NoResultException nre){
+			
 			entityManager.persist(assesseesAssessor);			
-			List<AssesseeObjectives> assesseeObjectives = entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID,
-					AssesseeObjectives.class)
-					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
-					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
-					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getResultList();
-			for(AssesseeObjectives copiedassesseeObjectives : assesseeObjectives){
-				AssesseeObjectives assesseeObjective = new AssesseeObjectives();
-				assesseeObjective.setAssesseeAssessor(assesseesAssessor);
-				assesseeObjective.setDescription(copiedassesseeObjectives.getDescription());
-				assesseeObjective.setSection(copiedassesseeObjectives.getSection());
-				assesseeObjective.setWeightage(0);
-				assesseeObjective.setLastModifiedDate(new Date());
-				entityManager.persist(assesseeObjective);
+			copyingAssesseeObjectives(assesseesAssessor);
 			}
 		}catch(Exception ee) {
 			// TODO Auto-generated catch block
@@ -119,6 +153,23 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 		return true;
 	}
 
+	private void copyingAssesseeObjectives(AssesseesAssessor assesseesAssessor)
+	{
+		List<AssesseeObjectives> assesseeObjectives = entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID,
+				AssesseeObjectives.class)
+				.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
+				.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
+				.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getResultList();
+		for(AssesseeObjectives copiedassesseeObjectives : assesseeObjectives){
+			AssesseeObjectives assesseeObjective = new AssesseeObjectives();
+			assesseeObjective.setAssesseeAssessor(assesseesAssessor);
+			assesseeObjective.setDescription(copiedassesseeObjectives.getDescription());
+			assesseeObjective.setSection(copiedassesseeObjectives.getSection());
+			assesseeObjective.setWeightage(copiedassesseeObjectives.getWeightage());
+			assesseeObjective.setLastModifiedDate(new Date());
+			entityManager.persist(assesseeObjective);
+				}
+	}
 	@Override
 	public List<AssesseeObjectives> getAssesseObjectives(
 			CopyObjectivesBean copyObjectivesBean, int sectionId) {
@@ -150,7 +201,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	public boolean addAssesseeObjective(AssesseeObjectives assesseeObjectives) {
 		// TODO Auto-generated method stub
 		try{
-			System.out.println("TESTTSTTST");
+			
 			entityManager.persist(assesseeObjectives);
 			return true;
 		}catch(Exception e){
@@ -164,7 +215,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Override
 	public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBean) {
 		// TODO Auto-generated method stub
-		System.out.println("getAssesseeAssessor");
+	
 		return entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 				.setParameter("cycleId", modelObjectDao.findCycleById(copyObjectivesBean.getAssessmentCycle()).getId())
 			     .setParameter("start_date", convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)))
@@ -180,7 +231,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	public boolean saveAssesseeObjectivebySection(
 			AssesseeObjectives assesseeObjectives) {
 		// TODO Auto-generated method stub
-		System.out.println("Save");
+		
 		entityManager
 		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID
 				).setParameter("description", assesseeObjectives.getDescription()).setParameter("assessebjectiveId", assesseeObjectives.getId()).executeUpdate()
@@ -193,7 +244,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 			throws SQLException {
 		// TODO Auto-generated method stub
 		try{
-		System.out.println("Objective id requested to delete is "+objectiveId);
+		
 		entityManager
 		.createNamedQuery(AssesseeObjectives.DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID
 				).setParameter("assessebjectiveId", objectiveId).executeUpdate();
