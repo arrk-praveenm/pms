@@ -31,7 +31,12 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	@Override
 	public Role findRoleById(int id) {
 		// TODO Auto-generated method stub
-		return modelObjectDao.findRoleById(id);
+		Role role=new Role();
+		
+		role=modelObjectDao.findRoleById(id);
+		
+		System.out.println("role is "+role.getTitle());
+	return role;
 	}
 
 	@Override
@@ -49,7 +54,12 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	@Override
 	public Employee findEmployeeById(int id) {
 		// TODO Auto-generated method stub
-		return modelObjectDao.findEmployeeById(id);
+		
+		Employee employee=new Employee();
+		employee= modelObjectDao.findEmployeeById(id);
+		
+		System.out.println("employee is "+employee.getFullname() +"  "+employee.getId() );
+		return employee;
 	}
 
 	@Override
@@ -85,8 +95,9 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 
 	@Override
 	public List<Cycle> getAllCycles() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		modelObjectDao.getAllCycles();
+		return modelObjectDao.getAllCycles();
 	}
 	
 

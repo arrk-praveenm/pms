@@ -17,15 +17,22 @@ import javax.persistence.Table;
 @Table(name = "assessee_assessor")
 
 @NamedQueries({
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id"),
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id"),
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE, query = "SELECT DISTINCT s FROM AssesseesAssessor s where s.cycleId.id= :id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
-
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id  from  Employee ee where ee.email= :email) ")
 
 })
 public class AssesseesAssessor {
+	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
+	public static final String FIND_ASSESSOR_BY_CYCLE = "AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE";
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_ASSESSEES_BY_EMAIL = "AssesseeAssessor.FIND_ASSESSEES_BY_EMAIL";
+	public static final String FIND_ASSESSEES_BY_EMPLOYEE_ID = "AssesseeAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID";
 
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;

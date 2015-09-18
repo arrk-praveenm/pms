@@ -8,17 +8,17 @@
 $(document).ready(function(){
 
 
-//var 
-
- 
-
 	// on select of Assessee
 $("#selectAssessee").on('change', function(){
 
-	alert($("#0").attr("name"));
+
+	
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
-			sectionToLoad:$("#0").attr("name")
+			sectionToLoad:$("#0").attr("name"),
+			role_id:$(selectAssessee).children(":selected").attr("name")
 			};
+	
+	
 	 ajaxCall(data);
 
 	//alert($("#selectAssessee").val());
@@ -26,43 +26,131 @@ $("#selectAssessee").on('change', function(){
 
 $(".test").on("click",function(){
 
-	//alert("Hello"+$(this).attr("name"));
+	var id = $(selectAssessee).children(":selected").attr("name");
+	
 
-	//alert(""+);
-	//$("#selectAssessee").val()
-	 $("#tbody").empty();
+	
+	if($("#selectAssessee").val()==0)
+   	 {	$("#tbody").empty();
+	 $("#tbody").append('<h1>Please Select Assessee</h1>');
+   	}else
+   		{
+	
+	
+	
+	$("#tbody").empty();
 	
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
-			sectionToLoad:$(this).attr("name")
+			sectionToLoad:$(this).attr("name"),
+			role_id:$(selectAssessee).children(":selected").attr("name")
+		
 			};
 	 ajaxCall(data);
+	 
+   		}
 });
 	
 
 function ajaxCall(data)
 {
 
+
+	
+	
+	
 	   $.ajax({
            url: "ajax/assesseeObjectives",
            type: 'GET',
            data: data,
            success: function(response) {
-              alert("Hello ");
+        	  
+        	   
+        	   
 			if(response=="")
            {
+				
+				
 				 $("#tbody").empty();
            }else{
+        	   
+        	   
 
            	 $("#tbody").empty();
-           	 if($("#selectAssessee").val()==0)
-               	 {
-           	 $("#tbody").append('<h1>Please Select Assessee</h1>');
-               	}
-            jQuery.each( response, function( iterStat, objectiveDesc ) {
-            var section=sectionLoad.sectionLoad;
-                            
-         
-			}); 
+                    	 
+    
+           	 
+             for (row in response) {
+            	 var objective="objective"+response[row].id;
+            	 var weightage="weightage"+response[row].id;
+            	 var selfRating="selfRating"+response[row].id;
+            	 var selfScore="selfScore"+response[row].id;
+            	 var managerRating="managerRating"+response[row].id;
+            	 var managerScore="managerScore"+response[row].id;
+            var btn="btn"+response[row].id;
+            	 
+            	 
+            	 
+            	 var classValue=" text-center";
+            	 
+            	  var rowdata = $(  "<tr id="+ response[row].id +" />")
+      		    $("#objective_table").append(rowdata); 
+      		    rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
+      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage + "</td>"));
+      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating + "</td>"));
+      		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
+    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating + "</td>"));
+    		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
+    		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>")); 
+    		   
+    		   /*   '<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>' */
+    		     /* <button class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button> */
+    		   
+             }
+           	 
+             
+             
+		     $(".btn-edit").on( "click", function(){
+		    		
+		    	 
+		    	  
+		    /* 	 alert("test"+$(this).attr("name"));
+		    	 
+		    	 var objectivecopy='#'+'objectiveDesc'+iterStat;
+		    	  */
+		    	  var objective_id='#'+'objective'+$(this).attr("name");
+		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
+		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
+		    	  var managerScore_id='#'+'managerScore'+$(this).attr("name");
+		    	/*   var managercomment='#'+'managerScore'+$(this).attr("name"); */
+		    	    var selfRating_id='#'+'selfRating'+$(this).attr("name");
+		    	  var selfScore_id='#'+'selfScore'+$(this).attr("name");
+		    	  
+
+		    	  $("#objective_modal").val($(objective_id).text());
+		    	  $("#weightage").val($(weightage_id).text());
+		    	  $("#manager_rating").val($(managerRating_id).text());
+		    	  $("#manager_score").val($(managerScore_id).text());
+		    	  $("#selfrating").val($(selfRating_id).text());
+		    	  $("#selfscore").val($(selfScore_id).text());
+		    	  
+		    	  
+		    	  
+		    	  if([[${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}]])
+		 		 {
+		 		$("#objectiveSection").children().prop('disabled',true);
+		 		$("#employeeSection").find("input,textarea").prop("disabled",true);
+		 		$("#manager_score").prop("disabled",true);
+		 		$("#objective_modal").prop("disabled",true);
+		 		$("#weightage").prop("disabled",true);
+		 	
+		 		
+		 		 }
+		    	  
+		    	  
+		    	  
+		    	  }); 
+           	 
+            
            } 
 
             
@@ -73,9 +161,20 @@ function ajaxCall(data)
            }
 		}); 
 		//ajax function ends 
-	};
+	
+   		
+   		};
+	
 
 
+	
+	
+
+
+	 	
+	 	
+	 	
+	 	
 $(".text-center").on('click',function(){
 	alert($(this).attr("id"));
 	var objectiveDesc="objectiveDesc"+$(this).attr("id");
@@ -89,7 +188,7 @@ $(".text-center").on('click',function(){
 		 {
 		$("#objectiveSection").children().prop('disabled',true);
 		$("#employeeSection").find("input,textarea").prop("disabled",true);
-		alert("Hello");
+		
 		 }
 });
 
@@ -127,9 +226,10 @@ $(".text-center").on('click',function(){
 					<div class="row margintop15">
 							<div class="col-md-6">
 								<div class="form-group">
-									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}">
+									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}" >								
+									
 										<option selected="selected" value="0">Select Employee</option>
-										<option th:each="assesse : ${assessorAssessees}" th:text="${assesse.fullname}" th:value="${assesse.id}">Employee one</option>
+										<option th:each="assessor : ${assessorAssessees}" th:text="${assessor.fullname}" th:value="${assessor.id}" th:name="${assessor.role_id}">Employee one</option>
 										
 									</select>
 								</div>
@@ -161,7 +261,7 @@ $(".text-center").on('click',function(){
 							<div id="par" class="tab-pane active">
 								
 								<div class="box-body table-responsive">
-									<table class="table">
+									<table id="objective_table" class="table">
 										<thead>
 											<tr>
 												<th>Objectives</th>
@@ -221,6 +321,11 @@ $(".text-center").on('click',function(){
 							
 						
 					</div>
+					
+					
+					
+					
+					
 				</div>
 			</div>
 			<!-- Manager header panel ends -->
@@ -231,6 +336,20 @@ $(".text-center").on('click',function(){
       </div>
 	<!-- Content Wrapper ends -->
 	<!-- Manager Modal Starts -->
+		
+		<form method="post" action="#"
+						th:action="@{/assessor/SaveSectionData}"
+						th:object="${SectionDataBean}">
+						
+						<input type="hidden" id="employee_assessor_id" name="employee_assessor_id"
+							th:field="*{employee_assessor_id}" th:value="${employee_assessor_id}" />
+						
+										
+							<input type="hidden" id="sectionid" name="sectionid"
+							th:field="*{sectionid}" th:value="${sectionid}" />
+						
+						
+		
 		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -243,13 +362,13 @@ $(".text-center").on('click',function(){
 							<div class="col-md-9">
 								<div class="form-group" id="objectiveDesc">
 									<label class="sr-only">Objectives</label>
-									<textarea row="2" class="form-control" Placeholder="Objectives"></textarea>
+									<textarea id="objective_modal"  row="2" class="form-control" Placeholder="Objectives"></textarea>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group" id="wightage">
 									<label class="sr-only">Weightage</label>
-									<input type="text" class="form-control" Placeholder="weightage" />
+									<input id="weightage" type="text" class="form-control" Placeholder="weightage" />
 								</div>
 							</div>
 						  </div>
@@ -257,52 +376,52 @@ $(".text-center").on('click',function(){
 						 
 						  <div class="row" id="employeeSection">
 							<div class="col-md-12">
-								<h4>Employee Self Rating</h4>
+								<h4>Assesse Self Rating</h4>
 								<hr class="marginbottom15 margintop5"/>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="sr-only">Self Rating</label>
-									<input type="text" class="form-control" Placeholder="Self Rating" />
+									<input id="selfrating" type="text" class="form-control" Placeholder="Self Rating" />
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="sr-only">Self Score</label>
-									<input type="text" class="form-control" Placeholder="Self Score" />
+									<input id="selfscore" type="text" class="form-control" Placeholder="Self Score" />
 								</div>
 							</div>
 							<div class="col-md-6"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="sr-only">Employee Comments</label>
-									<textarea row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+									<textarea id="comments" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
 								</div>
 							</div>
 						  </div>
 						 
 						   <div class="row" id="managerSection">
 							<div class="col-md-12">
-								<h4>Manager Rating</h4>
+								<h4>Assessor Rating</h4>
 								<hr class="marginbottom15 margintop5"/>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="sr-only">Manager Rating</label>
-									<input type="text" class="form-control" Placeholder="Manager Rating" />
+									<input id="manager_rating"  th:field="*{manager_rating}"  type="text" class="form-control" Placeholder="Manager Rating" />
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label class="sr-only">Manager Score</label>
-									<input type="text" class="form-control" Placeholder="Manager Score" />
+									<input id="manager_score" type="text" class="form-control" Placeholder="Manager Score" />
 								</div>
 							</div>
 							<div class="col-md-6"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="sr-only">Manager Comments</label>
-									<textarea row="2" class="form-control" Placeholder="Manager Comments"></textarea>
+									<textarea id="manager_comments" th:field="*{manager_comments}" row="2" class="form-control" Placeholder="Manager Comments"></textarea>
 								</div>
 							</div>
 						  </div>
@@ -310,11 +429,16 @@ $(".text-center").on('click',function(){
 					  </div>
 					  <div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-						<button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+						<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
 					  </div>
 				</div>
 			</div>
 		</div>
+		</form>
+		
+		
+		
+		
 		<!-- Manager Modal ends -->
 
 
