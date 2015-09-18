@@ -26,11 +26,7 @@ import javax.persistence.Table;
 		@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_ASSESSOR_ID, query = "from AssesseeObjectives a where a.id=:assessebjectiveId"),
 		@NamedQuery(name = AssesseeObjectives.GET_ALL_ASSESSEE_SECTION_ID, query = "from AssesseeObjectives a where a.assesseeAssessor.id=:assesseeAssessorId and a.section.id=:sectionId") })
 public class AssesseeObjectives {
-	// @NamedQuery(name =
-	// AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION, query =
-	// "FROM AssesseeObjectives s where s.assesseeAssessor.assesseeId.id=(select id from Employee ee where ee.id= :employeeId) and s.section.id=:sectionId orderby s.assesseeAssessor.start_date , s.assesseeAssessor.end_date ")
-	// public static final String GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION =
-	// "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION";
+	
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION";
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID";
 	public static final String DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID = "AssesseeObjectives.DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID";
