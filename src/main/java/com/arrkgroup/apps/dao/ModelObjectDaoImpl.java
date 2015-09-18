@@ -11,6 +11,7 @@ import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
@@ -123,6 +124,20 @@ public class ModelObjectDaoImpl implements ModelObjectDao {
 	public List<Weightage> getAllWeightages() {
 		// TODO Auto-generated method stub
 		return entityManager.createNamedQuery(Weightage.GET_ALL_Weightage, Weightage.class)
+				.getResultList();
+	}
+
+	@Override
+	public Rating findRatingById(int id) {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Rating.GET_RATING_ID,Rating.class).setParameter("id", id)
+				.getSingleResult();
+	}
+
+	@Override
+	public List<Rating> getAllRatings() {
+		// TODO Auto-generated method stub
+		return  entityManager.createNamedQuery(Rating.GET_ALL_RATING, Rating.class)
 				.getResultList();
 	}	
 

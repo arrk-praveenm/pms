@@ -32,6 +32,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	private ModelObjectDao modelObjectDao;
 	
 	private static final int DEFAULT_WEIGHTAGE_ID = 1;
+	private static final int DEFAULT_RATING_ID = 1;
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -109,6 +110,8 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 			assesseeObjective.setDescription(roleModel.getObjectives().getObjectiveDesc());
 			assesseeObjective.setSection(roleModel.getSection());
 			assesseeObjective.setWeightage(modelObjectDao.findWeightageById(DEFAULT_WEIGHTAGE_ID));
+			assesseeObjective.setSelf_rating(modelObjectDao.findRatingById(DEFAULT_RATING_ID));
+			assesseeObjective.setManager_rating(modelObjectDao.findRatingById(DEFAULT_RATING_ID));
 			assesseeObjective.setLastModifiedDate(new Date());
 			entityManager.persist(assesseeObjective);
 		}
@@ -166,6 +169,8 @@ try{
 			assesseeObjective.setDescription(copiedassesseeObjectives.getDescription());
 			assesseeObjective.setSection(copiedassesseeObjectives.getSection());
 			assesseeObjective.setWeightage(copiedassesseeObjectives.getWeightage());
+			assesseeObjective.setSelf_rating(modelObjectDao.findRatingById(DEFAULT_RATING_ID));
+			assesseeObjective.setManager_rating(modelObjectDao.findRatingById(DEFAULT_RATING_ID));
 			assesseeObjective.setLastModifiedDate(new Date());
 			entityManager.persist(assesseeObjective);
 				}

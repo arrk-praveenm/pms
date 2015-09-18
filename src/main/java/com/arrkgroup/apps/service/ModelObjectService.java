@@ -6,6 +6,7 @@ import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
@@ -27,6 +28,9 @@ public interface ModelObjectService {
 	public List<Project> getAllProjects();
 	public Weightage findWeightageById(int id);
 	public List<Weightage> getAllWeightages();
+	
+	public Rating findRatingById(int id);
+	public List<Rating> getAllRatings();
 	
 
 }

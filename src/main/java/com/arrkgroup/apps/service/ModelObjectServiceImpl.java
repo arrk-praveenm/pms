@@ -12,6 +12,7 @@ import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
@@ -113,6 +114,18 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	public List<Weightage> getAllWeightages() {
 		// TODO Auto-generated method stub
 		return modelObjectDao.getAllWeightages();
+	}
+
+	@Override
+	public Rating findRatingById(int id) {
+		// TODO Auto-generated method stub
+		return modelObjectDao.findRatingById(id);
+	}
+
+	@Override
+	public List<Rating> getAllRatings() {
+		// TODO Auto-generated method stub
+		return modelObjectDao.getAllRatings();
 	}
 	
 

@@ -32,6 +32,8 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 	private static final String STATUS = "Initiated";
 	private static final String EDIT_FLAG = "false";
 	private static final int DEFAULT_WEIGHTAGE_ID = 1;
+	private static final int DEFAULT_RATING_ID = 1;
+	
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -106,6 +108,8 @@ private Date convertStringToDate(String datestring)
 		assesseeObjectives.setLastModifiedDate(new Date());
 		assesseeObjectives.setWeightage(modelObjectiveDao.findWeightageById(DEFAULT_WEIGHTAGE_ID));
 		assesseeObjectives.setSection(modelObjectiveDao.findSectionById(Integer.parseInt(sectionId)));
+		assesseeObjectives.setSelf_rating(modelObjectiveDao.findRatingById(DEFAULT_RATING_ID));
+		assesseeObjectives.setManager_rating(modelObjectiveDao.findRatingById(DEFAULT_RATING_ID));
 	
 		return assignObjectivesDao.addAssesseeObjective(assesseeObjectives);
 	}
