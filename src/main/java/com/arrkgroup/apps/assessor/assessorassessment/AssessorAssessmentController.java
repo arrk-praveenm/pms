@@ -7,19 +7,28 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.arrkgroup.apps.form.EmployeeBean;
+import com.arrkgroup.apps.form.RoleObjectivesBean;
+import com.arrkgroup.apps.form.SectionDataBean;
 import com.arrkgroup.apps.hr.managesections.SectionService;
+import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
+import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.service.ModelObjectService;
 
 @Controller
 public class AssessorAssessmentController {
@@ -33,77 +42,136 @@ public class AssessorAssessmentController {
 	@Autowired
 	AssessorAssessmentService assessorAssessmentService;
 	
+	@Autowired
+	ModelObjectService modelObjectService;
+	
+	@Autowired
+	AssessorAssessmentDao assessmentDao;
+	
+	
+	
 private int sectionToLoad=0;
 
 	@RequestMapping(value = "/assessor/assessorAssessment", method = RequestMethod.GET)
 	public String loadCreateSectionPage(Principal principal,
-			Map<String, Object> model, HttpSession session ) {
+			Model model, HttpSession session ) {
 
+		model.addAttribute("SectionDataBean", new SectionDataBean());
 		System.out.println(session.getAttribute("userEmailId"));
 		
+		int sectionToLoad=0;
 		
-		setDefaultLoad(model,"jeevankumar.reddy@arrkgroup.com", sectionToLoad);
+		setDefaultLoad(model,"mahesh.mohite@arrkgroup.com", sectionToLoad);
 
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 		}
 	
 	@RequestMapping(value = "/assessor/ajax/assesseeObjectives", method = RequestMethod.GET)
-	public @ResponseBody List<Objective> loadAssignedObjectivesAssessee(
+	public @ResponseBody List<AssesseeObjectives> loadAssignedObjectivesAssessee(
 			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
-			@RequestParam("sectionToLoad") String sectionToLoad)
+			@RequestParam("sectionToLoad") String sectionToLoad,
+			@RequestParam("role_id") String role_id,Model model)
 	{
+		
+		
+		System.out.println("data  is "+selectedAsseesseID  +"  "+sectionToLoad+"  "+role_id);
+		
+		
+		
 		int selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
 		int sectionToLoadInt=Integer.parseInt(sectionToLoad);
-		List<Objective> allsectionObjectives=null;
-		if(selectedAsseesseeID==0)
-		{
-			//Load Section sepcific objectives
-			
-			allsectionObjectives = sectionService
-					.getObjectivesBySection(Integer.parseInt(sectionToLoad));
-			
-		}else
-		{
-			//Load section based and Assessee specific objectives
-			allsectionObjectives = sectionService
-					.getObjectivesBySection(Integer.parseInt(sectionToLoad));
-			
-		}
-		
-		
 		
 		System.out.println(" request for objectives to load for section id is "
 				+ sectionToLoad);
+		System.out.println(" before  employee assessor id is ");
 		
-		return allsectionObjectives;
+		/*AssesseesAssessor assessor=new AssesseesAssessor();
+				
+			assessor=assessmentDao.getAssessees(Integer.parseInt(selectedAsseesseID),Integer.parseInt(role_id));
+		
+		System.out.println("employee assessor id is "+assessor.getId());
+		
+		model.addAttribute("employee_assessor_id", assessor.getId());*/
+		
+		return assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id));
+		
+	
+		
+		
 	}
 	
 
 	@RequestMapping(value = "/assessor/ajax/assignedObjectives", method = RequestMethod.GET)
-	private void setDefaultLoad(Map model, Object object, int sectionIDtoLoad)
+	private void setDefaultLoad(Model model, Object object, int sectionIDtoLoad)
 	{
+	
+		
 		List<AssesseesAssessor> employeeAssessees=assessorAssessmentService.getMyAssessees(object.toString());
-		Iterator<AssesseesAssessor> itr=employeeAssessees.iterator();
-		List<Employee> assessorAssessees=new ArrayList<Employee>();
-		System.out.println("1");
-		while(itr.hasNext())
-		{
+		List<EmployeeBean> assessorAssessees=new ArrayList<EmployeeBean>();
+	
+		
+		for (AssesseesAssessor assessees : employeeAssessees) {
 			
-			assessorAssessees.add(assessorAssessmentService.getAssessee(itr.next().getAssesseeId().getId()));
+			EmployeeBean employee=new EmployeeBean();
+			Role role=new Role();
+			 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
+			 employee=assessorAssessmentService.getAssesseeBean(assessees.getAssesseeId().getId());
+			
+			 String Name=employee.getFullname();
+				employee.setFullname(Name+"    "+ "  "+role.getTitle());
+			   employee.setRole_id(role.getId());
+				
+			  
+				
+				assessorAssessees.add(employee);
+			 
+			
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 		List<Section> allSections = assessorAssessmentService.getAllSections();
 		if(sectionIDtoLoad==0)
 		{
 		sectionIDtoLoad = ((Section) allSections.get(0)).getId();
 		}
 		
-		List<Objective> allObjectives =	sectionService.getObjectivesBySection(sectionIDtoLoad);
-		model.put("selectedAsseses", 0);
-		model.put("sectionToLoad", sectionIDtoLoad);
-		model.put("allSections", allSections);
-		model.put("allObjectives", allObjectives);
-		model.put("assessorAssessees", assessorAssessees);
-		
+		/*List<Objective> allObjectives =	sectionService.getObjectivesBySection(sectionIDtoLoad);*/
+		model.addAttribute("selectedAsseses", 0);
+		model.addAttribute("sectionToLoad", sectionIDtoLoad);
+		model.addAttribute("allSections", allSections);
+		/*model.put("allObjectives", allObjectives);*/
+		model.addAttribute("assessorAssessees", assessorAssessees);
+	
+		System.out.println("in setdefault method  ends");
 	}
+	
+	
+	
+
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST)
+	private String SaveSectionData(@ModelAttribute("SectionDataBean") SectionDataBean bean,Principal principal,Model model)
+	{
+		
+		System.out.println("manager rating is  "+bean.getManager_rating());
+		System.out.println("manager rating is  "+bean.getManager_comments());
+	
+		
+		
+		boolean flag= assessorAssessmentService.saveSectionData(bean);
+		
+		System.out.println("flag is "+flag);
+		
+		
+		return principal != null ? ASSESSORASSESSMENT : LOGIN;
+	}
+	
+
+	
 	
 }

@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.arrkgroup.apps.dao.ModelObjectDao;
 import com.arrkgroup.apps.form.SectionDataBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
@@ -22,6 +24,10 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	ModelObjectDao modelObjectDao;
+	
 	@Override
 	public List<AssesseesAssessor> getMyAssessees(String email) {
 		// TODO Auto-generated method stub
@@ -81,11 +87,25 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	@Override
 	public List<AssesseeObjectives> getAssesseeObjectives(int sectionID,
 			int assesseID) {
+	System.out.println(sectionID+" "+assesseID );
 	
-		return entityManager
+	
+	try
+	{
+		
+	
+	
+	return entityManager
 				.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION,
 						AssesseeObjectives.class).setParameter("sectionID", sectionID).setParameter("assesseID", assesseID).getResultList();
-		
+	}
+	catch(Exception e)
+	{
+	
+		System.out.println("exception is "+e.getMessage());
+	return null;
+	}
+	
 		
 		
 	}
@@ -108,22 +128,19 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	
 	public boolean saveSectionData(SectionDataBean bean)
 	{
+	 int n=	entityManager
+		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
+				).setParameter("comments",bean.getManager_comments()).setParameter("managerId", bean.getManager_rating())
+				.setParameter("assessebjectiveId", bean.getObjectiveid()).executeUpdate();
+	
 		
-		SectionData dataBean=new SectionData(bean.getManager_rating(),bean.getManager_comments(),bean.getEmployee_assessor_id(),new Date());
-		
-		
-		try {
-
-			entityManager.merge(dataBean);
-		}
-
-		catch (Exception e) {
-			// log it or do something
-			return false;
-		}
-
+	if(n>0)
+	{
 		return true;
-		
+	}else
+	{
+		return false;
+	}
 		
 	
 	}

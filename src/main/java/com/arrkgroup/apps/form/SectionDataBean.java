@@ -21,7 +21,7 @@ public class SectionDataBean {
 	
 	int id;
 
-	
+	int objectiveid;
 	int sectionid;
 	
 	private Date last_modified_date;
@@ -51,6 +51,20 @@ public class SectionDataBean {
 
 
 
+
+
+
+
+		public int getObjectiveid() {
+			return objectiveid;
+		}
+
+
+
+
+		public void setObjectiveid(int objectiveid) {
+			this.objectiveid = objectiveid;
+		}
 
 
 

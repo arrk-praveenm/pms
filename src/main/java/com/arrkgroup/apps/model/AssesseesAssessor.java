@@ -17,19 +17,33 @@ import javax.persistence.Table;
 @Table(name = "assessee_assessor")
 
 @NamedQueries({
+
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE, query = "SELECT DISTINCT s FROM AssesseesAssessor s where s.cycleId.id= :id"),
-	@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
-	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id  from  Employee ee where ee.email= :email) ")
-
+		@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id  from  Employee ee where ee.email= :email) "),
+	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
+			   + "and s.start_date=:start_date and s.end_date=:end_date and s.projectId.id=:project_name "
+			   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
+	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
+					   + "and  s.projectId.id=:project_name "
+					   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
+	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate where id = :assesseesAssessorId"),
 })
 public class AssesseesAssessor {
 	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
 	public static final String FIND_ASSESSOR_BY_CYCLE = "AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE";
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_ASSESSEES_BY_EMAIL = "AssesseeAssessor.FIND_ASSESSEES_BY_EMAIL";
+
 	public static final String FIND_ASSESSEES_BY_EMPLOYEE_ID = "AssesseeAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID";
+
+	public static final String FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
+	public static final String FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
+	public static final String UPDATE_ASSESSE_ASSESSOR_BY_ID = "AssesseeAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID";
+
+
 
 	
 	
@@ -39,7 +53,11 @@ public class AssesseesAssessor {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "assessor_id")
 	Employee assessorId;
-	String project_name;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "project_name")
+	Project projectId;
+	
 	Date start_date;
 	Date end_date;
 	String period_edit_flag;
@@ -70,12 +88,14 @@ public class AssesseesAssessor {
 		this.assessorId = assessorId;
 	}
 
-	public String getProject_name() {
-		return project_name;
+	
+
+	public Project getProjectId() {
+		return projectId;
 	}
 
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
+	public void setProjectId(Project projectId) {
+		this.projectId = projectId;
 	}
 
 	public Date getStart_date() {

@@ -6,7 +6,7 @@
 <head>
 <script th:inline="javascript">
 	$(document).ready(function(){
-
+$("#copyObjectiveBlock").hide();
 		//getting the attributes from request object
 		var allObjectives = [[${allObjectives}]];
 
@@ -18,10 +18,20 @@
 
 		
 //on Load setting objectives
+
+if(allObjectives!=null)
+	{
  $.each( allObjectives, function( iterStat, objectiveDesc ) {
-           LodaObjectives(iterStat,objectiveDesc,selectedSection)
+           LodaObjectives(iterStat,objectiveDesc,selectedSection);
 });
 
+	}else{
+		$("#sectionObjectives-prnt").hide();
+		$(".wrapper-tabs").hide();
+		$("#sectionsBody").hide();
+		
+		$("#addObjectiveform").hide();
+		}
  //To select active tabs on load
  $('.test').removeClass( "active test" ).addClass("test");
 
@@ -29,7 +39,79 @@
 
  $("#addObjectiveSectionName").val($('li[name="'+selectedSection+'"]').text());
 
- 
+
+ $("#assessee").on('change',function(){
+	 triggerToObjectives();
+		});
+	//set to count value to one which will restrict to call the multiple time of on change of assessmentFromDate
+	var count=1;
+	$("#assessmentFromDate").click(function(){
+		count =1;
+		});
+	$("#assessmentToDate").click(function(){
+		count =1;
+		});
+	$("#assessmentFromDate").change( function(){
+		if(count==1)
+			{
+			count=2;
+			triggerToObjectives();
+			}
+		}) ;
+	
+	$("#projectName").on('change', function(){
+	
+		triggerToObjectives();
+		});
+
+	$("#assessmentToDate").on('change', function(){
+		if(count==1)
+		{
+		count=2;
+		triggerToObjectives();
+		}
+				});
+	$("#assessor").on('change', function(){
+		triggerToObjectives();
+				});
+
+	$("#assesseeRole").on('change', function(){
+		triggerToObjectives();
+				});
+	$("#assessmentCycle").on('change', function(){
+		triggerToObjectives();
+				});
+	
+	function triggerToObjectives() {
+		//$("#modal_alert_messages").modal('show');
+
+		if($("#assessee").val()!="0") {
+		if($("#assessmentFromDate").val()!="") {
+			if($("#projectName").val()!="") {
+			if($("#assessmentCycle").val()!="0"){
+				if($("#assessor").val()!="0") {
+					if($("#assesseeRole").val()!="0") {
+						if($("#assessmentToDate").val()!=""){
+							    var	sectionLoad={
+						              sectionLoad:"0",
+						              assesseeid:$("#assessee").val(),
+						              assessmentFromDate: $("#assessmentFromDate").val(),
+						              projectName: $("#projectName").val(),
+						              assessmentCycle: $("#assessmentCycle").val(),
+						              assessmentToDate: $("#assessmentToDate").val(),
+						              assessor:  $("#assessor").val(),
+						              assesseeRole: $("#assesseeRole").val()
+						             } 
+							    
+								  ajaxcall(sectionLoad, false); 
+							    }
+							}
+						}
+					}
+				}
+			}
+		}
+	};
  
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
@@ -38,21 +120,23 @@
 	  
 		var spanDescId="objectiveDesc"+iterStat;
     	var hiddenObjectiveId="objectiveId"+iterStat;
+    	var weightageId="weightageId"+iterStat;
     	$("#sectionObjectives-prnt").append('<div id="sectionObjectives" >'
     			
-    			+'<form action="#" id="deleteObjective" method="post" 	th:action="@{/assessor/deleteObjective}">'
+    			+'<form action="#" id="deleteObjective" method="post" onsubmit="button'+objectiveDesc.id+'.disabled = true; return true;"	th:action="@{/assessor/deleteObjective}">'
     			+'<div 	class="panel panel-default marginbottom10 panel-objective" 	id="objective-one">'
     			+'<div class="panel-body">'
     			+'<p class="pull-left" id="objectiveDesc">'
-    			+'<span id="'+spanDescId+'" text="'+objectiveDesc.objectiveDesc+'">'+objectiveDesc.objectiveDesc+'</span>'
+    			+'<span id="'+spanDescId+'" text="'+objectiveDesc.description+'">'+objectiveDesc.description+'</span>'
     			+'</p>'
     			+'<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>'
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
+    			+'<input type="hidden" id="'+weightageId+'" name="'+objectiveDesc.weightage.id+'" value="'+objectiveDesc.weightage.weightage+'"/>'
     			+'<div class="pull-right">'
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
     			+'</button>'
-    			+'<button style="padding: 0px 6px;" type="submit" data-target="#objective-one" aria-label="Close" class="btn btn-danger btn-close">'
+    			+'<button style="padding: 0px 6px;" type="submit" name="button'+objectiveDesc.id+'" data-target="#objective-one" aria-label="Close" class="btn  btn-close btn-danger">'
     			+'<i class="fa fa-times"></i>'
     			+'</button></div></div></div></form></div>');
 
@@ -66,19 +150,53 @@
     		$("#updateobjectiveId").val($(hiddenObjectiveid).val());
     		
     		$("#updateSectionid").val($('#sectionIdSelected').val());
+    		
+    		var weightageID='#weightageId'+$(this).attr("id");
+    		
+    		
+    		
+    		if($(weightageID).attr('name')==1)
+        		{
+    			
+    		    		$("#weightage").val(0);
+        		}else{
+        			
+        			
+        			$("#weightage").val($(weightageID).attr('name'));
+            		}
+    		
     		});	
+
+    	 $("btn-danger").click(function(e){
+        	// alert("hello");
+    		   $(this).prop('disabled', true);
+    		  });
+    
 	}; 
 
-
+	
 		$(".btn-edit").on( "click", function(){
 		
 			var id='#'+'objectiveDesc'+$(this).attr("id");
 			var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
 			$("#textAreas").val($(id).text());
 			$("#updateobjectiveId").val($(hiddenObjectiveid).val());
+	var weightageID='#weightageId'+$(this).attr("id");
+    		
+    		
+    		
+    		if($(weightageID).attr('name')==1)
+        		{
+    			 		    		$("#weightage").val(0);
+        		}else{
+        			
+        			$("#weightage").val($(weightageID).attr('name'));
+            		}
+			
 			});
 
 		$(".test").on("click",function(){
+			
 			var id='#'+'section'+$(this).attr("id");
 
 			$("#addObjectiveSectionID").val($(id).attr("name"));
@@ -87,38 +205,76 @@
 			
 			
 			$("#messageBlock").empty();
-			
+		
 		var	sectionLoad={
               sectionLoad:$(id).attr("name"),
+              assesseeid:$("#assessee").val(),
+              assessmentFromDate: $("#assessmentFromDate").val(),
+              projectName: $("#projectName").val(),
+             assessmentCycle: $("#assessmentCycle").val(),
+            assessmentToDate: $("#assessmentToDate").val(),
+             assessor:  $("#assessor").val(),
+             assesseeRole:  $("#assesseeRole").val()
+              
              } 
-
+        
+		
 		//Error Message removal for add objective text box
 			$("#hasError").removeClass("has-error");
 			$("#span").empty();
-
-
+			
+			
+			ajaxcall(sectionLoad,true);
 
 		
 			
 //making ajax call to laod objectives for selected section
+	
+	
+
+		
+			});
+
+		
+
+
+		function ajaxcall(sectionLoad,status)
+		{
 			   $.ajax({
 	                url: 'ajax/sectionLoad',
 	                type: 'GET',
 	                data: sectionLoad,
 	                success: function(response) {
+	                	
 		              
 					if(response=="")
 	                {
+		                
+		                if(!status)
+			                {
+						$("#sectionObjectives-prnt").hide();
+						$(".wrapper-tabs").hide();
+						$("#sectionsBody").hide();
+						$("#addObjectiveform").hide();
+					}
 						 $("#sectionObjectives-prnt").empty();
+						
 	                }else{
-
+	                	$("#copyObjectiveBlock").hide();
+	                	
 	                	 $("#sectionObjectives-prnt").empty();
+	                	$("#sectionObjectives-prnt").show();
+	            		$(".wrapper-tabs").show();
+	            		$("#sectionsBody").show();
+	            		$("#addObjectiveform").show();
+	                	 $("#sectionObjectives-prnt").show();
+	                	 
 	                jQuery.each( response, function( iterStat, objectiveDesc ) {
-                     var section=sectionLoad.sectionLoad;
+                    var section=sectionLoad.sectionLoad;
 	                
 	                    LodaObjectives(iterStat,objectiveDesc, section);
 	              
-	}); 
+				}); 
 	                } 
 
 	                 
@@ -128,13 +284,26 @@
 	                    alert(errorThrown);
 	                }
 				}); 
+			};
 
-	
 
-		
-			});
+
+			$("#addObjective").on('click',function()
+					{
+//alert($("#assesseeRole").val());
+
+				$("#inputAssessmentCycle").val($("#assessmentCycle").val()); 
+				 $("#inputAssesseeRole").val($("#assesseeRole").val()); 
+				 $("#inputAssessor").val($("#assessor").val()); 
+				 $("#inputProjectName").val($("#projectName").val()); 
+				 $("#inputAssessmentToDate").val($("#assessmentToDate").val()); 
+				 $("#inputAssessmentFromDate").val($("#assessmentFromDate").val());//
+				 $("#inputAssessee").val($("#assessee").val());
+						});
+			//alert($("#inputAssessmentCycle").val());
 });
 
+	
 	
 </script>
 </head>
@@ -158,9 +327,10 @@
 			<!-- Manager header panel starts -->
 			<div class="box">
 				<div class="box-body">
+			
 					<form method="post" action="#"
-						th:action="@{/assessor/copyroleobjectives}"
-						th:object="${copyObjectivesBean}">
+      th:action="@{/assessor/copyobjectives}"
+      th:object="${copyObjectivesBean}">
 						<div class="greybg-container">
 							<div class="greybg-fields-container paddingleft0 paddingright0">
 								<div class="col-md-4">
@@ -187,7 +357,7 @@
 											</div>
 											<input type="text" id="assessmentFromDate"
 												th:field="*{assessmentFromDate}" class="form-control"
-												placeholder="From" />
+												placeholder="From" readonly="readonly" style="background:#fff;" />
 										</div>
 									</div>
 								</div>
@@ -199,7 +369,7 @@
 												<i class="fa fa-calendar"></i>
 											</div>
 											<input type="text" class="form-control" id="assessmentToDate"
-												th:field="*{assessmentToDate}" placeholder="To" />
+												th:field="*{assessmentToDate}" placeholder="To" readonly="readonly" style="background:#fff;" />
 										</div>
 									</div>
 								</div>
@@ -210,10 +380,23 @@
 						<div class="row margintop20">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label for="managerprojectname" class="sr-only">Project
+									<!-- <label for="managerprojectname" class="sr-only">Project
 										Name</label> <input type="text" id="projectName"
 										th:field="*{projectName}" class="form-control"
-										placeholder="Project Name" />
+										placeholder="Project Name" /> -->
+										
+										
+										<label for="managerprojectname" class="sr-only">Project
+											Name</label> <select class="form-control" id="projectName"
+											th:field="*{projectName}"
+											style="padding-left: 0px; padding-right: 5px;">
+											<option selected="selected" value="0">Project Name 
+												</option>
+											<option th:each="projects : ${projectList}"
+												th:text="${projects.project_name}" th:value="${projects.id}">PMS
+												</option>
+										</select>
+									
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -255,21 +438,22 @@
 
 						</div>
 
-						<div class="form-inline margintop30 text-center">
+						<div class="form-inline margintop30 text-center" id="copyObjectives">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" type="submit">
+								<button class="btn btn-primary btn-lg" name="type" value="role" type="submit" id="roleObjectives">
 									<i class="fa fa-files-o"></i> Copy Role Objectives
 								</button>
 							</div>
+							
 							<div class="form-group">
-								<button class="btn btn-info btn-green btn-lg" type="submit">
+								<button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit" id="employeeObjectives">
 									<i class="fa fa-files-o"></i> Copy Other Employee
 								</button>
 							</div>
 						</div>
 					</form>
 
-					<div class="box-body">
+					<div class="box-body" id="sectionsBody">
 
 						<hr class="margintop5 marginbottom20" />
 
@@ -316,6 +500,14 @@
 									<form action="#" id="objective" method="post"
 										th:action="@{/assessor/addObjective}"
 										th:object="${addObjectiveBean}">
+										<input type="hidden"  	class="form-control" id="inputAssessmentCycle" 	name="assessmentCycle" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentFromDate" 	name="assessmentFromDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessmentToDate" 	name="assessmentToDate" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputProjectName" 	name="projectName" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessor" 	name="assessor" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssesseeRole" 	name="assesseeRole" th:value="1" />
+								<input type="hidden"  	class="form-control" id="inputAssessee" 	name="assessee" th:value="1" />
+								
 										<div id="hasError" class="form-group margintop10 marginbottom30"
 											th:classappend="${#fields.hasErrors('objectiveDesc')}? 'has-error'">
 											<div class="input-group input-group-lg">
@@ -326,12 +518,13 @@
 													placeholder="Add objectives" class="form-control"
 													id="addObjectiveSectionID" name="addObjectiveSectionID"
 													th:value="${sectionToLoad}" /> <span class="input-group-btn"> 
+										
 													<input
 													type="hidden" placeholder="Add objectives"
 													class="form-control" id="addObjectiveSectionName"
 													name="addObjectiveSectionName" th:value="1" />
 													class="input-group-btn">
-													<button type="submit" class="btn btn-info btn-lg button">
+													<button type="submit" id="addObjective" class="btn btn-info btn-lg button">
 														<i class="fa fa-plus">&nbsp;</i>
 													</button>
 												</span>
@@ -356,7 +549,7 @@
 											id="SelectedSection" th:value="66" />
 									</div>
 									<div id="sectionObjectives-prnt">
-										<div id="sectionObjectives"
+										<div id="sectionObjectives" th:if="${allObjectives != null}"
 											th:each="objectiveDesc, iterStat  : ${allObjectives}">
 											<form action="#" id="deleteObjective" method="post"
 												th:action="@{/assessor/deleteObjective}">
@@ -366,7 +559,7 @@
 													<div class="panel-body">
 														<p class="pull-left" id="objectiveDesc">
 															<span th:id="'objectiveDesc'+${iterStat.index}"
-																th:text="${objectiveDesc.getObjectiveDesc()}">Delivering
+																th:text="${objectiveDesc.getDescription()}">Delivering
 																to the Customer's satisfaction/ expectation.</span>
 														</p>
 
@@ -442,9 +635,16 @@
 											class="form-control"></textarea>
 										<input type="hidden" id="updateSectionid"
 											name="updateSectionid" value="text" />
-											 <input type="hidden"
-											id="updateobjectiveId" name="updateobjectiveId" value="text" />
 									</div>
+									<div class="form-group">
+										<label for="accessmentperiodmanager" class="sr-only">Weightage</label>
+									 	<select class="form-control" id="weightage" name="weightage">
+											<option selected="selected" value="0">Select Weightage</option>
+											<option th:each="weight : ${allWeightages}" th:text="${weight.weightage}" th:value="${weight.id}">1</option>
+												
+										</select>
+									</div>
+								 	<input type="hidden" id="updateobjectiveId" name="updateobjectiveId" value="text" />
 								</div>
 							</div>
 						</div>
@@ -458,6 +658,25 @@
 			</div>
 		</div>
 		<!-- Modal ends -->
+		
+		<!-- Alert popup starts -->
+
+		<div class="modal fade" id="modal_alert_messages" tabindex="-1" role="dialog"
+			aria-labelledby="alertmodal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body" id="alertmodal">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<p id="alertMessage">Alert Text csdc vsdvcsdc vsdvcsd</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+					  </div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Alert popup ends -->
 		
 		
 		

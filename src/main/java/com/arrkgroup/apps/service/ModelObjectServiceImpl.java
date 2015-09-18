@@ -11,9 +11,12 @@ import com.arrkgroup.apps.dao.ModelObjectDao;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
+import com.arrkgroup.apps.model.Project;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.Weightage;
 
 @Transactional
 @Service
@@ -95,9 +98,45 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 
 	@Override
 	public List<Cycle> getAllCycles() {
-		
-		modelObjectDao.getAllCycles();
+
+		// TODO Auto-generated method stub
 		return modelObjectDao.getAllCycles();
+	}
+
+	@Override
+	public Project findProjectById(int id) {
+		// TODO Auto-generated method stub
+		return modelObjectDao.findProjectById(id);
+	}
+
+	@Override
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		return modelObjectDao.getAllProjects();
+	}
+
+	@Override
+	public Weightage findWeightageById(int id) {
+		// TODO Auto-generated method stub
+		return modelObjectDao.findWeightageById(id);
+	}
+
+	@Override
+	public List<Weightage> getAllWeightages() {
+		// TODO Auto-generated method stub
+		return modelObjectDao.getAllWeightages();
+	}
+
+	@Override
+	public Rating findRatingById(int id) {
+		// TODO Auto-generated method stub
+		return modelObjectDao.findRatingById(id);
+	}
+
+	@Override
+	public List<Rating> getAllRatings() {
+		// TODO Auto-generated method stub
+		return modelObjectDao.getAllRatings();
 	}
 	
 

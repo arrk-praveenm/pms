@@ -10,9 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
+import com.arrkgroup.apps.model.Project;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.Weightage;
 
 @Repository("ModelObjectDao")
 public class ModelObjectDaoImpl implements ModelObjectDao {
@@ -93,6 +96,48 @@ public class ModelObjectDaoImpl implements ModelObjectDao {
 	public List<Cycle> getAllCycles() {
 		// TODO Auto-generated method stub
 		return entityManager.createNamedQuery(Cycle.FIND_ALL,Cycle.class)
+				.getResultList();
+	}
+
+	@Override
+	public Project findProjectById(int id) {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Project.GET_PROJECT_ID,Project.class).setParameter("id", id)
+				.getSingleResult();
+	}
+
+	@Override
+	public List<Project> getAllProjects() {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Project.GET_ALL_PROJECTS,Project.class)
+				.getResultList();
+	}
+
+	@Override
+	public Weightage findWeightageById(int id) {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Weightage.GET_Weightage_ID,Weightage.class).setParameter("id", id)
+				.getSingleResult();
+	}
+
+	@Override
+	public List<Weightage> getAllWeightages() {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Weightage.GET_ALL_Weightage, Weightage.class)
+				.getResultList();
+	}
+
+	@Override
+	public Rating findRatingById(int id) {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Rating.GET_RATING_ID,Rating.class).setParameter("id", id)
+				.getSingleResult();
+	}
+
+	@Override
+	public List<Rating> getAllRatings() {
+		// TODO Auto-generated method stub
+		return  entityManager.createNamedQuery(Rating.GET_ALL_RATING, Rating.class)
 				.getResultList();
 	}	
 

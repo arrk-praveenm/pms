@@ -12,12 +12,12 @@ $(function () {
 				todayHighlight: true,
 			});
 			$('#assessmentFromDate').datepicker({
-				format: 'mm/dd/yyyy',
+				format: 'dd/mm/yyyy',
 				todayHighlight: true,
 				autoclose: true
 			});
 			$('#assessmentToDate').datepicker({
-				format: 'mm/dd/yyyy',
+				format: 'dd/mm/yyyy',
 				todayHighlight: true,
 				autoclose: true
 			});

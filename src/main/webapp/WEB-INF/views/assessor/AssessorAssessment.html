@@ -11,6 +11,8 @@ $(document).ready(function(){
 	// on select of Assessee
 $("#selectAssessee").on('change', function(){
 
+	$("#0").trigger("click");
+	$( "#0" ).trigger( "click" );
 
 	
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
@@ -46,6 +48,7 @@ $(".test").on("click",function(){
 		
 			};
 	 ajaxCall(data);
+	 $("#sectionid").val($(this).attr("name"));
 	 
    		}
 });
@@ -95,10 +98,10 @@ function ajaxCall(data)
             	  var rowdata = $(  "<tr id="+ response[row].id +" />")
       		    $("#objective_table").append(rowdata); 
       		    rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
-      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage + "</td>"));
-      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating + "</td>"));
+      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage.weightage + "</td>"));
+      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating + "</td>"));
+    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
     		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>")); 
     		   
@@ -132,6 +135,7 @@ function ajaxCall(data)
 		    	  $("#manager_score").val($(managerScore_id).text());
 		    	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
+		    	  $("#objectiveid").val($(this).attr("name"));
 		    	  
 		    	  
 		    	  
@@ -341,9 +345,14 @@ $(".text-center").on('click',function(){
 						th:action="@{/assessor/SaveSectionData}"
 						th:object="${SectionDataBean}">
 						
+						
+						<input type="hidden" id="objectiveid" name="objectiveid"
+							th:field="*{objectiveid}" th:value="${objectiveid}" />
+						
 						<input type="hidden" id="employee_assessor_id" name="employee_assessor_id"
 							th:field="*{employee_assessor_id}" th:value="${employee_assessor_id}" />
 						
+										
 										
 							<input type="hidden" id="sectionid" name="sectionid"
 							th:field="*{sectionid}" th:value="${sectionid}" />

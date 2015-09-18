@@ -102,6 +102,8 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 		list= assessorAssessmentDao.getAssesseeObjectives(sectionID, assessor.getId());
 		
+		System.out.println("list size is  "+list.size());
+		
 		return list;
 	}
 	
