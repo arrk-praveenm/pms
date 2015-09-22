@@ -113,6 +113,11 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 		return  assessorAssessmentDao.saveSectionData(bean) ;
 	}
+	@Override
+	public List<Role> getRoleOfCurrentUser(String email) {
+		// TODO Auto-generated method stub
+		return assessorAssessmentDao.getRoleOfCurrentUser(email);
+	}
 	
 	
 	

@@ -78,30 +78,22 @@
 		  
 		  <!-- Sidebar Menu for employee module starts -->
 
-			<li class="treeview main-heading" id="menu_employeemodule" th:if="${#authorization.expression('hasRole(''ASSESSEE'')')}">
+			<li class="treeview main-heading" id="menu_employeemodule">
 				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Employee</span> <i class="fa fa-angle-left pull-right"></i></a>
 				<ul class="treeview-menu">
 					<li>
-						<a href="#">
+						<a href="/assessor/assesseeRating" th:href="@{/assessor/assesseeRating}">
 							<em class="fa-stack">
 								<i style="top: 2px; left: 0px;" class="fa fa-user fa-stack-1x"></i>
 								<i style="left: -5px; top: 5px;" class="fa fa-list-alt fa-stack-2x"></i>
-							</em><span>Self Reporting</span>
+							</em><span>Self Rating</span>
 						</a>
 					</li>
-					<li><a href="#"><i class='fa fa fa-star icon-isf'></i><span>Self Rating</span></a></li>
-					<li><a href="#"><i class='fa fa-check-circle icon-isf'></i><span>Accept/Disagree/Print</span></a></li>
-					<li>
-						<a href="#">
-							<em class="fa-stack">
-							<i style="top: 2px; left: 0px;" class="fa fa-history fa-stack-1x"></i>
-							<i style="left: -5px; top: 5px;" class="fa fa-list-alt fa-stack-2x"></i>
-							</em><span>View Historical Reports</span>
-						</a>
-					</li>
-					<li><a href="#"><i class='fa fa fa-book icon-isf'></i><span>See Definitions</span></a></li>
 				</ul>
 			</li>
+			
+			
+			
 		  </ul>
           
         </section>

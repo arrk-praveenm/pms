@@ -14,8 +14,9 @@ import com.arrkgroup.apps.form.SectionDataBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
+import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
-import com.arrkgroup.apps.model.SectionData;
+
 
 
 
@@ -143,6 +144,14 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 		
 	
+	}
+	@Override
+	public List<Role> getRoleOfCurrentUser(String email) {
+		// TODO Auto-generated method stub
+	return entityManager
+				.createNamedQuery(Role.FIND_ROLES_OF_ASSESSEE,
+						Role.class).setParameter("email", email)
+				.getResultList();
 	}
 	
 	

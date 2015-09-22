@@ -8,9 +8,36 @@
 $(document).ready(function(){
 
 
+	 if([[${assessorAssessees}]]==null)
+		 {
+		 //for employee screen
+		 $("#selectAssesseeRow").hide();
+		 $("#margin").hide();
+		 //selectRoleRow
+		 if([[${allObjectives}]]!=null)
+			 {
+			 $("#selectRoleRow").hide();
+			 }else{
+		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();	
+			 }	 
+		 }
+	 else{
+	//	//for Assessor screen
+	
+	 $("#selectRoleRow").hide();
+		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+		
+			
+		 }
+
 	// on select of Assessee
 $("#selectAssessee").on('change', function(){
-
+	if($("#selectAssessee").val()!=0)
+  	 {	
 	$("#0").trigger("click");
 	$( "#0" ).trigger( "click" );
 
@@ -22,7 +49,34 @@ $("#selectAssessee").on('change', function(){
 	
 	
 	 ajaxCall(data);
+  	 }else{
+  		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+		}
+	//alert($("#selectAssessee").val());
+	});
+//on  Select of Role
+$("#selectRoleRow").on('change', function(){
+	alert("Test");
+	/* if($("#selectRoleRow").val()!=0)
+  	 {	
+	$("#0").trigger("click");
+	$( "#0" ).trigger( "click" );
 
+	
+	var data={selectedAsseesseID:$("#selectRoleRow").val(),
+			sectionToLoad:$("#0").attr("name"),
+			role_id:$(selectAssessee).children(":selected").attr("name")
+			};
+	
+	
+	 ajaxCall(data);
+  	 }else{
+  		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+		} */
 	//alert($("#selectAssessee").val());
 	});
 
@@ -33,11 +87,17 @@ $(".test").on("click",function(){
 
 	
 	if($("#selectAssessee").val()==0)
-   	 {	$("#tbody").empty();
-	 $("#tbody").append('<h1>Please Select Assessee</h1>');
+   	 {	
+		var data={selectedAsseesseID:0,
+				sectionToLoad:$(this).attr("name"),
+				role_id:$(selectAssessee).children(":selected").attr("name")
+			
+				};
+		 ajaxCall(data);
+	
    	}else
    		{
-	
+	 
 	
 	
 	$("#tbody").empty();
@@ -71,12 +131,22 @@ function ajaxCall(data)
         	   
 			if(response=="")
            {
-				
-				
+		           if(data.selectedAsseesseID==0)
+			           {
+						 $("#selectedAssesseeSummary").hide();
+						 $("#selectedAssesseeBody").hide();
+						 $("#margin").hide();
+			           }
+		           $("#selectedAssesseeSummary").show();
+					 $("#selectedAssesseeBody").show();
+					 $("#margin").show();
+		           
 				 $("#tbody").empty();
            }else{
         	   
-        	   
+        	   $("#selectedAssesseeSummary").show();
+				 $("#selectedAssesseeBody").show();
+				 $("#margin").show();
 
            	 $("#tbody").empty();
                     	 
@@ -227,7 +297,7 @@ $(".text-center").on('click',function(){
 			<!-- Manager header panel starts -->
 			<div class="box">
 				<div class="box-body">
-					<div class="row margintop15">
+					<div class="row margintop15" id="selectAssesseeRow">
 							<div class="col-md-6">
 								<div class="form-group">
 									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}" >								
@@ -242,13 +312,29 @@ $(".text-center").on('click',function(){
 
 							</div>
 						</div>
+						
+						<div class="row margintop15" id="selectRoleRow">
+							<div class="col-md-6">
+								<div class="form-group">
+									<select class="form-control" id="selectRole" th:name="${selectedRole}" >								
+									
+										<option selected="selected" value="0">Select Role</option>
+										<option th:each="role : ${allRolesofCurrentUser}" th:text="${role.title}" th:value="${role.id}" th:name="${role.id}">Role</option>
+										
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+
+							</div>
+						</div>
 					
-					<hr class="margintop10" />
-						<div class="form-group text-right">
+					<hr class="margintop10"  id="margin"/>
+						<div class="form-group text-right" id="selectedAssesseeSummary">
 							<button class="btn btn-info btn-green" type="button" data-target="#summaryrating" data-toggle="modal"><i class="fa fa-file-text">&nbsp;</i> Summary Ratings</button>
 						</div>
 					
-					<div class="nav-tabs-custom margintop10 noboxshadow">
+					<div class="nav-tabs-custom margintop10 noboxshadow" id="selectedAssesseeBody">
 						<div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
 						<div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
 						<div class="wrapper-tabs">
@@ -280,22 +366,22 @@ $(".text-center").on('click',function(){
 										<tbody id="tbody">
 										<th:block th:each="objective,itrIndex: ${allObjectives}">
 											<tr id="tRow" th:name="${objective.getId()}">
-												<td class="col-md-10 col-xs-7" th:text="${objective.getObjectiveDesc()}" th:id="'objectiveDesc'+${objective.getId()}">
+												<td class="col-md-10 col-xs-7" th:text="${objective.description}" th:id="'objectiveDesc'+${objective.getId()}">
 													Delivering to the Customer's satisfaction/ expectation
 												</td>
-												<td class="col-md-1 col-xs-3 text-center" th:id="'wightage'+${objective.getId()}">
+												<td class="col-md-1 col-xs-3 text-center" th:id="'wightage'+${objective.weightage.weightage}">
 													0
 												</td>
-												<td class="col-md-1 col-xs-3 text-center" th:id="'selfRating'+${objective.getId()}">
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfRating'+${objective.self_rating.score}">
 													0
 												</td>
-												<td class="col-md-1 col-xs-3 text-center" th:id="'selfScore'+${objective.getId()}">
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfScore'+${objective.self_score}">
 													0
 												</td>
-												<td class="col-md-1 col-xs-3 text-center" th:id="'managerRating'+${objective.getId()}">
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerRating'+${objective.manager_rating.score}">
 													0
 												</td>
-												<td class="col-md-1 col-xs-3 text-center" th:id="'managerScore'+${objective.getId()}">
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerScore'+${objective.manager_score}">
 													0
 												</td>
 												<td class="col-md-1 col-xs-1 text-center" th:id="${objective.getId()}">

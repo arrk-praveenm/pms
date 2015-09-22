@@ -139,6 +139,13 @@ public class ModelObjectDaoImpl implements ModelObjectDao {
 		// TODO Auto-generated method stub
 		return  entityManager.createNamedQuery(Rating.GET_ALL_RATING, Rating.class)
 				.getResultList();
+	}
+
+	@Override
+	public Employee findEmployeeByEmail(String email) {
+		// TODO Auto-generated method stub
+		return entityManager.createNamedQuery(Employee.FIND_BY_EMAIl, Employee.class).setParameter("email", email)
+				.getSingleResult();
 	}	
 
 }
