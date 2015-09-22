@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arrkgroup.apps.form.EmployeeBean;
-import com.arrkgroup.apps.form.SectionDataBean;
+import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
@@ -109,7 +109,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	
 	
 	@Override
-	public boolean saveSectionData(SectionDataBean bean) {
+	public boolean saveSectionData(AssessorAssessmentBean bean) {
 		
 		return  assessorAssessmentDao.saveSectionData(bean) ;
 	}

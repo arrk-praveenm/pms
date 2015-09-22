@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.arrkgroup.apps.dao.ModelObjectDao;
-import com.arrkgroup.apps.form.SectionDataBean;
+import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
@@ -126,7 +126,7 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 	
 	
-	public boolean saveSectionData(SectionDataBean bean)
+	public boolean saveSectionData(AssessorAssessmentBean bean)
 	{
 	 int n=	entityManager
 		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
