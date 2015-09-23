@@ -131,7 +131,9 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	 int n=	entityManager
 		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
 				).setParameter("comments",bean.getManager_comments()).setParameter("managerId", bean.getManager_rating())
-				.setParameter("assessebjectiveId", bean.getObjectiveid()).executeUpdate();
+				.setParameter("assessebjectiveId", bean.getObjectiveid())
+				.setParameter("weight", bean.getWeightage())
+				.setParameter("manager_score", bean.getManager_score()).executeUpdate();
 	
 		
 	if(n>0)

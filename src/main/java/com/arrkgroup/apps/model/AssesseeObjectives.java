@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "assessee_objectives")
 @NamedQueries({
 
-	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1, query = "update AssesseeObjectives set manager_comments=:comments , manager_rating.id=:managerId  where id = :assessebjectiveId"),	
+	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1, query = "update AssesseeObjectives set manager_comments=:comments , manager_rating.id=:managerId ,weightage.id=:weight, manager_score=:manager_score where id = :assessebjectiveId"),	
 	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=:assesseID and so.section.id=:sectionID"),
 		@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assessorId.id=:assessorId and aa.assesseeId.id=:employeeId and  aa.projectId.id=:projectName and aa.start_date=:StartDate and aa.cycleId.id=:Cycle and aa.roleId.id=:roleId and aa.end_date=:endDate) and section.id=:id"),
 		@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id = (SELECT id FROM AssesseesAssessor aa WHERE aa.assesseeId.id=:assesseeId and aa.cycleId.id=:cycleId and aa.roleId.id=:roleId)"),

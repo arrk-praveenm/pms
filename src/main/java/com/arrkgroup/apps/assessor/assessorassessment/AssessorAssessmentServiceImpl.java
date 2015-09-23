@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arrkgroup.apps.dao.ModelObjectDao;
 import com.arrkgroup.apps.form.EmployeeBean;
 import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
@@ -15,6 +16,7 @@ import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.service.ModelObjectService;
 
 @Service("AssessorAssessmentService")
 @Transactional
@@ -22,6 +24,10 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 
 	@Autowired
 	AssessorAssessmentDao assessorAssessmentDao;
+	
+	@Autowired 
+	ModelObjectDao modelObjectDao;
+	
 	@Override
 	public List<AssesseesAssessor>  getMyAssessees(String email) {
 		// TODO Auto-generated method stub
@@ -110,6 +116,14 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	
 	@Override
 	public boolean saveSectionData(AssessorAssessmentBean bean) {
+		
+		
+		
+		
+		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());		
+		
+		
+		
 		
 		return  assessorAssessmentDao.saveSectionData(bean) ;
 	}

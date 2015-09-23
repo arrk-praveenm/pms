@@ -17,16 +17,7 @@ $(document).ready(function(){
 	  $('option[name="' + role + '"]').attr("selected","selected");
 	  
 	
-	  
-	  /* $("#selectAssessee").val($(selectAssessee).) */
-	  
-	  
-	  
-	/*   var option = $(this).find('option:selected').val(); */
 
-	
-
-	  
        if (selectedAsseesse > 0) {
 
     	   
@@ -53,13 +44,13 @@ $(document).ready(function(){
 	
        $("#submitbtn").on("click",function(){
 
-    	   var classValue="help-block";
+    
     	   
     	
     	  
     	   if($("#manager_rating").val() == null)
     		   {
-    		  // $("#managerSection").append($('<span />').addClass(classValue).html('Please select Rating'));
+    		  
     		  
     		  $("#manager_rating").css({"border-color": "#a94442"}); 
     		  
@@ -80,6 +71,28 @@ $(document).ready(function(){
     	  
     	   
        });
+       
+
+       $("#submitbtn_summary").on("click",function(){
+    	   
+    	   alert("employee id is "+$("#selectAssessee").val());
+    	   
+    	   alert("section id is "+$("#sectionid").val());
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+    	   
+       });
+       
 	
 	
 	
@@ -91,22 +104,15 @@ $(document).ready(function(){
 	// on select of Assessee
 $("#selectAssessee").on('change', function(){
 
+	
 	if($("#selectAssessee").val() > 0)
 	{
-	  $("#section0").trigger("click");
-	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
+	
+		$("#section0").trigger("click");
+ 	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
+ 
+	
 
-	
-	var data={selectedAsseesseID:$("#selectAssessee").val(),
-			sectionToLoad:$("#0").attr("name"),
-			role_id:$(selectAssessee).children(":selected").attr("name")
-			};
-	
-	
-	 ajaxCall(data);
-
-	//alert($("#selectAssessee").val());
-	
 	}else
 		{
 		$("#tbody").empty();
@@ -119,6 +125,8 @@ $("#selectAssessee").on('change', function(){
 
 $(".test").on("click",function(){
 
+	$("#current_section_id").val($(this).attr("name"));
+	
 	var id = $(selectAssessee).children(":selected").attr("name");
 	
 
@@ -138,6 +146,8 @@ $(".test").on("click",function(){
 			role_id:$(selectAssessee).children(":selected").attr("name")
 		
 			};
+	
+	
 	 ajaxCall(data);
 	 $("#sectionid").val($(this).attr("name"));
 	 
@@ -199,10 +209,10 @@ function ajaxCall(data)
             	  var rowdata = $(  "<tr id="+ response[row].id +" />")
       		    $("#objective_table").append(rowdata); 
       		    rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
-      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage.id + "</td>"));
-      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating.id + "</td>"));
+      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage.weightage + "</td>"));
+      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating.id + "</td>"));
+    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
     		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>")); 
     		
@@ -218,10 +228,7 @@ function ajaxCall(data)
 		    		
 		    	 $("#errorspan").hide();
 		   	  $("#manager_rating").css({"border-color": "#d2d6de"}); 
-		   /* 	 $("#errorspancomments").hide();
-		   	  $("#manager_comments").css({"border-color": "#d2d6de"}); 
-		   	  
-		   	   */
+		 
 		    	 
 		   
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
@@ -234,8 +241,32 @@ function ajaxCall(data)
 		    	  
 
 		    	  $("#objective_modal").val($(objective_id).text());
-		    	  $("#weightage").val($(weightage_id).text());
-		    	  $("#manager_rating").val($(managerRating_id).text());
+		   
+		    	  
+		    	  if($(weightage_id).text() ==0)
+		    		  {
+		    		  $("#weightage").val(1);
+		    		  
+		    		  }else
+		    			  {
+		    			  
+		    			  $("#weightage").val($(weightage_id).text());
+		    			  }
+		    	 
+		    	
+		    	  if($(managerRating_id).text() ==0)
+	    		  {
+		    		  $("#manager_rating").val(1);
+	    		  
+	    		  }else
+	    			  {
+	    			  
+	    			  $("#manager_rating").val($(managerRating_id).text());
+	    			  }
+	    	 
+		    	  
+		    	 
+		    	
 		    	  $("#manager_score").val($(managerScore_id).text());
 		    	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
@@ -250,9 +281,7 @@ function ajaxCall(data)
 		 		$("#employeeSection").find("input,textarea").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
 		 		$("#objective_modal").prop("disabled",true);
-		 		$("#weightage").prop("disabled",true);
 		 	
-		 		
 		 		 }
 		    	  
 		    	  
@@ -273,39 +302,60 @@ function ajaxCall(data)
 	
    		
    		};
+   		
+   		
+   	 	
+   		function ajaxCallSummary(data)
+   		{ 			
+   			
+   			
+   			   $.ajax({
+   		           url: "ajax/GetSummaryRating",
+   		           type: 'GET',
+   		           data: data,
+   		           success: function(response) {
+   		        	   		        	   
+   		        	   
+   					if(response=="")
+   		           {
+   						
+   						
+   						alert("no data in ajaxCallSummary  ")
+   		           }else
+   		        	   {
+   		        	   
+   		        	   
+   		        	   
+   		        	   
+   		        	   }
+   		        	   
+   		        	   
+   		        	   
+   		        	   
+   		        	   
+   		        	   
+   		           },
+   		        error: function(jqXHr, reponse, errorThrown) {
+   	               // ... Process the result ...
+   	               alert(errorThrown);
+   	           }
 	
 
 
-	
-	
+   			   });
+   			   
+   			   
+   		}; 
 
 
 	 	
 	 	
 	 	
-	 	
-/* $(".text-center").on('click',function(){
-	alert($(this).attr("id"));
-	var objectiveDesc="objectiveDesc"+$(this).attr("id");
-	var wightage="wightage"+$(this).attr("id");
-	var selfRating="selfRating"+$(this).attr("id");
-	var selfScore="selfScore"+$(this).attr("id");
-	var managerRating="managerRating"+$(this).attr("id");
-	var managerScore="managerScore"+$(this).attr("id");
-
-	 if([[${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}]])
-		 {
-		$("#objectiveSection").children().prop('disabled',true);
-		$("#employeeSection").find("input,textarea").prop("disabled",true);
-		
-		 }
-}); */
 
 
 
 
 
-	//Document close
 });
 </script>
 
@@ -322,7 +372,12 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="roleid" name="roleid"
 							th:value="${roleid}" />
-						
+	
+	 <input type="hidden"
+							id="current_section_id" name="current_section_id"
+							 />					
+	
+	
 	
 	 <!-- Content Wrapper starts -->
       <div >
@@ -487,9 +542,17 @@ function ajaxCall(data)
 								</div>
 							</div>
 							<div class="col-md-3">
-								<div class="form-group" id="wightage">
-									<label class="sr-only">Weightage</label>
-									<input id="weightage" type="text" class="form-control" Placeholder="weightage" />
+								<div class="form-group" id="weightagediv">
+									
+									
+										<select class="form-control" id="weightage"  th:field="*{weightage}" >								
+									
+										<option selected="selected"  value="1">Select Weightage</option>
+										<option th:each="weight : ${weightageList}" th:text="${weight.weightage}" th:value="${weight.id}">Employee one</option>
+										
+									</select>
+									
+									
 								</div>
 							</div>
 						  </div>
@@ -534,7 +597,7 @@ function ajaxCall(data)
 								<select class="form-control" id="manager_rating"  th:field="*{manager_rating}" >								
 									
 										<option selected="selected" disabled="disabled" value="1">Select Rating</option>
-										<option th:each="rating : ${managerRating}" th:text="${rating.id}" th:value="${rating.id}">Employee one</option>
+										<option th:each="rating : ${managerRating}" th:text="${rating.score}" th:value="${rating.id}">Employee one</option>
 										
 									</select>
 									<span class="help-block"
@@ -606,6 +669,8 @@ function ajaxCall(data)
 										<em class="score-title">Personal Qualities</em>
 										<em class="score">0.2</em>
 									</p>
+						
+								
 								</div>
 							</div>
 							<div class="row">
@@ -636,7 +701,7 @@ function ajaxCall(data)
 							</div>
 					  </div>
 					  <div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+						<button id="submitbtn_summary" type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
 					  </div>
 				</div>
 			</div>

@@ -27,7 +27,9 @@ public class AssessorAssessmentBean {
 	int roleid;
 	private Date last_modified_date;
 
-
+int weightage;
+	
+	
 	private int self_rating;
 
 
@@ -53,6 +55,20 @@ public class AssessorAssessmentBean {
 
 
 
+
+
+
+
+		public int getWeightage() {
+			return weightage;
+		}
+
+
+
+
+		public void setWeightage(int weightage) {
+			this.weightage = weightage;
+		}
 
 
 
