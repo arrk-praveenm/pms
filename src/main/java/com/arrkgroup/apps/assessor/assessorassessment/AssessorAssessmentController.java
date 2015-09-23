@@ -89,9 +89,20 @@ public class AssessorAssessmentController {
 		int selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
 		int sectionToLoadInt=Integer.parseInt(sectionToLoad);
 		
+		
+		if(sectionToLoadInt==0)
+		{
+			sectionToLoadInt = ((Section) assessorAssessmentService.getAllSections().get(0)).getId();
+		}	
+		
+		
+		
+		
 		log.info(" request for objectives to load for section id is "
 				+ sectionToLoad);
 	
+		
+		
 		
 		/*AssesseesAssessor assessor=new AssesseesAssessor();
 				
@@ -107,6 +118,24 @@ public class AssessorAssessmentController {
 		
 		
 	}
+	
+	
+/*	@RequestMapping(value = "/assessor/ajax/assesseeObjectives", method = RequestMethod.GET)
+	public @ResponseBody List<AssesseeObjectives> getsummarydata(
+			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
+			@RequestParam("sectionToLoad") String sectionToLoad,Model model)
+	{
+		
+		
+	return null;	
+	}	
+	
+	
+	
+	*/
+	
+	
+	
 	
 
 	@RequestMapping(value = "/assessor/ajax/assignedObjectives", method = RequestMethod.GET)
@@ -152,7 +181,7 @@ public class AssessorAssessmentController {
 		model.addAttribute("assessorAssessees", assessorAssessees);
 		
 		model.addAttribute("managerRating", modelObjectService.getAllRatings());
-		
+		model.addAttribute("weightageList", modelObjectService.getAllWeightages());
 	
 		
 	}
@@ -168,6 +197,7 @@ public class AssessorAssessmentController {
 		
 		log.info("manager rating is  "+bean.getManager_rating());
 		log.info("manager rating is  "+bean.getManager_comments());
+		log.info("weightafe is  "+bean.getWeightage());
 	
 		model.addAttribute("roleid", bean.getRoleid());
 		log.info("role id "+bean.getRoleid());
