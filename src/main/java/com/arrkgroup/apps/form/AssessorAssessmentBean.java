@@ -13,17 +13,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.arrkgroup.apps.model.AssesseesAssessor;
 
 
-public class SectionDataBean {
+public class AssessorAssessmentBean {
 	
 	int id;
 
 	int objectiveid;
 	int sectionid;
-	
+	int roleid;
 	private Date last_modified_date;
 
 
@@ -32,6 +33,7 @@ public class SectionDataBean {
 
 	private int self_score;
 
+	
 	private int manager_rating;
 
 	private int manager_score;
@@ -47,10 +49,24 @@ public class SectionDataBean {
 	
 	 
 
-	    private int employee_assessor_id;
+	    private int employee_id;
 
 
 
+
+
+
+
+		public int getRoleid() {
+			return roleid;
+		}
+
+
+
+
+		public void setRoleid(int roleid) {
+			this.roleid = roleid;
+		}
 
 
 
@@ -210,17 +226,20 @@ public class SectionDataBean {
 
 
 
-		public int getEmployee_assessor_id() {
-			return employee_assessor_id;
+		public int getEmployee_id() {
+			return employee_id;
 		}
 
 
 
 
-		public void setEmployee_assessor_id(int employee_assessor_id) {
-			this.employee_assessor_id = employee_assessor_id;
+		public void setEmployee_id(int employee_id) {
+			this.employee_id = employee_id;
 		}
-	
+
+
+
+
 	
 
 	

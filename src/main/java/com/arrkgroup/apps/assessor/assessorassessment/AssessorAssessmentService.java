@@ -2,8 +2,8 @@ package com.arrkgroup.apps.assessor.assessorassessment;
 
 import java.util.List;
 
+import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.form.EmployeeBean;
-import com.arrkgroup.apps.form.SectionDataBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
@@ -23,8 +23,10 @@ public interface AssessorAssessmentService {
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID,int role_id);
 	
-	public boolean saveSectionData(SectionDataBean bean);
-	
+
 	public List<Role>   getRoleOfCurrentUser(String email);
+
+	public boolean saveSectionData(AssessorAssessmentBean bean);
+
 
 }

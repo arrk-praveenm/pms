@@ -7,12 +7,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.arrkgroup.apps.form.EmployeeBean;
-import com.arrkgroup.apps.form.SectionDataBean;
-import com.arrkgroup.apps.hr.managesections.SectionService;
+
+import com.arrkgroup.apps.form.RoleObjectivesBean;
+import com.arrkgroup.apps.form.AssessorAssessmentBean;
+import com.arrkgroup.apps.hr.managesections.CreateSectionController;
+
+
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Objective;
@@ -35,9 +44,9 @@ public class AssessorAssessmentController {
 	private final String LOGIN="login/login";
 	
 
+	private final Logger log = LoggerFactory
+			.getLogger(AssessorAssessmentController.class);
 
-	@Autowired
-	SectionService sectionService;
 	
 	@Autowired
 	AssessorAssessmentService assessorAssessmentService;
@@ -45,21 +54,18 @@ public class AssessorAssessmentController {
 	@Autowired
 	ModelObjectService modelObjectService;
 	
+
 	InetOrgPerson userDetails = null;
 	boolean isAssessorOREmployee=false;
-	
-	
-	
-	
 
 //For Manager or Assessor tab initial load  
 	@RequestMapping(value = "/assessor/assessorAssessment", method = RequestMethod.GET)
 	public String loadCreateSectionPage(Principal principal,
-			Model model, HttpSession session ) {
+			Model model ) {
 		
 	
 		userDetails=(InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		model.addAttribute("SectionDataBean", new SectionDataBean());
+		model.addAttribute("AssessorAssessmentBean", new AssessorAssessmentBean());
 		
 		
 		int sectionToLoad=0;
@@ -75,14 +81,18 @@ public class AssessorAssessmentController {
 	//For Employee tab initial load  
 	@RequestMapping(value = "/assessor/assesseeRating", method = RequestMethod.GET)
 	public String loadAssesseeSelfRating(Principal principal,
-			Model model, HttpSession session ) {
+			Model model ) {
 
 		 userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		
-		model.addAttribute("SectionDataBean", new SectionDataBean());
+		
 	
 		isAssessorOREmployee=false;
 	
+
+		model.addAttribute("AssessorAssessmentBean", new AssessorAssessmentBean());
+		
+
 		
 	
 		int sectionToLoad=0;
@@ -100,19 +110,34 @@ public class AssessorAssessmentController {
 	{
 		
 		
-		System.out.println("data  is "+selectedAsseesseID  +"  "+sectionToLoad+"  "+role_id);
+		log.info("data  is "+selectedAsseesseID  +"  "+sectionToLoad+"  "+role_id);
+		int selectedAsseesseeID=0;
+		int sectionToLoadInt=0;
+		
+		userDetails=(InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		if(selectedAsseesseID.equalsIgnoreCase("0"))
+		{
+			
+			selectedAsseesseeID= modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId();
+			sectionToLoadInt=assessorAssessmentService.getAllSections().get(0).getId();
+			
+		}else{
+			 selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
+			 sectionToLoadInt=Integer.parseInt(sectionToLoad);
+		}
 		
 		
 		
-		int selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
-		int sectionToLoadInt=Integer.parseInt(sectionToLoad);
-		
-		System.out.println(" request for objectives to load for section id is "
+		log.info(" request for objectives to load for section id is "
 				+ sectionToLoad);
-		System.out.println(" before  employee assessor id is ");
-		 
-		
-		return assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id));
+		List<AssesseeObjectives> allassesseeObjectives=null;
+try{
+		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id));
+}catch(Exception e)
+{
+	System.out.println(e.getMessage());
+	}
+		return allassesseeObjectives;
 		
 	
 		
@@ -166,32 +191,46 @@ public class AssessorAssessmentController {
 		}
 	
 		
+
 		
 		model.addAttribute("selectedAsseses", 0);
+
 		model.addAttribute("sectionToLoad", sectionIDtoLoad);
+		log.info("section to load is "+sectionIDtoLoad);
+		
 		model.addAttribute("allSections", allSections);
 		model.addAttribute("allObjectives", allObjectives);
 		model.addAttribute("allRolesofCurrentUser", allRolesofCurrentUser);
 		model.addAttribute("assessorAssessees", assessorAssessees);
+		
+		model.addAttribute("managerRating", modelObjectService.getAllRatings());
+		
 	
-		System.out.println("in setdefault method  ends");
+		
 	}
 	
 	
 	
 
 	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST)
-	private String SaveSectionData(@ModelAttribute("SectionDataBean") SectionDataBean bean,Principal principal,Model model)
+	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,BindingResult error,Model model,Principal principal)
 	{
-		
-		System.out.println("manager rating is  "+bean.getManager_rating());
-		System.out.println("manager rating is  "+bean.getManager_comments());
 	
+
 		
+		log.info("manager rating is  "+bean.getManager_rating());
+		log.info("manager rating is  "+bean.getManager_comments());
+	
+		model.addAttribute("roleid", bean.getRoleid());
+		log.info("role id "+bean.getRoleid());
 		
 		boolean flag= assessorAssessmentService.saveSectionData(bean);
 		
-		System.out.println("flag is "+flag);
+		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		isAssessorOREmployee=true;
+		setDefaultLoad(model, bean.getSectionid(),userDetails,isAssessorOREmployee);
+		
+		
 		
 		
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
