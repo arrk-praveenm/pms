@@ -127,12 +127,19 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 	
 	
-	public boolean saveSectionData(AssessorAssessmentBean bean)
+	public boolean saveAssessorAssessment(AssessorAssessmentBean bean)
 	{
 	 int n=	entityManager
-		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
-				).setParameter("comments",bean.getManager_comments()).setParameter("managerId", bean.getManager_rating())
-				.setParameter("assessebjectiveId", bean.getObjectiveid()).executeUpdate();
+		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2
+				).setParameter("managerComments",bean.getManager_comments())
+				.setParameter("managerRating", bean.getManager_rating())
+				.setParameter("assessebjectiveId", bean.getObjectiveid())
+				.setParameter("weight", bean.getWeightage())
+				/*.setParameter("assesseeComments",bean.getEmployee_comments())
+				.setParameter("assesseeRatingId", bean.getSelf_rating())
+				.setParameter("self_score", bean.getSelf_score())
+				.setParameter("weight", bean.getWeightage())*/
+				.setParameter("manager_score", bean.getManager_score()).executeUpdate();
 	
 		
 	if(n>0)
@@ -145,6 +152,28 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 		
 	
 	}
+	
+	@Override
+	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		 int n=	entityManager
+					.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
+							).setParameter("comments",bean.getEmployee_comments())
+							.setParameter("assesseeRatingId", bean.getSelf_rating())
+							.setParameter("self_score", bean.getSelf_score())
+							.setParameter("weight", bean.getWeightage())
+							.setParameter("assessebjectiveId", bean.getObjectiveid()).executeUpdate();
+				
+					
+				if(n>0)
+				{
+					return true;
+				}else
+				{
+					return false;
+				}
+					
+	}
 	@Override
 	public List<Role> getRoleOfCurrentUser(String email) {
 		// TODO Auto-generated method stub
@@ -153,6 +182,8 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 						Role.class).setParameter("email", email)
 				.getResultList();
 	}
+	
+	
 	
 	
 	

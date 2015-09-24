@@ -656,7 +656,7 @@ blockquote {
 	padding: 5px 20px;
 }
 .panel-objective .panel-body p {
-	width: 90%;
+	width: 85%;
 	margin-bottom: 0;
 }
 .onlyborderleft {
@@ -677,6 +677,13 @@ blockquote {
 }
 .scroller-left,  .scroller-right {
 	display: none;
+}
+.objective-weightage {
+	height: 20px;
+	width: 30px;
+	padding: 5px 10px;
+	font-size: 16px;
+	margin-right: 5px;
 }
 @media max-width: 1199px) {
 

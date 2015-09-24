@@ -23,7 +23,8 @@ public interface AssessorAssessmentDao {
 	
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
 	
-	public boolean saveSectionData(AssessorAssessmentBean bean);
+	public boolean saveAssessorAssessment(AssessorAssessmentBean bean);
+	public boolean saveSelfAssessment(AssessorAssessmentBean bean);
 	
 	public List<Role>   getRoleOfCurrentUser(String email);
 	

@@ -26,7 +26,8 @@ public interface AssessorAssessmentService {
 
 	public List<Role>   getRoleOfCurrentUser(String email);
 
-	public boolean saveSectionData(AssessorAssessmentBean bean);
+	public boolean saveAssessorAssessment(AssessorAssessmentBean bean);
+	public boolean saveSelfAssessment(AssessorAssessmentBean bean);
 
 
 }

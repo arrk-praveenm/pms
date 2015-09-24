@@ -133,6 +133,7 @@ if(allObjectives!=null)
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
     			+'<input type="hidden" id="'+weightageId+'" name="'+objectiveDesc.weightage.id+'" value="'+objectiveDesc.weightage.weightage+'"/>'
     			+'<div class="pull-right">'
+    			+'<span id="weightage'+iterStat+'" class="label label-default objective-weightage" >'+objectiveDesc.weightage.weightage+'</span>'
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
     			+'</button>'
@@ -570,6 +571,7 @@ if(allObjectives!=null)
 															type="hidden" th:id="'sectionId'+${iterStat.index}"
 															name="SectionIdSelected" value="1" />
 														<div class="pull-right">
+															<span id="'weightage'+${iterStat.index}" class="label label-default objective-weightage">0</span>
 															<button type="button" th:id="${iterStat.index}"
 																data-target="#editobjective" data-toggle="modal"
 																class="btn btn-info btn-edit">
