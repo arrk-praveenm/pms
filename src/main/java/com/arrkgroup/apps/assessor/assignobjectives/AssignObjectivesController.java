@@ -106,6 +106,10 @@ public class AssignObjectivesController {
 			assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
 		}
 		if(type.equals("assessee")){
+			
+			log.info("Assessee: "+copyObjectivesBean.getAssessee());
+			log.info("OtherAssessee: "+copyObjectivesBean.getOtherAssessee());
+			//copyObjectivesBean.setAssessee(copyObjectivesBean.getOtherAssessee());
 			assignObjectivesService.copyAssesseObjectives(copyObjectivesBean);
 		}
 		

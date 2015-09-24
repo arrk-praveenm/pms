@@ -122,9 +122,9 @@ body {
 .table-bordered {
     border: 1px solid #ddd;
 }
-.close {
+/*.close {
 	font-size: 15px;
-}
+}*/
 label {
 	font-size: 12px;
 }
@@ -684,6 +684,13 @@ blockquote {
 	padding: 5px 10px;
 	font-size: 16px;
 	margin-right: 5px;
+}
+.popover {
+	min-width: 250px;
+	max-width: 258px;
+}
+.popper-content {
+	display: none;
 }
 @media max-width: 1199px) {
 

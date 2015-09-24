@@ -118,22 +118,35 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	}
 
 	@Override
-	public boolean copyAssesseObjectives(AssesseesAssessor assesseesAssessor) {
+	public boolean copyAssesseObjectives(AssesseesAssessor assesseesAssessor , AssesseesAssessor OtherAssesseesAssessor) 
+	{
+		
+		try{
+			//if No records goes to catch block
+			AssesseesAssessor OtherassesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+					.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
+					.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
+					.setParameter("end_date", OtherAssesseesAssessor.getEnd_date())
+					.setParameter("project_name", OtherAssesseesAssessor.getProjectId().getId())
+					.setParameter("assesseeId", OtherAssesseesAssessor.getAssesseeId().getId())
+					.setParameter("assessorId", OtherAssesseesAssessor.getAssessorId().getId())
+					.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getSingleResult();
 try{
-	
+	System.out.println("Test 1");
 	AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 			.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 			.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 			.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 			.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
 			.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+	System.out.println("Test 11");
 	entityManager
 	.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
 			).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
-	copyingAssesseeObjectives(assesseesAssessorUpdate);
+	copyingAssesseeObjectives(assesseesAssessorUpdate, OtherAssesseesAssessor);
 		}catch(NoResultException re){
 		try {
-		
+			System.out.println("Test 2");
 			AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 					.setParameter("start_date", assesseesAssessor.getStart_date())
@@ -142,27 +155,34 @@ try{
 					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
-			copyingAssesseeObjectives(assesseesAssessor1);
+			System.out.println("Test 22");
+			copyingAssesseeObjectives(assesseesAssessor1,OtherAssesseesAssessor);
 		}catch(NoResultException nre){
 			
 			entityManager.persist(assesseesAssessor);			
-			copyingAssesseeObjectives(assesseesAssessor);
+			copyingAssesseeObjectives(assesseesAssessor,OtherAssesseesAssessor);
 			}
 		}catch(Exception ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
 			return false;
 		}
+		}catch(NoResultException nre){
+			nre.printStackTrace();
+			return false;
+		}
 		return true;
 	}
 
-	private void copyingAssesseeObjectives(AssesseesAssessor assesseesAssessor)
+	private void copyingAssesseeObjectives(AssesseesAssessor assesseesAssessor,AssesseesAssessor OtherAssesseesAssessor)
 	{
+		System.out.println("Test get Objectives");
 		List<AssesseeObjectives> assesseeObjectives = entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID,
 				AssesseeObjectives.class)
-				.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
-				.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
-				.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getResultList();
+				.setParameter("assesseeId", OtherAssesseesAssessor.getAssesseeId().getId())
+				.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
+				.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getResultList();
+		System.out.println("Test copy Objectives");
 		for(AssesseeObjectives copiedassesseeObjectives : assesseeObjectives){
 			AssesseeObjectives assesseeObjective = new AssesseeObjectives();
 			assesseeObjective.setAssesseeAssessor(assesseesAssessor);
