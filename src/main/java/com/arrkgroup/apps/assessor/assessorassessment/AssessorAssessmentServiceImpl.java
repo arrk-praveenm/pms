@@ -99,10 +99,10 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 	
 	@Override
 	public List<AssesseeObjectives> getAssesseeObjectives(int sectionID,
-			int assesseID, int role_id) {
+			int assesseID, int role_id, int projectId) {
 	
 		AssesseesAssessor assessor=new AssesseesAssessor();
-		assessor = assessorAssessmentDao.getAssessees(assesseID,role_id);
+		assessor = assessorAssessmentDao.getAssessees(assesseID,role_id,projectId);
 		
 List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
@@ -138,7 +138,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	
 	
 	@Override
-	public List<Role> getRoleOfCurrentUser(String email) {
+	public List<AssesseesAssessor> getRoleOfCurrentUser(String email) {
 		// TODO Auto-generated method stub
 		return assessorAssessmentDao.getRoleOfCurrentUser(email);
 	}

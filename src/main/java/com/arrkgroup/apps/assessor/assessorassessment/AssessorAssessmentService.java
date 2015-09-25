@@ -21,10 +21,10 @@ public interface AssessorAssessmentService {
 
 	
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
-	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID,int role_id);
+	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID,int role_id, int projectId );
 	
 
-	public List<Role>   getRoleOfCurrentUser(String email);
+	public List<AssesseesAssessor>   getRoleOfCurrentUser(String email);
 
 	public boolean saveAssessorAssessment(AssessorAssessmentBean bean);
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean);

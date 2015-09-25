@@ -12,6 +12,7 @@ $(document).ready(function(){
 	   var selectedSection = $('#First_section_id').val();
 	  var  selectedAsseesse= $("#selectAssessee").val();
 	  var role=$("#roleid").val();
+	  var projectId=1;
 	  
 	  
 
@@ -32,7 +33,8 @@ $(document).ready(function(){
 	      	
 	      	var data={selectedAsseesseID:0,
 	      			sectionToLoad:[[${sectionToLoad}]],
-	      			role_id:[[${allRolesofCurrentUser}]][0].id
+	      			role_id:[[${allRolesofCurrentUser}]][0].roleId,
+	      			projectId:[[${allRolesofCurrentUser}]][0].projectId
 	      			};
 	          
 	     
@@ -47,20 +49,22 @@ $(document).ready(function(){
 	//	//for Assessor screen
 	
 	$('select option[value="' + selectedAsseesse + '"]').attr("selected","");
-	  $('option[name="' + role + '"]').attr("selected","selected");
+	
+	  $('option[name="' + role + '"]'+' ' +'option[id="'+projectId+'"]').attr("selected","selected");
 	  
 	  
       if (selectedAsseesse > 0) {
 
-   	   
+   	
           $('.test').removeClass("active test").addClass("test");
 
           $('li[name="' + selectedSection + '"]').addClass("active test");
           
-      	
+         
       	var data={selectedAsseesseID:$("#selectAssessee").val(),
       			sectionToLoad:selectedSection,
-      			role_id:role
+      			role_id:$(selectAssessee).children(":selected").attr("name"),
+      			projectId:$(selectAssessee).children(":selected").attr("id")
       			};
           
      
@@ -68,13 +72,34 @@ $(document).ready(function(){
      
       	
       }
+
+      if($("#selectAssessee").val()!=0)
+          {
+        //  alert("Test"+$("#selectAssessee").val());
+        //  alert([[${roleid}]]);
+         // alert([[${sectionToLoad}]]);
+    	  $("#selectRoleRow").hide();
+      	   
+      /*     $('.test').removeClass("active test").addClass("test");
+
+          $('li[name="' + selectedSection + '"]').addClass("active test");
+          
+      	
+      	var data={selectedAsseesseID:$("#selectAssessee").val(),
+      			sectionToLoad:[[${sectionToLoad}]],
+      			role_id:[[${roleid}]]
+      			};
+          
+     
+      	ajaxCall(data); */
+          }else{
 	
 	
-	 $("#selectRoleRow").hide();
+        	  $("#selectRoleRow").hide();
 		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
 		 $("#margin").hide();
-		
+          }
 			
 		 }
 
@@ -82,7 +107,9 @@ $(document).ready(function(){
 	 
 
 $("#submitbtn").on("click",function(){
-	
+
+
+	//alert("role is " +);
 	   var classValue="help-block";
 	  
 	 //incase of employee
@@ -150,7 +177,7 @@ $("#selectAssessee").on('change', function(){
 	   $("#section0").trigger("click");
 	   
 	   $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
-	 
+	
   	 }else{
   		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -173,9 +200,12 @@ $(".test").on("click",function(){
 		 if($("#selectedRole").val()>0)
 		   	 {
 			  $("#roleid").val($("#selectedRole").val());
+			 
 		var data={selectedAsseesseID:0,
 				sectionToLoad:$(this).attr("name"),
-				role_id:$("#selectedRole").val()
+				role_id:$("#selectedRole").val(),
+				projectId:$(selectAssessee).children(":selected").attr("id")
+			
 				};
 		 ajaxCall(data);
 		   	 }else{
@@ -184,7 +214,8 @@ $(".test").on("click",function(){
 			   	
 		   		var data={selectedAsseesseID:0,
 						sectionToLoad:$(this).attr("name"),
-						role_id:list[0].id
+						role_id:list[0].roleId,
+						projectId:list[0].projectId
 
 						};
 				 ajaxCall(data);
@@ -193,11 +224,13 @@ $(".test").on("click",function(){
    		{
 
 	$("#tbody").empty();
-	
+	 /* alert($("#selectedRole").val());
+		alert($(selectAssessee).children(":selected").attr("id"));
+	 */
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
 			sectionToLoad:$(this).attr("name"),
-			role_id:$(selectAssessee).children(":selected").attr("name")
-		
+			role_id:$(selectAssessee).children(":selected").attr("name"),
+			projectId:$(selectAssessee).children(":selected").attr("id")
 			};
 	
 	
@@ -212,10 +245,12 @@ $("#selectedRole").on('change', function(){
 
  if($("#selectedRole").val()!=0)
   	 {	
+  	
 		
 	var data={selectedAsseesseID:0,
 			sectionToLoad:0,
-			role_id:$("#selectedRole").val()
+			role_id:$("#selectedRole").val(),
+			projectId: $(selectedRole).children(":selected").attr("name")
 			};
 	
 	
@@ -358,7 +393,9 @@ function ajaxCall(data)
 	    			  $("#selfrating").val($(selfRating_id).attr('name'));
 	    			  }
 	    	 
-		    	 
+		    	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
+		    	  $("#projectId").val($(selectAssessee).children(":selected").attr("name"));
+		    	  
 		    	
 		    	  $("#manager_score").val($(managerScore_id).text());
 		    //	  $("#selfrating").val($(selfRating_id).text());
@@ -381,7 +418,7 @@ function ajaxCall(data)
 				 		//find(':input').prop('disabled', false);
 				 		$("#managerSection select:not(:selected)").attr('disabled', true);
 				 		$("#managerSection select").attr('readonly', true); */
-				 		
+				 		 $("#weightagediv option:not(:selected)").attr('disabled', true);
 						$("#managerSection").find("input,textarea,select").prop("disabled",true);
 				 		$("#selfscore").attr("disabled",true);
 				 		$("#objective_modal").attr("disabled",true);
@@ -485,6 +522,11 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="roleid" name="roleid"
 							th:value="${roleid}" />
+							
+							 <input type="hidden"
+							id="projectId" name="projectId"
+							th:value="${projectId}" />
+							
 	
 	 <input type="hidden"
 							id="current_section_id" name="current_section_id"
@@ -517,7 +559,7 @@ function ajaxCall(data)
 									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}" th:field="*{employee_id}" >								
 									
 										<option selected="selected" value="0">Select Employee</option>
-										<option th:each="assessor : ${assessorAssessees}" th:text="${assessor.fullname}" th:value="${assessor.id}" th:name="${assessor.role_id}">Employee one</option>
+										<option th:each="assessor : ${assessorAssessees}" th:text="${assessor.fullname}" th:value="${assessor.id}" th:name="${assessor.role_id}" th:id="${assessor.projectId}">Employee one</option>
 										
 									</select>
 								</div>
@@ -533,7 +575,7 @@ function ajaxCall(data)
 									<select class="form-control" id="selectedRole" th:name="${selectedRole}" >								
 									
 										<option selected="selected" value="0">Select Role</option>
-										<option th:each="role : ${allRolesofCurrentUser}" th:text="${role.title}" th:value="${role.id}" th:name="${role.id}">Role</option>
+										<option th:each="role : ${allRolesofCurrentUser}" th:text="${role.assesseeProjectRole}" th:value="${role.roleId}" th:name="${role.projectId}">Role</option>
 										
 									</select>
 								</div>

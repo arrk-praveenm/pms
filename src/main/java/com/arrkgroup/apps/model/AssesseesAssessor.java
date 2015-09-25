@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @NamedQueries({
 
-	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id"),
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id and s.projectId.id=:projectId"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE, query = "SELECT DISTINCT s FROM AssesseesAssessor s where s.cycleId.id= :id"),
 		@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
@@ -30,6 +30,7 @@ import javax.persistence.Table;
 					   + "and  s.projectId.id=:project_name "
 					   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
 	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate where id = :assesseesAssessorId"),
+	@NamedQuery(name = AssesseesAssessor.FIND_ROLES_OF_ASSESSEE, query = "from AssesseesAssessor aa where aa.assesseeId.id=(select id from  Employee ee where ee.email=:email) "),
 })
 public class AssesseesAssessor {
 	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
@@ -42,7 +43,7 @@ public class AssesseesAssessor {
 	public static final String FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
 	public static final String FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
 	public static final String UPDATE_ASSESSE_ASSESSOR_BY_ID = "AssesseeAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID";
-
+	public static final String FIND_ROLES_OF_ASSESSEE = "AssesseesAssessor.FIND_ROLES_OF_ASSESSEE";
 
 
 	

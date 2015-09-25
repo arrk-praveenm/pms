@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.arrkgroup.apps.form.AssesseRoleBean;
 import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.form.EmployeeBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
+import com.arrkgroup.apps.model.Project;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.service.ModelObjectService;
@@ -94,6 +96,7 @@ public class AssessorAssessmentController {
 	public @ResponseBody List<AssesseeObjectives> loadAssignedObjectivesAssessee(
 			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
 			@RequestParam("sectionToLoad") String sectionToLoad,
+			@RequestParam("projectId") String projectId,
 			@RequestParam("role_id") String role_id,Model model)
 	{
 		
@@ -135,7 +138,7 @@ public class AssessorAssessmentController {
 
 		List<AssesseeObjectives> allassesseeObjectives=null;
 try{
-		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id));
+		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id), Integer.parseInt(projectId));
 }catch(Exception e)
 {
 	System.out.println(e.getMessage());
@@ -152,7 +155,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 	{
 		
 		List<EmployeeBean> assessorAssessees=null;
-		List<Role> allRolesofCurrentUser=null;
+		List<AssesseRoleBean> allRolesofCurrentUser=new ArrayList<AssesseRoleBean>();
 		
 		List<AssesseeObjectives> allObjectives =	null;
 
@@ -170,23 +173,46 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 			
 			EmployeeBean employee=new EmployeeBean();
 			Role role=new Role();
+			Project proj=new Project();
 			 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
 			 employee=assessorAssessmentService.getAssesseeBean(assessees.getAssesseeId().getId());
+			proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
 			
 			 String Name=employee.getFullname();
-				employee.setFullname(Name+"    "+ "  "+role.getTitle());
+				employee.setFullname(Name+"  -  "+proj.getProject_name()+" - "+role.getTitle());
 			   employee.setRole_id(role.getId());
+			   employee.setProjectId(proj.getId());
 				assessorAssessees.add(employee);
 				
 		
 		}
 		}else{
 			
-			 allRolesofCurrentUser=assessorAssessmentService.getRoleOfCurrentUser(userDetails.getMail());
+			// allRolesofCurrentUser
+			List<AssesseesAssessor> employeeAssessees=assessorAssessmentService.getRoleOfCurrentUser(userDetails.getMail());
+			 //List rolesofCure
+			 for (AssesseesAssessor assessees : employeeAssessees) {
+					
+				 AssesseRoleBean assesseRoleBean=new AssesseRoleBean();
+					Role role=new Role();
+					Project proj=new Project();
+					 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
+					// employee=assessorAssessmentService.getAssesseeBean(assessees.getAssesseeId().getId());
+					proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
+					
+					// String Name=employee.getFullname();
+					assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()+" - "+role.getTitle());
+					assesseRoleBean.setRoleId(role.getId());
+					assesseRoleBean.setProjectId(proj.getId());
+					allRolesofCurrentUser.add(assesseRoleBean);
+						
+				
+				}
+			 
 			 
 			 if(allRolesofCurrentUser.size()==1)
 			 {
-			 allObjectives =assessorAssessmentService.getAssesseeObjectives(sectionIDtoLoad, modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId(), allRolesofCurrentUser.get(0).getId());
+			 allObjectives =assessorAssessmentService.getAssesseeObjectives(sectionIDtoLoad, modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId(), allRolesofCurrentUser.get(0).getRoleId(),allRolesofCurrentUser.get(0).getProjectId());
 			 }
 					 //modelObjectService.getObjectiveBySectionId(sectionIDtoLoad);
 			System.out.println("User Roles Size"+allRolesofCurrentUser.size());

@@ -69,13 +69,17 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 	
 	
-	public AssesseesAssessor  getAssessees(int assesse_id,int role_id)
+	public AssesseesAssessor  getAssessees(int assesse_id,int role_id, int projectId)
 	{
 		
 		
 		return entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID,
-						AssesseesAssessor.class).setParameter("id", assesse_id).setParameter("role_id", role_id).getSingleResult();
+						AssesseesAssessor.class).setParameter("id", assesse_id)
+						.setParameter("role_id", role_id)
+						.setParameter("projectId", projectId)
+						.getSingleResult();
+		
 		
 	}
 	
@@ -175,11 +179,11 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 					
 	}
 	@Override
-	public List<Role> getRoleOfCurrentUser(String email) {
+	public List<AssesseesAssessor> getRoleOfCurrentUser(String email) {
 		// TODO Auto-generated method stub
 	return entityManager
-				.createNamedQuery(Role.FIND_ROLES_OF_ASSESSEE,
-						Role.class).setParameter("email", email)
+				.createNamedQuery(AssesseesAssessor.FIND_ROLES_OF_ASSESSEE,
+						AssesseesAssessor.class).setParameter("email", email)
 				.getResultList();
 	}
 	

@@ -18,7 +18,7 @@ public interface AssessorAssessmentDao {
 	
 	public AssesseesAssessor  getAssesseesAssessor(int id);
 	
-	public AssesseesAssessor  getAssessees(int assesse_id,int role_id);
+	public AssesseesAssessor  getAssessees(int assesse_id,int role_id, int projectId);
 	
 	
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
@@ -26,7 +26,7 @@ public interface AssessorAssessmentDao {
 	public boolean saveAssessorAssessment(AssessorAssessmentBean bean);
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean);
 	
-	public List<Role>   getRoleOfCurrentUser(String email);
+	public List<AssesseesAssessor>   getRoleOfCurrentUser(String email);
 	
 
 	
