@@ -45,7 +45,7 @@
 									for="hrsectionname">Section Name</label>
 								<div class="col-sm-8">
 									<div class="input-group input-group-lg">
-										<input type="text" placeholder="Add objectives"
+										<input type="text" placeholder="Add Section"
 											class="form-control" id="sectionName"
 											th:field="*{sectionName}" /> <span class="input-group-btn">
 											<button type="submit" class="btn btn-primary btn-lg"
@@ -228,7 +228,7 @@
     	var hiddenObjectiveId="objectiveId"+iterStat;
     	$("#sectionObjectives-prnt").append('<div id="sectionObjectives" >'
     			
-    			+'<form action="#" id="deleteObjective" method="post" 	th:action="@{/hr/deleteObjective}">'
+    			+'<form action="#" id="deleteObjective" method="post" onsubmit="button'+objectiveDesc.id+'.disabled = true; return true;"	th:action="@{/hr/deleteObjective}">'
     			+'<div 	class="panel panel-default marginbottom10 panel-objective" 	id="objective-one">'
     			+'<div class="panel-body">'
     			+'<p class="pull-left" id="objectiveDesc">'
@@ -240,7 +240,7 @@
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
     			+'</button>'
-    			+'<button style="padding: 0px 6px;" type="submit" data-target="#objective-one" aria-label="Close" class="btn btn-danger btn-close">'
+    			+'<button style="padding: 0px 6px;" type="submit" name="button'+objectiveDesc.id+'" data-target="#objective-one" aria-label="Close" class="btn btn-danger btn-close">'
     			+'<i class="fa fa-times"></i>'
     			+'</button></div></div></div></form></div>');
 

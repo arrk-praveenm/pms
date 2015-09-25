@@ -18,6 +18,8 @@ $(document).ready(function(){
 
 	 if([[${assessorAssessees}]]==null)
 		 {
+		 
+		 $("#setHeaderH1").text("Employee");
 		 //for employee screen
 		 $("#selectAssesseeRow").hide();
 		 $("#margin").hide();
@@ -537,8 +539,8 @@ function ajaxCall(data)
 	 <!-- Content Wrapper starts -->
       <div >
         <!-- Content Header starts -->
-        <section class="content-header">
-          <h1>Manager</h1>
+        <section id="setHeader" class="content-header">
+          <h1 id="setHeaderH1" >Manager</h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li class="active">Here</li>
