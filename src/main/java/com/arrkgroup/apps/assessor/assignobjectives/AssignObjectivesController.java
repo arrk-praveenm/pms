@@ -208,11 +208,12 @@ public class AssignObjectivesController {
 			@ModelAttribute("textAreas") String saveObjectDesc,
 			@ModelAttribute("updateobjectiveId") String saveObjectiveId,
 			@ModelAttribute("updateSectionid") String updateSectionid,
-			@RequestParam("weightage") String weightage,
+			//@RequestParam("weightage") String weightage,
 			Principal principal,
 			BindingResult result, Map<String, Object> model) {
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		assesseeObjectives.setDescription(saveObjectDesc);
+		String weightage="1";
 		if(Integer.parseInt(weightage)!=0)
 		{
 		assesseeObjectives.setWeightage(modelObjectService.findWeightageById(Integer.parseInt(weightage)));
