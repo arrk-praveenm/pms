@@ -324,6 +324,18 @@ public class AssignObjectivesController {
 		return allsectionObjectives;
 
 	}
+	
+	
+	@RequestMapping(value = "/assessor/ajax/saveWeightage", method = RequestMethod.GET)
+	public @ResponseBody
+	boolean saveWeightage(@RequestParam("weightage") String weightageId,
+			@RequestParam("objectiveId") String objectiveId)
+			{
+		System.out.println(weightageId);
+		System.out.println("objectiveId "+objectiveId);
+		
+		return true;
+			}
 //	convertStringToDate(assessmentFromDate.substring(0, 10))
 	private Date convertStringToDate(String datestring)
 	{

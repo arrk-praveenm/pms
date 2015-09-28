@@ -656,7 +656,7 @@ blockquote {
 	padding: 5px 20px;
 }
 .panel-objective .panel-body p {
-	width: 85%;
+	width: 80%;
 	margin-bottom: 0;
 }
 .onlyborderleft {
@@ -679,11 +679,10 @@ blockquote {
 	display: none;
 }
 .objective-weightage {
-	height: 20px;
-	width: 30px;
-	padding: 5px 10px;
-	font-size: 16px;
-	margin-right: 5px;
+	height: 25px;
+    margin-right: 10px;
+    padding: 0 2px;
+    width: 40px !important;
 }
 .popover {
 	min-width: 250px;
@@ -723,7 +722,7 @@ blockquote {
 		width: 75%;
 	}
 	.panel-objective .panel-body p {
-		width: 80%;
+		width: 65%;
 	}
 }
 @media (max-width: 767px) {
@@ -755,6 +754,11 @@ blockquote {
 	.btn-responsize {
 		margin-top: 2px;
 	}
+	.objective-weightage {
+		width: 100% !important;
+		margin-right: 0px;
+		margin-bottom: 10px;
+	}
 }
 @media (max-width: 480px) {
 	#upload-file-info {
@@ -779,7 +783,7 @@ blockquote {
 		margin-top: 10px;
 	}
 	.panel-objective .panel-body p {
-		width: 70%;
+		width: 65%;
 	}
 	.score-container .score-title {
 		width: auto;

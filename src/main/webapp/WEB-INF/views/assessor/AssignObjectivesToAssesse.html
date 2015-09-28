@@ -112,74 +112,68 @@ if(allObjectives!=null)
 			}
 		}
 	};
-
-	$("#employeeObjective").on('click',function(){
-		//alert("Test 11 "+$("#selectAssesse").val());
-		});
-	
-	$("#myForm").on('submit',function(event){
-		/* 
-		if($("#assessee").val()=="0") {
-			alert(Te)
-			event.preventDefault();
-			
-			}
-
-		if($("#assessmentToDate").val()==""){
-			
-			event.preventDefault();
-			
-	    }
-		if($("#assesseeRole").val()=="0") {
-			event.preventDefault();
-		}
-		if($("#assessor").val()=="0") {
-			event.preventDefault();
-		}
-		if($("#assessmentCycle").val()=="0"){
-			event.preventDefault();
-		}
-		if($("#projectName").val()=="") {
-			event.preventDefault();
-		}
-		if($("#assessmentFromDate").val()=="") {
-			event.preventDefault();
-		} */
-
-	/*	alert("TEst");
-		alert($("#employeeObjective").attr("value"));
-		alert($("#selectAssesse").val()); */
-
-		/* if($("#employeeObjective").attr("value")=="assessee")
-			{
-			if($("#otherAssesse").val()==null) {
-				event.preventDefault();
-			}
-
-			if($("#otherAssesse").val()==$("#assessee").val()) {
-				event.preventDefault();
-			}
-			} */
-//assessee
+//
+ $("#employeeObjectivesss").on('click',function(event){
 		
-		//alert($("#selectAssesse").val());
-		/* if($("#selectAssesse").val() == null)
-		   {
-		 	  
-		  $("#selectAssesse").css({"border-color": "#a94442"}); 
-		  
-		 // $("#errorspanSelf").show();
-
-		  return false;
-	  
-		   }else
-			   {
-				
-			   return true;
-			    
-			   } */
+		 $("#employeeObjective").on('click',function(event){
+			//	alert("Test 11");
+				 submitForm(event,"employeeObjective");
+				}); 
+		
+		}); 
+ $("#employeeObjective").on('click',function(event){
+		//alert("Test 11");
+	 submitForm(event,"employeeObjective");
+		}); 
+	
+	$("#roleObjectives").on('click',function(event){
+		
+		 submitForm(event,"roleObjectives");
 		   });
- 
+
+
+	  window.submitForm = function(event, buttonName)
+	 {
+			
+			if($("#assessee").val()=="0") {
+				
+				event.preventDefault();
+				
+				}
+
+			if($("#assessmentToDate").val()==""){
+				
+				event.preventDefault();
+				
+		    }
+			if($("#assesseeRole").val()=="0") {
+				event.preventDefault();
+			}
+			if($("#assessor").val()=="0") {
+				event.preventDefault();
+			}
+			if($("#assessmentCycle").val()=="0"){
+				event.preventDefault();
+			}
+			if($("#projectName").val()=="") {
+				event.preventDefault();
+			}
+			if($("#assessmentFromDate").val()=="") {
+				event.preventDefault();
+			}  
+			
+
+			 if($("#"+buttonName).attr("value")=="assessee")
+				{
+				if($("#otherAssesse").val()==null) {
+					event.preventDefault();
+				}
+
+				if($("#otherAssesse").val()==$("#assessee").val()) {
+					event.preventDefault();
+				}
+				} 
+			 }
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
 {
@@ -199,18 +193,61 @@ if(allObjectives!=null)
     			+'<input type="hidden" id="'+hiddenObjectiveId+'" name="deleteObjectiveId" value="'+objectiveDesc.id+'"/>'
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
     			+'<input type="hidden" id="'+weightageId+'" name="'+objectiveDesc.weightage.id+'" value="'+objectiveDesc.weightage.weightage+'"/>'
-    			+'<div class="pull-right">'
-    			+'<span id="weightage'+iterStat+'" class="label label-default objective-weightage" >'+objectiveDesc.weightage.weightage+'</span>'
+    			+'<div class="pull-right form-inline">'
+    			+'<select class="form-control objective-weightage" id="weightage'+iterStat+'" name="'+objectiveDesc.weightage.id+'">'
+    			+'<option  value="1">0</option>'
+        	    +'</select>'
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
     			+'</button>'
     			+'<button style="padding: 0px 6px;" type="submit" name="button'+objectiveDesc.id+'" data-target="#objective-one" aria-label="Close" class="btn  btn-close btn-danger">'
     			+'<i class="fa fa-times"></i>'
     			+'</button></div></div></div></form></div>');
+    	
 
+    	
     //setting the data to text areas on click of edit button 	
     	var valId='#'+'objectiveDesc'+iterStat;
     	$(valId).text(objectiveDesc.objectiveDesc);
+
+    	$.each([[${allWeightages}]], function(key, weight) {   
+         	//alert(key+""+weight.weightage);
+     	     $("#weightage"+iterStat)
+     	         .append($("<option></option>")
+     	         .attr("value",weight.id)
+     	         .text(weight.weightage)); 
+     	});
+
+		$("#weightage"+iterStat).val(objectiveDesc.weightage.id);
+
+		$("#weightage"+iterStat).on('change',function(){
+
+			var data={
+					weightage:$(this).val(),
+					objectiveId:objectiveDesc.id
+					
+					}
+
+			   $.ajax({
+	                url: 'ajax/saveWeightage',
+	                type: 'GET',
+	                data: data,
+	                success: function(response) {
+	                	
+		              
+					alert(response);
+
+	                 
+	                },
+	                error: function(jqXHr, reponse, errorThrown) {
+	                    // ... Process the result ...
+	                    alert(errorThrown);
+	                }
+				}); 
+			
+			});
+    	 
+    	
     	$(".btn-edit").on( "click", function(){
     		var id='#'+'objectiveDesc'+$(this).attr("id");
     		var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
@@ -239,9 +276,13 @@ if(allObjectives!=null)
         	// alert("hello");
     		   $(this).prop('disabled', true);
     		  });
-    
+
+
+     	
 	}; 
 
+
+	
 	
 		$(".btn-edit").on( "click", function(){
 		
@@ -539,8 +580,8 @@ if(allObjectives!=null)
 									</select>
 								</div>
 								 <div class="form-group margintop10"> 
-								 	
-									<button id="employeeObjective" name="type" value="assessee" type="submit" class="btn btn-primary"><i class="fa fa-files-o"></i> Copy</button>
+								 	<!--onClick="submitForm(this,'employeeObjective');"  -->
+									<button id="employeeObjective" name="type" value="assessee" type="submit"  class="btn btn-primary "><i class="fa fa-files-o"></i> Copy</button>
 							 	</div> 
 							</div>
 								
@@ -665,8 +706,16 @@ if(allObjectives!=null)
 															th:value="${objectiveDesc.getId()}" /> <input
 															type="hidden" th:id="'sectionId'+${iterStat.index}"
 															name="SectionIdSelected" value="1" />
-														<div class="pull-right">
-															<span id="'weightage'+${iterStat.index}" class="label label-default objective-weightage">0</span>
+														<div class="pull-right form-inline">
+															<!-- <span id="'weightage'+${iterStat.index}" class="label label-default objective-weightage">0</span> -->
+															<select class="form-control objective-weightage">
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+															</select>
 															<button type="button" th:id="${iterStat.index}"
 																data-target="#editobjective" data-toggle="modal"
 																class="btn btn-info btn-edit">
