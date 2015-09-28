@@ -122,9 +122,6 @@ body {
 .table-bordered {
     border: 1px solid #ddd;
 }
-.close {
-	font-size: 15px;
-}
 label {
 	font-size: 12px;
 }
@@ -552,18 +549,33 @@ div.jqi .jqibuttons button:focus {
 .score-container {
 	padding: 10px;
 	display: inline-block;
-	margin-top: 10px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	font-size: 16px;
+	width: 24.5%;
 }
 .score-container .score-title {
 	display: block;
 	font-style: normal;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	white-space: normal;
-	width: 150px;
+	/*width: 150px;*/
+}
+.score-container .score-title input {
+	width: 100%;
+    background-color: transparent;
+    border: 0;
+    text-align: center;
 }
 .score-container .score {
 	font-style: normal; font-size: 30px;
+}
+.score-container .score input {
+	width:100%;
+	font-size: 24px;
+	background-color: transparent;
+    border: 0;
+    text-align: center;
 }
 .mandatory {
 	color: #ff0000;
@@ -741,6 +753,9 @@ blockquote {
 	.btn-responsize {
 		margin-top: 2px;
 	}
+	.score-container {
+   	 	width: 32.9%;
+	}
 }
 @media (max-width: 480px) {
 	#upload-file-info {
@@ -754,6 +769,7 @@ blockquote {
 	}
 	.score-container {
 		display: block;
+		width: 100%;
 	}
 	.custom-panel-heading h3 {
 		width: 100%;

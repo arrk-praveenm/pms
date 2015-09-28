@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,14 +16,22 @@ import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
+import com.arrkgroup.apps.model.Objective;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.SectionConsolidated;
 import com.arrkgroup.apps.model.SectionData;
+import com.arrkgroup.apps.model.Weightage;
 
 
 
 @Repository("AssessorAssessmentDao")
 public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 
+	private final Logger log = LoggerFactory
+			.getLogger(AssessorAssessmentController.class);
+	
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -87,7 +97,7 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	@Override
 	public List<AssesseeObjectives> getAssesseeObjectives(int sectionID,
 			int assesseID) {
-	System.out.println(sectionID+" "+assesseID );
+	log.info(sectionID+" "+assesseID );
 	
 	
 	try
@@ -102,7 +112,7 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	catch(Exception e)
 	{
 	
-		System.out.println("exception is "+e.getMessage());
+		log.info("exception is "+e.getMessage());
 	return null;
 	}
 	
@@ -146,7 +156,95 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 		
 	
 	}
+	@Override
+	public int getMaxWightage() {
+	return (int) entityManager
+			.createNamedQuery(Weightage.GET_Weightage_MAX).getSingleResult();
+	}
+	@Override
+	public int getMaxRating() {
+		return (int) entityManager
+				.createNamedQuery(Rating.GET_RATING_MAX).getSingleResult();
+	}
 	
+	@Override
+	public boolean saveSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id)
+	{
+		
+		
+	Date currentdate=new Date();
+float managerscore=manger_score;
+	
+	
+	
+	Section	section=entityManager.createNamedQuery(Section.FIND_BY_ID,
+			Section.class).setParameter("id", section_id)
+			.getSingleResult();
+	
+
+	
+	AssesseesAssessor assessor=entityManager.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ID,
+			AssesseesAssessor.class).setParameter("id", assessor_id).getSingleResult();
+	
+	
+	
+	
+		SectionConsolidated consolidated=new SectionConsolidated(currentdate, self_score, managerscore, max_score,section,assessor);
+	
+		log.info("section is  "+ section.getSection());
+		log.info("assessor is  "+ assessor.getAssesseeId().getFullname());
+		
+
+		try {
+			
+			
+			entityManager.merge(consolidated);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+		
+	}
+	
+	
+	public List<AssesseeObjectives> findSectionByAssessor(int assessorId)
+	{
+		
+		return entityManager
+				.createNamedQuery(AssesseeObjectives.FIND_SECTION_BY_ASSESSOR,
+						AssesseeObjectives.class).setParameter("assesseeAssessorId", assessorId).getResultList();
+	
+		
+		
+	}
+	@Override
+	public List<SectionConsolidated> findById(int assessorId) {
+		// TODO Auto-generated method stub
+		return entityManager
+				.createNamedQuery(SectionConsolidated.FIND_BY_ID,
+						SectionConsolidated.class).setParameter("id", assessorId).getResultList();
+	
+	}
+	
+	public int updateSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id)
+	{
+		float managerscore=manger_score;
+		
+
+		
+		return entityManager
+				.createNamedQuery(SectionConsolidated.UPDATE_ASSESSE_SECTON_ASSESSOR).setParameter("date", new Date())
+						.setParameter("max_score", max_score)
+						.setParameter("manager_score", managerscore)
+						.setParameter("self_score", self_score)
+						.setParameter("sectionid", section_id)
+						.setParameter("assessorid", assessor_id).executeUpdate();
+		
+	}
 	
 	
 

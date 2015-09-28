@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 @NamedQueries({
 
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ID, query = "SELECT s FROM AssesseesAssessor s where s.id= :id "),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE, query = "SELECT DISTINCT s FROM AssesseesAssessor s where s.cycleId.id= :id"),
@@ -32,6 +33,7 @@ import javax.persistence.Table;
 	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate where id = :assesseesAssessorId"),
 })
 public class AssesseesAssessor {
+	public static final String FIND_ASSESSEES_BY_ID = "AssesseesAssessor.FIND_ASSESSEES_BY_ID";
 	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
 	public static final String FIND_ASSESSOR_BY_CYCLE = "AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE";
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";

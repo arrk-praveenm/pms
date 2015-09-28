@@ -6,7 +6,10 @@ import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
+import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.SectionConsolidated;
+import com.arrkgroup.apps.model.Weightage;
 
 public interface AssessorAssessmentDao {
 
@@ -23,6 +26,19 @@ public interface AssessorAssessmentDao {
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
 	
 	public boolean saveSectionData(AssessorAssessmentBean bean);
+	
+	public int getMaxWightage();
+	
+	public int getMaxRating();
+	
+	public boolean saveSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id);
+	
+	public List<AssesseeObjectives> findSectionByAssessor(int assessorId);
+	
+	public List<SectionConsolidated> findById(int assessorId);
+	
+	public int updateSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id);
+	
 	
 
 	

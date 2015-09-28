@@ -14,12 +14,15 @@ import javax.persistence.Table;
 @Table(name = "weightage")
 @NamedQueries({
 
+	@NamedQuery(name = Weightage.GET_Weightage_MAX, query = "select max(w.weightage) FROM Weightage w "),
 	@NamedQuery(name = Weightage.GET_Weightage_ID, query = "FROM Weightage where id=:id "),
 	@NamedQuery(name= Weightage.GET_ALL_Weightage, query = "FROM Weightage where weightage != 0")
 	
 })
 public class Weightage {
 
+	
+	public static final String GET_Weightage_MAX= "Project.GET_Weightage_MAX";
 	public static final String GET_Weightage_ID= "Project.GET_Weightage_ID";
 	public static final String GET_ALL_Weightage= "Project.GET_ALL_Weightage";
 	
