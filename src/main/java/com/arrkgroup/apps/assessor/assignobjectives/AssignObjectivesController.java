@@ -331,8 +331,17 @@ public class AssignObjectivesController {
 	boolean saveWeightage(@RequestParam("weightage") String weightageId,
 			@RequestParam("objectiveId") String objectiveId)
 			{
-		System.out.println(weightageId);
-		System.out.println("objectiveId "+objectiveId);
+		log.info("Weightage "+weightageId);
+		log.info("objectiveId "+objectiveId);
+		
+		if(Integer.parseInt(weightageId)!=0)
+		{
+			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), Integer.parseInt(weightageId));
+	
+		}else{
+			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), DEFAULT_WEIGHTAGE_ID);
+	
+		}
 		
 		return true;
 			}

@@ -235,7 +235,7 @@ if(allObjectives!=null)
 	                success: function(response) {
 	                	
 		              
-					alert(response);
+					console.log(response);
 
 	                 
 	                },
@@ -399,7 +399,7 @@ if(allObjectives!=null)
 
 			$("#addObjective").on('click',function()
 					{
-//alert($("#assesseeRole").val());
+
 
 				$("#inputAssessmentCycle").val($("#assessmentCycle").val()); 
 				 $("#inputAssesseeRole").val($("#assesseeRole").val()); 
@@ -409,7 +409,7 @@ if(allObjectives!=null)
 				 $("#inputAssessmentFromDate").val($("#assessmentFromDate").val());//
 				 $("#inputAssessee").val($("#assessee").val());
 						});
-			//alert($("#inputAssessmentCycle").val());
+			
 });
 
 	
@@ -636,7 +636,7 @@ if(allObjectives!=null)
                                   <div id="addObjectiveform">
 									<form action="#" id="objective" method="post"
 										th:action="@{/assessor/addObjective}"
-										th:object="${addObjectiveBean}">
+										th:object="${addObjectiveBean}" onsubmit="addObjective.disabled = true; return true;">
 										<input type="hidden"  	class="form-control" id="inputAssessmentCycle" 	name="assessmentCycle" th:value="1" />
 								<input type="hidden"  	class="form-control" id="inputAssessmentFromDate" 	name="assessmentFromDate" th:value="1" />
 								<input type="hidden"  	class="form-control" id="inputAssessmentToDate" 	name="assessmentToDate" th:value="1" />
@@ -782,14 +782,14 @@ if(allObjectives!=null)
 										<input type="hidden" id="updateSectionid"
 											name="updateSectionid" value="text" />
 									</div>
-									<div class="form-group">
+								<!-- 	<div class="form-group">
 										<label for="accessmentperiodmanager" class="sr-only">Weightage</label>
 									 	<select class="form-control" id="weightage" name="weightage">
 											<option selected="selected" value="0">Select Weightage</option>
 											<option th:each="weight : ${allWeightages}" th:text="${weight.weightage}" th:value="${weight.id}">1</option>
 												
 										</select>
-									</div>
+									</div> -->
 								 	<input type="hidden" id="updateobjectiveId" name="updateobjectiveId" value="text" />
 								</div>
 							</div>

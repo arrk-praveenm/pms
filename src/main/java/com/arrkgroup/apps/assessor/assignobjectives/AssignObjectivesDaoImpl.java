@@ -259,7 +259,8 @@ try{
 		
 		entityManager
 		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID
-				).setParameter("description", assesseeObjectives.getDescription()).setParameter("weightageId", assesseeObjectives.getWeightage().getId())
+				).setParameter("description", assesseeObjectives.getDescription())
+				//.setParameter("weightageId", assesseeObjectives.getWeightage().getId())
 				.setParameter("assessebjectiveId", assesseeObjectives.getId()).executeUpdate()
 		;
 		return false;
@@ -303,6 +304,19 @@ try{
 				.setParameter("assesseeAssessorId", assesseeObjectives.getAssesseeAssessor().getId())
 				.setParameter("sectionId", assesseeObjectives.getSection().getId())
 				.getResultList();
+	}
+
+	@Override
+	public boolean saveWeightage(int objectiveId, int weightageId) {
+		// TODO Auto-generated method stub
+		
+		entityManager
+		.createNamedQuery(AssesseeObjectives.UPDATE_WEIGHTAGE_BY_OBJECTIVEID
+				).setParameter("weightageId",weightageId)
+				.setParameter("objectiveId", objectiveId).executeUpdate()
+		;
+		
+		return true;
 	}
 	
 
