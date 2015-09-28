@@ -138,6 +138,12 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 		// TODO Auto-generated method stub
 		return modelObjectDao.getAllRatings();
 	}
+
+	@Override
+	public Employee findEmployeeByEmail(String email) {
+		// TODO Auto-generated method stub
+		return modelObjectDao.findEmployeeByEmail(email);
+	}
 	
 
 }

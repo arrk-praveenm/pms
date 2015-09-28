@@ -112,6 +112,73 @@ if(allObjectives!=null)
 			}
 		}
 	};
+
+	$("#employeeObjective").on('click',function(){
+		alert("Test 11 "+$("#selectAssesse").val());
+		});
+	
+	$("#myForm").on('submit',function(event){
+		
+		if($("#assessee").val()=="0") {
+			
+			event.preventDefault();
+			
+			}
+
+		if($("#assessmentToDate").val()==""){
+			
+			event.preventDefault();
+			
+	    }
+		if($("#assesseeRole").val()=="0") {
+			event.preventDefault();
+		}
+		if($("#assessor").val()=="0") {
+			event.preventDefault();
+		}
+		if($("#assessmentCycle").val()=="0"){
+			event.preventDefault();
+		}
+		if($("#projectName").val()=="") {
+			event.preventDefault();
+		}
+		if($("#assessmentFromDate").val()=="") {
+			event.preventDefault();
+		}
+
+	/* 	alert("TEst");
+		alert($("#employeeObjective").attr("value"));
+		alert($("#selectAssesse").val()); */
+
+		if($("#employeeObjective").attr("value")=="assessee")
+			{
+			if($("#otherAssesse").val()==null) {
+				event.preventDefault();
+			}
+
+			if($("#otherAssesse").val()==$("#assessee").val()) {
+				event.preventDefault();
+			}
+			}
+//assessee
+		
+		//alert($("#selectAssesse").val());
+		/* if($("#selectAssesse").val() == null)
+		   {
+		 	  
+		  $("#selectAssesse").css({"border-color": "#a94442"}); 
+		  
+		 // $("#errorspanSelf").show();
+
+		  return false;
+	  
+		   }else
+			   {
+				
+			   return true;
+			    
+			   } */
+		   });
  
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
@@ -133,6 +200,7 @@ if(allObjectives!=null)
     			+'<input type="hidden" id="sectionIdSelected" name="sectionIdSelected" value="'+selectedSection+'"/>'
     			+'<input type="hidden" id="'+weightageId+'" name="'+objectiveDesc.weightage.id+'" value="'+objectiveDesc.weightage.weightage+'"/>'
     			+'<div class="pull-right">'
+    			+'<span id="weightage'+iterStat+'" class="label label-default objective-weightage" >'+objectiveDesc.weightage.weightage+'</span>'
     			+'<button type="button" id="'+iterStat+'" data-target="#editobjective" data-toggle="modal" class="btn btn-info btn-edit"> '
     			+'<i class="fa fa-pencil"></i>'
     			+'</button>'
@@ -328,7 +396,7 @@ if(allObjectives!=null)
 			<div class="box">
 				<div class="box-body">
 			
-					<form method="post" action="#"
+					<form  id="myForm" method="post" action="#"
       th:action="@{/assessor/copyobjectives}"
       th:object="${copyObjectivesBean}">
 						<div class="greybg-container">
@@ -446,9 +514,37 @@ if(allObjectives!=null)
 							</div>
 							
 							<div class="form-group">
-								<button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit" id="employeeObjectives">
+								<!--  <button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit" id="employeeObjectives">
+									<i class="fa fa-files-o"></i> Copy Other Employee
+								</button>-->
+								
+								
+								<button class="btn btn-info btn-green btn-lg popper" type="button" id="employeeObjectivesss" data-toggle="popover" data-pop="#popper-content" data-trigger="click">
 									<i class="fa fa-files-o"></i> Copy Other Employee
 								</button>
+								
+								
+								<div class="popper-content" id="popper-content">
+								<div class="form-group marginbottom5 pull-right">
+									<button type="button" class="close btn-popclose" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="clearfix"></div>
+								<div class="form-group">
+									<label class="sr-only">Select Assessee</label>
+									<select id="otherAssesse" class="form-control" th:field="*{otherAssessee}">
+											<option selected="selected" disabled="disabled" value="0">select Assessee</option>
+										<option th:each="assessee : ${assesses}"
+											th:text="${assessee.fullname}" th:value="${assessee.id}">Assessee
+											one</option>
+									</select>
+								</div>
+								 <div class="form-group margintop10"> 
+								 	
+									<button id="employeeObjective" name="type" value="assessee" type="submit" class="btn btn-primary"><i class="fa fa-files-o"></i> Copy</button>
+							 	</div> 
+							</div>
+								
+								
 							</div>
 						</div>
 					</form>
@@ -570,6 +666,7 @@ if(allObjectives!=null)
 															type="hidden" th:id="'sectionId'+${iterStat.index}"
 															name="SectionIdSelected" value="1" />
 														<div class="pull-right">
+															<span id="'weightage'+${iterStat.index}" class="label label-default objective-weightage">0</span>
 															<button type="button" th:id="${iterStat.index}"
 																data-target="#editobjective" data-toggle="modal"
 																class="btn btn-info btn-edit">

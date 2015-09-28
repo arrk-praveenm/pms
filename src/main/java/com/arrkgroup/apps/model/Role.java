@@ -15,11 +15,15 @@ import javax.persistence.Table;
 @Table(name="role")
 @NamedQueries({
 	@NamedQuery(name = Role.FIND_BY_ROLE_ID, query = "from Role e where e.id = :id"),
-	@NamedQuery(name = Role.FIND_ALL, query = "from Role c order by c.title")
+	@NamedQuery(name = Role.FIND_ALL, query = "from Role c order by c.title"),
+
+	
 })
 public class Role {
 	public static final String FIND_ALL = "Role.FIND_ALL";
 	public static final String FIND_BY_ROLE_ID = "Role.FIND_BY_ROLE_ID";
+	
+	
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

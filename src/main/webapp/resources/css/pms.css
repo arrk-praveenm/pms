@@ -122,6 +122,12 @@ body {
 .table-bordered {
     border: 1px solid #ddd;
 }
+<<<<<<< HEAD
+=======
+/*.close {
+	font-size: 15px;
+}*/
+>>>>>>> origin/master
 label {
 	font-size: 12px;
 }
@@ -668,7 +674,7 @@ blockquote {
 	padding: 5px 20px;
 }
 .panel-objective .panel-body p {
-	width: 90%;
+	width: 85%;
 	margin-bottom: 0;
 }
 .onlyborderleft {
@@ -688,6 +694,20 @@ blockquote {
     color: #000000 !important;
 }
 .scroller-left,  .scroller-right {
+	display: none;
+}
+.objective-weightage {
+	height: 20px;
+	width: 30px;
+	padding: 5px 10px;
+	font-size: 16px;
+	margin-right: 5px;
+}
+.popover {
+	min-width: 250px;
+	max-width: 258px;
+}
+.popper-content {
 	display: none;
 }
 @media max-width: 1199px) {

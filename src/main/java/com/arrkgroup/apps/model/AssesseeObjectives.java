@@ -18,8 +18,13 @@ import javax.persistence.Table;
 @Table(name = "assessee_objectives")
 @NamedQueries({
 
+
 	@NamedQuery(name = AssesseeObjectives.FIND_SECTION_BY_ASSESSOR, query = "SELECT DISTINCT a from AssesseeObjectives a where a.assesseeAssessor.id=:assesseeAssessorId"),
-	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1, query = "update AssesseeObjectives set manager_comments=:comments , manager_rating.id=:managerId ,weightage.id=:weight, manager_score=:manager_score where id = :assessebjectiveId"),	
+	
+
+	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1, query = "update AssesseeObjectives set assessee_comments=:comments , self_rating.id=:assesseeRatingId ,weightage.id=:weight, self_score=:self_score where id = :assessebjectiveId"),
+	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2, query = "update AssesseeObjectives set manager_comments=:managerComments , manager_rating.id=:managerRating, weightage.id=:weight, manager_score=:manager_score where id = :assessebjectiveId"),
+
 	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=:assesseID and so.section.id=:sectionID"),
 		@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=(SELECT id FROM AssesseesAssessor aa where aa.assessorId.id=:assessorId and aa.assesseeId.id=:employeeId and  aa.projectId.id=:projectName and aa.start_date=:StartDate and aa.cycleId.id=:Cycle and aa.roleId.id=:roleId and aa.end_date=:endDate) and section.id=:id"),
 		@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id = (SELECT id FROM AssesseesAssessor aa WHERE aa.assesseeId.id=:assesseeId and aa.cycleId.id=:cycleId and aa.roleId.id=:roleId)"),
@@ -30,11 +35,7 @@ import javax.persistence.Table;
 		@NamedQuery(name = AssesseeObjectives.GET_ALL_ASSESSEE_SECTION_ID, query = "from AssesseeObjectives a where a.assesseeAssessor.id=:assesseeAssessorId and a.section.id=:sectionId") })
 
 public class AssesseeObjectives {
-	// @NamedQuery(name =
-	// AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION, query =
-	// "FROM AssesseeObjectives s where s.assesseeAssessor.assesseeId.id=(select id from Employee ee where ee.id= :employeeId) and s.section.id=:sectionId orderby s.assesseeAssessor.start_date , s.assesseeAssessor.end_date ")
-	// public static final String GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION =
-	// "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ID_AND_SECTION";
+	
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION";
 
 	public static final String GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION = "AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION";
@@ -42,6 +43,7 @@ public class AssesseeObjectives {
 	public static final String DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID = "AssesseeObjectives.DELETE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID";
 	public static final String UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID = "AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID";
 	public static final String UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1 = "AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1";
+	public static final String UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2 = "AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2";
 	public static final String GET_ALL_SECTION_ASSESSEE_OBJECTIVES = "AssesseeObjectives.GET_ALL_SECTION_ASSESSEE_OBJECTIVES";
 	public static final String GET_ASSESSEE_ASSESSOR_ID = "AssesseeObjectives.GET_ASSESSEE_ASSESSOR_ID";
 	public static final String GET_ALL_ASSESSEE_SECTION_ID = "AssesseeObjectives.GET_ALL_ASSESSEE_SECTION_ID";

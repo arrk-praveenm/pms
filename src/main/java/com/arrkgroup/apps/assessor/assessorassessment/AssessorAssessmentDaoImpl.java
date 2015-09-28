@@ -16,12 +16,12 @@ import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
-import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Rating;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.model.SectionConsolidated;
-import com.arrkgroup.apps.model.SectionData;
 import com.arrkgroup.apps.model.Weightage;
+
+
 
 
 
@@ -78,13 +78,17 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 	
 	
-	public AssesseesAssessor  getAssessees(int assesse_id,int role_id)
+	public AssesseesAssessor  getAssessees(int assesse_id,int role_id, int projectId)
 	{
 		
 		
 		return entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID,
-						AssesseesAssessor.class).setParameter("id", assesse_id).setParameter("role_id", role_id).getSingleResult();
+						AssesseesAssessor.class).setParameter("id", assesse_id)
+						.setParameter("role_id", role_id)
+						.setParameter("projectId", projectId)
+						.getSingleResult();
+		
 		
 	}
 	
@@ -136,13 +140,18 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	}
 	
 	
-	public boolean saveSectionData(AssessorAssessmentBean bean)
+	public boolean saveAssessorAssessment(AssessorAssessmentBean bean)
 	{
 	 int n=	entityManager
-		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
-				).setParameter("comments",bean.getManager_comments()).setParameter("managerId", bean.getManager_rating())
+		.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2
+				).setParameter("managerComments",bean.getManager_comments())
+				.setParameter("managerRating", bean.getManager_rating())
 				.setParameter("assessebjectiveId", bean.getObjectiveid())
 				.setParameter("weight", bean.getWeightage())
+				/*.setParameter("assesseeComments",bean.getEmployee_comments())
+				.setParameter("assesseeRatingId", bean.getSelf_rating())
+				.setParameter("self_score", bean.getSelf_score())
+				.setParameter("weight", bean.getWeightage())*/
 				.setParameter("manager_score", bean.getManager_score()).executeUpdate();
 	
 		
@@ -230,6 +239,7 @@ float managerscore=manger_score;
 	
 	}
 	
+
 	public int updateSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id)
 	{
 		float managerscore=manger_score;
@@ -245,7 +255,38 @@ float managerscore=manger_score;
 						.setParameter("assessorid", assessor_id).executeUpdate();
 		
 	}
+
+	@Override
+	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		 int n=	entityManager
+					.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
+							).setParameter("comments",bean.getEmployee_comments())
+							.setParameter("assesseeRatingId", bean.getSelf_rating())
+							.setParameter("self_score", bean.getSelf_score())
+							.setParameter("weight", bean.getWeightage())
+							.setParameter("assessebjectiveId", bean.getObjectiveid()).executeUpdate();
+				
+					
+				if(n>0)
+				{
+					return true;
+				}else
+				{
+					return false;
+				}
+					
+	}
+	@Override
+	public List<AssesseesAssessor> getRoleOfCurrentUser(String email) {
+		// TODO Auto-generated method stub
+	return entityManager
+				.createNamedQuery(AssesseesAssessor.FIND_ROLES_OF_ASSESSEE,
+						AssesseesAssessor.class).setParameter("email", email)
+				.getResultList();
+	}
 	
 	
+
 
 }

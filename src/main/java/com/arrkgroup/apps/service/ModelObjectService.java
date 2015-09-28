@@ -32,5 +32,7 @@ public interface ModelObjectService {
 	public Rating findRatingById(int id);
 	public List<Rating> getAllRatings();
 	
+	public Employee findEmployeeByEmail(String email);
+	
 
 }

@@ -10,8 +10,15 @@ public class CopyObjectivesBean {
 	String action;
 	int assessor;
 	int assessee;
+	int otherAssessee;
 	int assesseeRole;
 	
+	public int getOtherAssessee() {
+		return otherAssessee;
+	}
+	public void setOtherAssessee(int otherAssessee) {
+		this.otherAssessee = otherAssessee;
+	}
 	public int getAssessmentCycle() {
 		return assessmentCycle;
 	}

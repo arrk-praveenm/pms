@@ -58,7 +58,7 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 
     @Override
     public void copyAssesseObjectives(CopyObjectivesBean copyObjectivesBean) {
-           assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,EDIT_FLAG,STATUS));
+           assignObjectivesDao.copyAssesseObjectives(getAssesseeAssessor(copyObjectivesBean,EDIT_FLAG,STATUS),getOtherAssesseeAssessor(copyObjectivesBean,EDIT_FLAG,STATUS));
     }
 
 
@@ -71,6 +71,22 @@ public AssesseesAssessor getAssesseeAssessor(CopyObjectivesBean copyObjectivesBe
            assesseesAssessor.setProjectId(modelObjectiveDao.findProjectById(copyObjectivesBean.getProjectName()));
            assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
            assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessee()));
+           assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
+           assesseesAssessor.setPeriod_edit_flag(editFlag);
+           assesseesAssessor.setStatus(Status);
+           return assesseesAssessor;
+    }
+
+
+public AssesseesAssessor getOtherAssesseeAssessor(CopyObjectivesBean copyObjectivesBean, String editFlag,String Status)
+    {
+           AssesseesAssessor assesseesAssessor = new AssesseesAssessor();
+           assesseesAssessor.setCycleId(modelObjectiveDao.findCycleById(copyObjectivesBean.getAssessmentCycle()));              
+           assesseesAssessor.setStart_date(convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)));
+           assesseesAssessor.setEnd_date(convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10)));
+           assesseesAssessor.setProjectId(modelObjectiveDao.findProjectById(copyObjectivesBean.getProjectName()));
+           assesseesAssessor.setAssessorId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getAssessor()));
+           assesseesAssessor.setAssesseeId(modelObjectiveDao.findEmployeeById(copyObjectivesBean.getOtherAssessee()));
            assesseesAssessor.setRoleId(modelObjectiveDao.findRoleById(copyObjectivesBean.getAssesseeRole()));
            assesseesAssessor.setPeriod_edit_flag(editFlag);
            assesseesAssessor.setStatus(Status);

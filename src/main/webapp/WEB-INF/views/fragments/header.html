@@ -12,7 +12,7 @@
           <span class="logo-mini"><b>PMS</b></span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg logo-mobile"><b>Performance Management System</b></span>
-		  <span class="logo-lg logo-desktop"><img src="../../../pms/resources/images/logo-pms.jpg" /></span>
+		  <span class="logo-lg logo-desktop"><img src="../../../pms/resources/images/logo-pms.jpg" th:src="@{/resources/images/logo-pms.jpg}" /></span>
         </a>
 
         <!-- Header Navbar -->
@@ -30,14 +30,14 @@
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
-                  <img src="../../../pms/resources/images/user.jpg" class="user-image" alt="User Image"/>
+                  <img src="../../../pms/resources/images/user.jpg" th:src="@{/resources/images/user.jpg}" class="user-image" alt="User Image"/>
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
                   <span class="hidden-xs" th:text="${#authentication.name}">User name</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
-                    <img src="../../../pms/resources/images/user.jpg" class="img-circle" alt="User Image" />
+                    <img src="../../../pms/resources/images/user.jpg"   th:src="@{/resources/images/user.jpg}" class="img-circle" alt="User Image" />
                     <p>
                       User Name - Designation
                       <small>Member since Nov. 2012</small>

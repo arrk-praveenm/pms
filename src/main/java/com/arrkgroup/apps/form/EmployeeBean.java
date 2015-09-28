@@ -11,6 +11,8 @@ public class EmployeeBean {
 /*	String fname;
 	String lname;*/
 	String fullname;
+	
+	int projectId;
 
 	/* String email;
 	String designation;
@@ -38,6 +40,13 @@ public class EmployeeBean {
 	}
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
+	}
+	
+	public int getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
 	}
 	/*public String getFname() {
 		return fname;

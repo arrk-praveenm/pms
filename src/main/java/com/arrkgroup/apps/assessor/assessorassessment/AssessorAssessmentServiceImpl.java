@@ -127,10 +127,10 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 	
 	@Override
 	public List<AssesseeObjectives> getAssesseeObjectives(int sectionID,
-			int assesseID, int role_id) {
+			int assesseID, int role_id, int projectId) {
 	
 		AssesseesAssessor assessor=new AssesseesAssessor();
-		assessor = assessorAssessmentDao.getAssessees(assesseID,role_id);
+		assessor = assessorAssessmentDao.getAssessees(assesseID,role_id,projectId);
 		
 List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
@@ -143,7 +143,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	
 	
 	@Override
-	public boolean saveSectionData(AssessorAssessmentBean bean) {
+	public boolean saveAssessorAssessment(AssessorAssessmentBean bean) {
 		
 		
 		
@@ -153,11 +153,28 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 		
 		
-		return  assessorAssessmentDao.saveSectionData(bean) ;
+		return  assessorAssessmentDao.saveAssessorAssessment(bean) ;
+	}
+	
+	@Override
+	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		
+		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
+		return assessorAssessmentDao.saveSelfAssessment(bean);
 	}
 	
 	
-	public void  saveSectionSummary(int sectionID,int employeeid,int roleid){
+	@Override
+	public List<AssesseesAssessor> getRoleOfCurrentUser(String email) {
+		// TODO Auto-generated method stub
+		return assessorAssessmentDao.getRoleOfCurrentUser(email);
+	}
+	
+	
+	
+	
+	public void  saveSectionSummary(int sectionID,int employeeid,int roleid,int projectid){
 		
 		
 		
@@ -166,7 +183,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		int MAX_RATING=assessorAssessmentDao.getMaxRating(); 		
 		
 		
-		AssesseesAssessor assessor=assessorAssessmentDao.getAssessees(employeeid,roleid);
+		AssesseesAssessor assessor=assessorAssessmentDao.getAssessees(employeeid,roleid,projectid);
 		
 		
 		List<SectionConsolidated> consolidated= assessorAssessmentDao.findById(assessor.getId());
@@ -239,14 +256,14 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 	}
 	
-	public List<SectionConsolidatedBean> findById(String selectedAsseesseID,String role_id)
+	public List<SectionConsolidatedBean> findById(String selectedAsseesseID,String role_id,int projectid)
 	{
 		 List<SectionConsolidated> list=new ArrayList<SectionConsolidated>();
 		List<SectionConsolidatedBean> beans=new ArrayList<SectionConsolidatedBean>();
 		 
 		AssesseesAssessor assessor=new AssesseesAssessor();
 		
-		assessor=assessorAssessmentDao.getAssessees(Integer.parseInt(selectedAsseesseID),Integer.parseInt(role_id));
+		assessor=assessorAssessmentDao.getAssessees(Integer.parseInt(selectedAsseesseID),Integer.parseInt(role_id),projectid);
 		list=assessorAssessmentDao.findById(assessor.getId());
 		
 		log.info( "section consolidated  size is "+list.size());

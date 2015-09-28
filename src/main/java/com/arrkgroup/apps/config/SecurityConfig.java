@@ -18,6 +18,7 @@ import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.authentication.LdapAuthenticator;
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
+import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy;
 
 @Configuration
@@ -44,6 +45,12 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
 	}
+    
+
+   @Bean
+    public InetOrgPersonContextMapper extendingContextOfLdap() {
+        return new InetOrgPersonContextMapper();
+    }
 
     @Override
 	protected void configure(AuthenticationManagerBuilder auth)	throws Exception {
@@ -71,6 +78,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationProvider ldapAuthenticationProvider() {
         LdapAuthenticationProvider provider = 
             new LdapAuthenticationProvider(ldapAuthenticator(),authoritiesPopulator());
+        provider.setUserDetailsContextMapper(extendingContextOfLdap() );
         return provider;
     }
 

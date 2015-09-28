@@ -26,6 +26,9 @@ public class AssessorAssessmentBean {
 	int sectionid;
 	int roleid;
 	private Date last_modified_date;
+	
+	int projectid;
+	
 
 int weightage;
 	
@@ -55,6 +58,20 @@ int weightage;
 
 
 
+
+
+
+
+		public int getProjectid() {
+			return projectid;
+		}
+
+
+
+
+		public void setProjectid(int projectid) {
+			this.projectid = projectid;
+		}
 
 
 

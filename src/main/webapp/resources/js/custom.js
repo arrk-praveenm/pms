@@ -205,4 +205,40 @@ $(function () {
 					  redirAfter: 1800000
 					});
 				
+				
+				
+				//Script for popover of copy to other employee
+				
+				//$("[data-toggle='popover']").popover();
+				
+				$('[data-toggle=popover]').popover({
+					placement: 'bottom',
+					//container: 'body',
+					content: function () {
+						return $(this.dataset.pop).html();
+					},
+					html: true,
+				});
+				
+				
+				//Script for closing the popover window
+				$('[data-toggle="popover"]').each(function () {
+					var button = $(this);
+					button.popover().on('shown.bs.popover', function() {
+						button.data('bs.popover').tip().find('[data-dismiss="popover"]').on('click', function () {
+							button.popover('toggle');
+						});
+					});
+				});
+				
+				$('body').on('click', function (e) {
+					$('[data-toggle="popover"]').each(function () {
+						//the 'is' for buttons that trigger popups
+						//the 'has' for icons within a button that triggers a popup
+						if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+							$(this).popover('hide');
+						}
+					});
+				});
+				
 });

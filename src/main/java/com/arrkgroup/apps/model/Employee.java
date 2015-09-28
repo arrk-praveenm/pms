@@ -18,12 +18,15 @@ import org.hibernate.validator.constraints.Email;
 @NamedQuery(name = Employee.FIND_ALL, query = "from Employee e order by e.fullname"),
 @NamedQuery(name = Employee.FIND_ROLE_BY_EMAIL, query = "from Employee e where e.reporting_manager = (select ee.id from Employee ee where ee.email= :email)"),
 @NamedQuery(name = Employee.FIND_BY_ID, query = "from Employee e where e.id = :id"),
+@NamedQuery(name = Employee.FIND_BY_EMAIl, query = "from Employee e where e.email = :email"),
 @NamedQuery(name = Employee.FIND_ASSESSEE_BY_ID, query = "select ee from Employee ee where ee.id= :id ")
+
 })
 public class Employee {
 	public static final String FIND_ALL = "Employee.FIND_ALL";
 	public static final String FIND_ROLE_BY_EMAIL = "Employee.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_BY_ID = "Employee.FIND_BY_ID";
+	public static final String FIND_BY_EMAIl = "Employee.FIND_BY_EMAIl";
 	public static final String FIND_ASSESSEE_BY_ID = "Employee.FIND_ASSESSEE_BY_ID";
 
 	@Id
