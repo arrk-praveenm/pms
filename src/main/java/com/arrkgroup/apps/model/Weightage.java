@@ -25,9 +25,9 @@ public class Weightage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;	
+	 int id;	
 	
-	public int weightage;
+	 int weightage;
 	
 	String description;
 	Date last_modified_date;

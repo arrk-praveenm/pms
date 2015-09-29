@@ -123,14 +123,14 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 		
 		try{
 			//if No records goes to catch block
-			AssesseesAssessor OtherassesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+			List<AssesseesAssessor> OtherassesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
-					.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
-					.setParameter("end_date", OtherAssesseesAssessor.getEnd_date())
+					//.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
+					//.setParameter("end_date", OtherAssesseesAssessor.getEnd_date())
 					.setParameter("project_name", OtherAssesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", OtherAssesseesAssessor.getAssesseeId().getId())
-					.setParameter("assessorId", OtherAssesseesAssessor.getAssessorId().getId())
-					.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getSingleResult();
+					//.setParameter("assessorId", OtherAssesseesAssessor.getAssessorId().getId())
+					.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getResultList();
 try{
 	System.out.println("Test 1");
 	AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
@@ -143,7 +143,7 @@ try{
 	entityManager
 	.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
 			).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
-	copyingAssesseeObjectives(assesseesAssessorUpdate, OtherAssesseesAssessor);
+	copyingAssesseeObjectives(assesseesAssessorUpdate, OtherassesseesAssessor1);
 		}catch(NoResultException re){
 		try {
 			System.out.println("Test 2");
@@ -156,11 +156,11 @@ try{
 					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
 			System.out.println("Test 22");
-			copyingAssesseeObjectives(assesseesAssessor1,OtherAssesseesAssessor);
+			copyingAssesseeObjectives(assesseesAssessor1,OtherassesseesAssessor1);
 		}catch(NoResultException nre){
 			
 			entityManager.persist(assesseesAssessor);			
-			copyingAssesseeObjectives(assesseesAssessor,OtherAssesseesAssessor);
+			copyingAssesseeObjectives(assesseesAssessor,OtherassesseesAssessor1);
 			}
 		}catch(Exception ee) {
 			// TODO Auto-generated catch block
@@ -174,14 +174,17 @@ try{
 		return true;
 	}
 
-	private void copyingAssesseeObjectives(AssesseesAssessor assesseesAssessor,AssesseesAssessor OtherAssesseesAssessor)
+	private void copyingAssesseeObjectives(AssesseesAssessor assesseesAssessor,List<AssesseesAssessor> OtherAssesseesAssessor)
 	{
 		System.out.println("Test get Objectives");
+		for(AssesseesAssessor otherAssesseesAssessor : OtherAssesseesAssessor){
+		
 		List<AssesseeObjectives> assesseeObjectives = entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSEEID_CYCLEID_ROLEID,
 				AssesseeObjectives.class)
-				.setParameter("assesseeId", OtherAssesseesAssessor.getAssesseeId().getId())
-				.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
-				.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getResultList();
+				.setParameter("assesseeId", otherAssesseesAssessor.getAssesseeId().getId())
+				.setParameter("cycleId", otherAssesseesAssessor.getCycleId().getId())
+				.setParameter("project_name", otherAssesseesAssessor.getProjectId().getId())
+				.setParameter("roleId", otherAssesseesAssessor.getRoleId().getId()).getResultList();
 		System.out.println("Test copy Objectives");
 		for(AssesseeObjectives copiedassesseeObjectives : assesseeObjectives){
 			AssesseeObjectives assesseeObjective = new AssesseeObjectives();
@@ -194,6 +197,7 @@ try{
 			assesseeObjective.setLastModifiedDate(new Date());
 			entityManager.persist(assesseeObjective);
 				}
+		}
 	}
 	@Override
 	public List<AssesseeObjectives> getAssesseObjectives(

@@ -26,6 +26,9 @@ import javax.persistence.Table;
 	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
 			   + "and s.start_date=:start_date and s.end_date=:end_date and s.projectId.id=:project_name "
 			   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
+   @NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
+		   + " and s.projectId.id=:project_name "
+		   + "and s.assesseeId.id=:assesseeId  and s.roleId.id=:roleId)"),
 	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
 					   + "and  s.projectId.id=:project_name "
 					   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
@@ -44,6 +47,7 @@ public class AssesseesAssessor {
 	public static final String FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
 	public static final String UPDATE_ASSESSE_ASSESSOR_BY_ID = "AssesseeAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID";
 	public static final String FIND_ROLES_OF_ASSESSEE = "AssesseesAssessor.FIND_ROLES_OF_ASSESSEE";
+	public static final String FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID";
 
 
 	

@@ -198,22 +198,24 @@ $(".test").on("click",function(){
 
 	
 	if($("#selectAssessee").val()==0)
-   	 {	//deleted
+   	 {	
+		
+	   	 //deleted
 		 if($("#selectedRole").val()>0)
-		   	 {
+		   	 {	
 			  $("#roleid").val($("#selectedRole").val());
-			 
+			
 		var data={selectedAsseesseID:0,
 				sectionToLoad:$(this).attr("name"),
 				role_id:$("#selectedRole").val(),
-				projectId:$(selectAssessee).children(":selected").attr("id")
+				projectId:$(selectedRole).children(":selected").attr("name")
 			
 				};
 		 ajaxCall(data);
 		   	 }else{
 		   		var list=[[${allRolesofCurrentUser}]];
 				
-			   	
+		   		
 		   		var data={selectedAsseesseID:0,
 						sectionToLoad:$(this).attr("name"),
 						role_id:list[0].roleId,
