@@ -6,199 +6,305 @@
 <head>
 <script th:inline="javascript">
 $(document).ready(function(){
-	
-	
-	var summarydata;
+
+
 
 	   var selectedSection = $('#First_section_id').val();
 	  var  selectedAsseesse= $("#selectAssessee").val();
 	  var role=$("#roleid").val();
-	  
-	  $('select option[value="' + selectedAsseesse + '"]').attr("selected","");
-	  $('option[name="' + role + '"]').attr("selected","selected");
-	  
-	
+	  var projectId=1;
+	  var summarydata;
 
-       if (selectedAsseesse > 0) {
 
-    	   
-           $('.test').removeClass("active test").addClass("test");
+	 if([[${assessorAssessees}]]==null)
+		 {
 
-           $('li[name="' + selectedSection + '"]').addClass("active test");
-           
-       	
-       	var data={selectedAsseesseID:$("#selectAssessee").val(),
-       			sectionToLoad:selectedSection,
-       			role_id:role
-       			};
-           
-      
-       	ajaxCall(data);
-      
-       	
-       }
-	
-	
-	
-	
-	
-	
-       $("#submitbtn").on("click",function(){
+		 $("#setHeaderH1").text("Employee");
+		 //for employee screen
+		 $("#selectAssesseeRow").hide();
+		 $("#margin").hide();
+		 //selectRoleRow
+		 if([[${allObjectives}]]!=null)
+			 {
+			 $("#selectRoleRow").hide();
 
-    
-    	   
-    	
-    	  
-    	   if($("#manager_rating").val() == null)
-    		   {
-    		  
-    		  
-    		  $("#manager_rating").css({"border-color": "#a94442"}); 
-    		  
-    		  $("#errorspan").show();
-    		  
-    		  
-    		  return false;
-    		   
-  
-    		   
-    		   }else
-    			   {
-    			   return true;
-    			   
-    			   }
-    	   
-    	   
-    	  
-    	   
-       });
-       
+		     $('.test').removeClass("active test").addClass("test");
 
-       $("#submitbtn_summary").on("click",function(){
-    	   
-    
-     	  	var data={selectedAsseesseID:$("#selectAssessee").val(),
-           			role_id:$(selectAssessee).children(":selected").attr("name")
-           			};
-               
-          
-           	ajaxCallSummary(data);
-    	    
-    	   
-    	   
-    /* 		<th:block th:each="section : ${allSectionsPoint}">
-			
-			
-			<p class="label label-success score-container">
-				<em style="word-wrap: break-word; white-space: normal;" class="score-title">Performance Assessment</em>
-				<em class="score">0.4</em>
-			</p>
-		
-		</th:block> */
-    	   
-    	   
-	   
-	
-		/* $("#sectionpoints").append($"<em style="style" class="+titleclass+">"+ mahesh1+ "</em>"); */
-		/* $("#sectionpoints").append($"<em class="+scoreclass+">"+ i + "</em>");
-		 */
-    	   
-    	   
-    	   
-       });
-       
-	
-	
-	
-	
-	
-	
-	
-	
+	          $('li[name="' + [[${sectionToLoad}]] + '"]').addClass("active test");
+
+
+	      	var data={selectedAsseesseID:0,
+	      			sectionToLoad:[[${sectionToLoad}]],
+	      			role_id:[[${allRolesofCurrentUser}]][0].roleId,
+	      			projectId:[[${allRolesofCurrentUser}]][0].projectId
+	      			};
+
+
+	      	ajaxCall(data);
+			 }else{
+		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+			 }
+		 }
+	 else{
+	//	//for Assessor screen
+
+	$('select option[value="' + selectedAsseesse + '"]').attr("selected","");
+
+	  $('option[name="' + role + '"]'+' ' +'option[id="'+projectId+'"]').attr("selected","selected");
+
+
+      if (selectedAsseesse > 0) {
+
+
+          $('.test').removeClass("active test").addClass("test");
+
+          $('li[name="' + selectedSection + '"]').addClass("active test");
+
+
+      	var data={selectedAsseesseID:$("#selectAssessee").val(),
+      			sectionToLoad:selectedSection,
+      			role_id:$(selectAssessee).children(":selected").attr("name"),
+      			projectId:$(selectAssessee).children(":selected").attr("id")
+      			};
+
+
+      	ajaxCall(data);
+
+
+      }
+
+      if($("#selectAssessee").val()!=0)
+          {
+        //  alert("Test"+$("#selectAssessee").val());
+        //  alert([[${roleid}]]);
+         // alert([[${sectionToLoad}]]);
+    	  $("#selectRoleRow").hide();
+
+      /*     $('.test').removeClass("active test").addClass("test");
+
+          $('li[name="' + selectedSection + '"]').addClass("active test");
+
+
+      	var data={selectedAsseesseID:$("#selectAssessee").val(),
+      			sectionToLoad:[[${sectionToLoad}]],
+      			role_id:[[${roleid}]]
+      			};
+
+
+      	ajaxCall(data); */
+          }else{
+
+
+        	  $("#selectRoleRow").hide();
+		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+          }
+
+		 }
+
+
+
+
+$("#submitbtn").on("click",function(){
+
+
+	//alert("role is " +);
+	   var classValue="help-block";
+
+	 //incase of employee
+if($("#selectAssessee").val()==0)
+	{
+	  if($("#selfrating").val() == null)
+	   {
+
+	  $("#selfrating").css({"border-color": "#a94442"});
+
+	  $("#errorspanSelf").show();
+
+	  return false;
+
+	   }else
+		   {
+
+		   return true;
+
+		   }
+	}
+
+
+//incase of manager or Assessor
+if($("#selectAssessee").val()>0)
+	{
+	  if($("#selfrating").val() == null)
+	   {
+
+	  $("#selfrating").css({"border-color": "#a94442"});
+	  $("#errorspan").text("Please ask employee to assess himself and do the assessment   ");
+	  $("#errorspan").show();
+
+	  return false;
+
+	   }else
+		   {
+		   return true;
+
+		   }
+
+	   if($("#manager_rating").val() == null)
+		   {
+
+		  $("#manager_rating").css({"border-color": "#a94442"});
+
+		  $("#errorspan").show();
+
+		  return false;
+
+		   }else
+			   {
+
+			   return true;
+
+			   }
+	}
+
+		});
 	// on select of Assessee
 $("#selectAssessee").on('change', function(){
 
-	
 	if($("#selectAssessee").val() > 0)
-	{
-	
-		$("#section0").trigger("click");
- 	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
- 
-	
+	 {
+	   $("#section0").trigger("click");
 
-	}else
-		{
-		$("#tbody").empty();
-		 $("#tbody").append('<h1>Please Select Assessee</h1>');
-		
+	   $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
+
+  	 }else{
+  		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+
 		}
-	
-	
 	});
 
+//on section click
 $(".test").on("click",function(){
 
 	$("#current_section_id").val($(this).attr("name"));
-	
-	var id = $(selectAssessee).children(":selected").attr("name");
-	
 
-	
+	var id = $(selectAssessee).children(":selected").attr("name");
+
+
+
 	if($("#selectAssessee").val()==0)
-   	 {	$("#tbody").empty();
-	 $("#tbody").append('<h1>Please Select Assessee</h1>');
+   	 {	//deleted
+		 if($("#selectedRole").val()>0)
+		   	 {
+			  $("#roleid").val($("#selectedRole").val());
+
+		var data={selectedAsseesseID:0,
+				sectionToLoad:$(this).attr("name"),
+				role_id:$("#selectedRole").val(),
+				projectId:$(selectedRole).children(":selected").attr("name")
+
+				};
+		 ajaxCall(data);
+		   	 }else{
+		   		var list=[[${allRolesofCurrentUser}]];
+
+
+		   		var data={selectedAsseesseID:0,
+						sectionToLoad:$(this).attr("name"),
+						role_id:list[0].roleId,
+						projectId:list[0].projectId
+
+						};
+				 ajaxCall(data);
+			   	 }
    	}else
    		{
-	
-	
-	
+
 	$("#tbody").empty();
-	
+	 /* alert($("#selectedRole").val());
+		alert($(selectAssessee).children(":selected").attr("id"));
+	 */
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
 			sectionToLoad:$(this).attr("name"),
-			role_id:$(selectAssessee).children(":selected").attr("name")
-		
+			role_id:$(selectAssessee).children(":selected").attr("name"),
+			projectId:$(selectAssessee).children(":selected").attr("id")
 			};
-	
-	
+
+
 	 ajaxCall(data);
 	 $("#sectionid").val($(this).attr("name"));
-	 
+
    		}
 });
-	
 
+//on  Select of Role
+$("#selectedRole").on('change', function(){
+
+ if($("#selectedRole").val()!=0)
+  	 {
+
+
+	var data={selectedAsseesseID:0,
+			sectionToLoad:0,
+			role_id:$("#selectedRole").val(),
+			projectId: $(selectedRole).children(":selected").attr("name")
+			};
+
+
+	 ajaxCall(data);
+  	 }else{
+
+  		 $("#selectedAssesseeSummary").hide();
+		 $("#selectedAssesseeBody").hide();
+		 $("#margin").hide();
+		}
+
+
+	});
+
+//make ajaxcall it common for ajxacalls in this page other than summarybutton event
 function ajaxCall(data)
 {
 
-
-	
-	
-	
 	   $.ajax({
            url: "ajax/assesseeObjectives",
            type: 'GET',
            data: data,
            success: function(response) {
-        	  
-        	   
-        	   
+
+
+
 			if(response=="")
            {
-				
-				
+		           if(data.selectedAsseesseID==0)
+			           {
+						 $("#selectedAssesseeSummary").hide();
+						 $("#selectedAssesseeBody").hide();
+						 $("#margin").hide();
+			           }
+		           $("#selectedAssesseeSummary").show();
+					 $("#selectedAssesseeBody").show();
+					 $("#margin").show();
+
 				 $("#tbody").empty();
-				 $("#tbody").append('<h3>No Objectives For this Section ! </h3>');
            }else{
-        	   
-        	   
+
+        	   $("#selectedAssesseeSummary").show();
+				 $("#selectedAssesseeBody").show();
+				 $("#margin").show();
 
            	 $("#tbody").empty();
-                    	 
-    
-           	 
+
+
+
              for (row in response) {
+
+
             	 var objective="objective"+response[row].id;
             	 var weightage="weightage"+response[row].id;
             	 var selfRating="selfRating"+response[row].id;
@@ -207,255 +313,350 @@ function ajaxCall(data)
             	 var managerScore="managerScore"+response[row].id;
             	 var managerComments="managerComments"+response[row].id;
             var btn="btn"+response[row].id;
-            	 
-            	 
-            	 
+
+
+
             	 var classValue=" text-center";
             	 var hidden="visibility:hidden";
             	 var comments=response[row].manager_comments;
-            	 
+
             	 if(comments == null)
             		 {
-            		 comments=""; 
+            		 comments="";
             		 }
-            	 
-            	 
+
+
             	  var rowdata = $(  "<tr id="+ response[row].id +" />")
-      		    $("#objective_table").append(rowdata); 
-      		/*     rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
-      		    rowdata.append($("<td id="+weightage+" class="+classValue+">" + response[row].weightage.weightage + "</td>"));
-      		    rowdata.append($("<td id="+selfRating+" class="+classValue+">" + response[row].self_rating.score + "</td>"));
+      		    $("#objective_table").append(rowdata);
+      		    rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
+      		    rowdata.append($("<td id="+weightage+" class="+classValue+" name="+response[row].weightage.id+" >" + response[row].weightage.weightage + "</td>"));
+      		    rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-    		    rowdata.append($("<td id="+managerRating+" class="+classValue+">" + response[row].manager_rating.score + "</td>"));
+    		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
-    		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>")); 
-    		
-    		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>")); 
-    		    */
-    		     
-    		     
-    		     rowdata.append($("<td id="+objective+">" + response[row].description + "</td>"));
-    	            rowdata.append($("<td id="+weightage+" class="+classValue+" name="+response[row].weightage.id+" >" + response[row].weightage.weightage + "</td>"));
-    	            rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
-    	            rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-    	          rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
-    	          rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
-    	          rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>")); 
+    		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>"));
 
-    	           rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>")); 
+    		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>"));
 
-    		     
-    		     
-    		     
-    		     
-    		     
-    		     
-    		     
-    	
-             
+
+
              }
-           	 
-             
-             
+
+
+           //on clcik of edit button
 		     $(".btn-edit").on( "click", function(){
-		    		
+		    	 $("#errorspanSelf").hide();
 		    	 $("#errorspan").hide();
-		   	  $("#manager_rating").css({"border-color": "#d2d6de"}); 
-		 
-		    	 
-		   
+		   	  $("#manager_rating").css({"border-color": "#d2d6de"});
+		   	  $("#selfrating").css({"border-color": "#d2d6de"});
+
+		   	 $("#roleid").val($("#selectedRole").val());
+
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
 		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
 		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
 		    	  var managerScore_id='#'+'managerScore'+$(this).attr("name");
-		    	  var managercomment='#'+'managerComments'+$(this).attr("name"); 
+		    	  var managercomment='#'+'managerComments'+$(this).attr("name");
 		    	    var selfRating_id='#'+'selfRating'+$(this).attr("name");
 		    	  var selfScore_id='#'+'selfScore'+$(this).attr("name");
-		    	  
+
 
 		    	  $("#objective_modal").val($(objective_id).text());
-		   
-		    	  
+
+
 		    	  if($(weightage_id).text() ==0)
 		    		  {
 		    		  $("#weightage").val(1);
-		    		  
+
 		    		  }else
 		    			  {
-		    			  
+
 		    			  $("#weightage").val($(weightage_id).attr('name'));
 		    			  }
-		    	 
-		    	
+
+
 		    	  if($(managerRating_id).text() ==0)
 	    		  {
 		    		  $("#manager_rating").val(1);
-	    		  
+
 	    		  }else
 	    			  {
-	    			  
+
 	    			  $("#manager_rating").val($(managerRating_id).attr('name'));
 	    			  }
-	    	 
-		    	  
-		    	 
-		    	
+
+		    	  if($(selfRating_id).text() ==0)
+	    		  {
+		    		  $("#selfrating").val(1);
+
+	    		  }else
+	    			  {
+
+	    			  $("#selfrating").val($(selfRating_id).attr('name'));
+	    			  }
+
+		    	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
+		    	  $("#projectId").val($(selectAssessee).children(":selected").attr("id"));
+
+
 		    	  $("#manager_score").val($(managerScore_id).text());
-		    	  $("#selfrating").val($(selfRating_id).text());
+		    //	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
 		    	  $("#objectiveid").val($(this).attr("name"));
-		    
+
 		    	  $("#manager_comments").val($(managercomment).text());
-		    	  
-		    	  
-		    	  if([[${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}]])
+
+
+		    	  if($("#selectAssessee").val()==0)
+		    	   	 {
+		    		  $("#objectiveSection").children().prop('disabled',true);
+		    		  /*
+		    		    //$("#weightagediv").find("select").prop("readonly",true);
+		    		    $("#weightagediv option:not(:selected)").attr('disabled', true);
+		    		    $("#managerSection input").attr('disabled', true);
+				 		$("#managerSection textarea").attr('readonly', true);
+				 		//find("input,textarea").
+
+				 		//find(':input').prop('disabled', false);
+				 		$("#managerSection select:not(:selected)").attr('disabled', true);
+				 		$("#managerSection select").attr('readonly', true); */
+				 		 $("#weightagediv option:not(:selected)").attr('disabled', true);
+						$("#managerSection").find("input,textarea,select").prop("disabled",true);
+				 		$("#selfscore").attr("disabled",true);
+				 		$("#objective_modal").attr("disabled",true);
+
+
+
+	    			  } else
 		 		 {
 		 		$("#objectiveSection").children().prop('disabled',true);
-		 		$("#employeeSection").find("input,textarea").prop("disabled",true);
+		 		$("#employeeSection").find("input,textarea,select").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
 		 		$("#objective_modal").prop("disabled",true);
-		 	
-		 		 }
-		    	  
-		    	  
-		    	  
-		    	  }); 
-           	 
-            
-           } 
 
-            
+		 		 }
+
+
+
+		    	  });
+
+
+           }
+
+
            },
            error: function(jqXHr, reponse, errorThrown) {
                // ... Process the result ...
                alert(errorThrown);
            }
-		}); 
-		//ajax function ends 
-	
-   		
+		});
+		//ajax function ends
+
+
    		};
-   		
-   		
-   	    $("#summaryclose").on( "click", function(){
-   	    
+
+
+
+
+		       $("#submitbtn_summary").on("click",function(){
+
+
+
+
+
+		    	   if($("#selectAssessee").val()==0)
+		    	   	 {	//deleted
+		    			 if($("#selectedRole").val()>0)
+		    			   	 {
+		    				  $("#roleid").val($("#selectedRole").val());
+
+		    			var data={selectedAsseesseID:0,
+		    				     role_id:$("#selectedRole").val(),
+		    					projectId:$(selectedRole).children(":selected").attr("name")
+
+		    					};
+		    	     	ajaxCallSummary(data);
+		    			   	 }else{
+		    			   		var list=[[${allRolesofCurrentUser}]];
+
+
+		    			   		var data={selectedAsseesseID:0,
+		    							role_id:list[0].roleId,
+		    							projectId:list[0].projectId
+
+		    							};
+		    			     	ajaxCallSummary(data);
+		    				   	 }
+		    	   	}else
+		    	   		{
+
+
+		    		var data={selectedAsseesseID:$("#selectAssessee").val(),
+		    				role_id:$(selectAssessee).children(":selected").attr("name"),
+		    				projectId:$(selectAssessee).children(":selected").attr("id")
+		    				};
+
+
+		    	     	ajaxCallSummary(data);
+
+
+		    	   		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       });
+
+
+
+
+
+
+
+		   	    $("#summaryclose").on( "click", function(){
+
 
    	    	overlayclose();
    	    });
-   	    
-   	   $("#modal_close").on( "click", function(){
-      	    
-      	   
+
+  /*  	   $("#modal_close").on( "click", function(){
+
+
       	    	overlayclose();
       	    });
-   	    
-   	    
+ */
 
-   	    
-   	 
+
+
+
    	 function overlayclose()
    	 {
 
 	    	for (row in summarydata) {
 	   		    var point="point"+summarydata[row].id;
-  		      
+
   		      var value=summarydata[row].section_point;
   		   var pointvalue=value.toFixed(2);
-  		      
+
   		$('input[name="' + point + '"]').val(0);
-  		       
-  		 
-  		
-  		            	
-  		            	
+
+
+
+
+
   		            }
-   		 
+
    	 };
-   	 
-   	 
-   	 
-   	 
-   	    
-   	    
-   		function ajaxCallSummary(data)
-   		{ 			
-   			
-   			$('#summaryrating').modal('show');
-   			
+
+
+
+
+
+
+
+
+	function ajaxCallSummary(data)
+   		{
+
+
+
+
+
    			   $.ajax({
    		           url: "ajax/GetSummaryRating",
    		           type: 'GET',
    		           data: data,
    		           success: function(response) {
-   		        	        	   
-   		        	 $('#summaryrating').modal('show'); 
-   		        	   
-   		        	   
+
+   		        	 $('#summaryrating').modal('show');
+
+
    					if(response=="")
    		           {
-   						
-   						
-   						alert("no data in ajaxCallSummary  ")
+
+
+
    		           }else
    		        	   {
-   		        	   
-   		         	
+
+
    		        	 summarydata=response;
-   		         	
-   		        	
+
+
    		        	 var finalweightage=0;
    		        	 var section_value=0;
    		        	 var section;
-   		        	 
+
    		            for (row in response) {
-   	   		    	
-   		       
+
+
    		      var point="point"+response[row].id;
-   		      
+
    		      var value=response[row].section_point;
    		   var pointvalue=value.toFixed(2);
-   		      
+
    		$('input[name="' + point + '"]').val(pointvalue);
-   		       
+
    		section="section_value"+response[row].id;
-   		
+
    		section_value=$('#'+section).val();
-            
-   		
-   		
+
+
+
        	finalweightage=finalweightage+section_value*pointvalue;
-   		
-   		            	
+
+
    		            }
-   		            
-   		         	   
-   		         $('#weightage_score').val(finalweightage.toFixed(2));  
-   		         	   
-   		        	   
+
+
+   		         $('#weightage_score').val(finalweightage.toFixed(2));
+
+
    		        	   }
-   		        	   
-   		        	   
-   		        	   
-   		        	   
-   		        	   
-   		        	   
+
+
+
+
+
+
    		           },
    		        error: function(jqXHr, reponse, errorThrown) {
    	               // ... Process the result ...
    	               alert(errorThrown);
    	           }
-	
+
 
 
    			   });
-   			   
-   			   
-   		}; 
 
 
-	 	
-	 	
-	 	
+   		};
+
+
+
+
+
 
 
 
@@ -468,151 +669,152 @@ function ajaxCall(data)
 <body>
 	<div layout:fragment="content">
 		<form method="post" action="#"
-			th:action="@{/assessor/SaveSectionData}"
-			th:object="${AssessorAssessmentBean}">
+						th:action="@{/assessor/SaveSectionData}"
+						th:object="${AssessorAssessmentBean}">
 
-			<input type="hidden" id="First_section_id" name="First_section_id"
-				th:value="${sectionToLoad}" /> <input type="hidden" id="roleid"
-				name="roleid" th:value="${roleid}" /> <input type="hidden"
-				id="current_section_id" name="current_section_id" />
+							 <input type="hidden"
+							id="First_section_id" name="First_section_id"
+							th:value="${sectionToLoad}" />
+							 <input type="hidden"
+							id="roleid" name="roleid"
+							th:value="${roleid}" />
 
-
-
-			<!-- Content Wrapper starts -->
-			<div>
-				<!-- Content Header starts -->
-				<section class="content-header">
-					<h1>Manager</h1>
-					<ol class="breadcrumb">
-						<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-						<li class="active">Here</li>
-					</ol>
-				</section>
-				<!-- Content Header ends -->
-
-				<!-- Main content starts -->
-				<section class="content">
+							 <input type="hidden"
+							id="projectId"
+							th:value="${projectId}" th:field="*{projectId}" />
 
 
-					<!-- Manager header panel starts -->
-					<div class="box">
-						<div class="box-body">
-							<div class="row margintop15">
-								<div class="col-md-6">
-									<div class="form-group">
-										<select class="form-control" id="selectAssessee"
-											th:name="${selectedAsseses}" th:field="*{employee_id}">
+	 <input type="hidden"
+							id="current_section_id" name="current_section_id"
+							 />
 
-											<option selected="selected" value="0">Select
-												Employee</option>
-											<option th:each="assessor : ${assessorAssessees}"
-												th:text="${assessor.fullname}" th:value="${assessor.id}"
-												th:name="${assessor.role_id}">Employee one</option>
 
-										</select>
-									</div>
+
+	 <!-- Content Wrapper starts -->
+      <div >
+        <!-- Content Header starts -->
+        <section id="setHeader" class="content-header">
+          <h1 id="setHeaderH1" >Manager</h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>
+		<!-- Content Header ends -->
+
+        <!-- Main content starts -->
+        <section class="content">
+
+
+			<!-- Manager header panel starts -->
+			<div class="box">
+				<div class="box-body">
+					<div class="row margintop15" id="selectAssesseeRow">
+							<div class="col-md-6">
+								<div class="form-group">
+									<select class="form-control" id="selectAssessee" th:name="${selectedAsseses}" th:field="*{employee_id}" >
+
+										<option selected="selected" value="0">Select Employee</option>
+										<option th:each="assessor : ${assessorAssessees}" th:text="${assessor.fullname}" th:value="${assessor.id}" th:name="${assessor.role_id}" th:id="${assessor.projectId}">Employee one</option>
+
+									</select>
 								</div>
-								<div class="col-md-6"></div>
 							</div>
+							<div class="col-md-6">
 
-							<hr class="margintop10" />
-							<div class="form-group text-right">
-								<button id="submitbtn_summary" class="btn btn-info btn-green"
+							</div>
+						</div>
+
+						<div class="row margintop15" id="selectRoleRow">
+							<div class="col-md-6">
+								<div class="form-group">
+									<select class="form-control" id="selectedRole" th:name="${selectedRole}" >
+
+										<option selected="selected" value="0">Select Role</option>
+										<option th:each="role : ${allRolesofCurrentUser}" th:text="${role.assesseeProjectRole}" th:value="${role.roleId}" th:name="${role.projectId}">Role</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6">
+
+							</div>
+						</div>
+
+					<hr class="margintop10"  id="margin"/>
+						<div class="form-group text-right" id="selectedAssesseeSummary">
+
+
+						<button id="submitbtn_summary" class="btn btn-info btn-green"
 									type="button">
 									<i class="fa fa-file-text">&nbsp;</i> Summary Ratings
 								</button>
 
-								<!-- //data-target="#summaryrating" data-toggle="modal" -->
+						</div>
 
-							</div>
+					<div class="nav-tabs-custom margintop10 noboxshadow" id="selectedAssesseeBody">
+						<div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+						<div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+						<div class="wrapper-tabs">
+							<ul class="nav nav-tabs list" id="myTab" >
+							<th:block th:each="section, iterStat : ${allSections}" th:field="*{sectionid}">
+								<li th:if="${iterStat.index}==0" class="test active"  th:name="${section.getId()}" ><a th:id="'section'+${iterStat.index}" data-toggle="tab" href="#par" th:text="${section.getSection()}">Performance</a></li>
 
-							<div class="nav-tabs-custom margintop10 noboxshadow">
-								<div class="scroller scroller-left">
-									<i class="glyphicon glyphicon-chevron-left"></i>
-								</div>
-								<div class="scroller scroller-right">
-									<i class="glyphicon glyphicon-chevron-right"></i>
-								</div>
-								<div class="wrapper-tabs">
-									<ul class="nav nav-tabs list" id="myTab">
-										<th:block th:each="section, iterStat : ${allSections}"
-											th:field="*{sectionid}">
-											<li th:if="${iterStat.index}==0" class="test active"
-												th:name="${section.getId()}"><a
-												th:id="'section'+${iterStat.index}" data-toggle="tab"
-												href="#par" th:text="${section.getSection()}">Performance</a></li>
+								<li th:if="${iterStat.index}!=0"  th:name="${section.getId()}" class="test"><a th:id="${iterStat.index}" data-toggle="tab" href="#car" th:text="${section.getSection()}">Competancy</a></li>
+								</th:block>
+								<!-- <li><a data-toggle="tab" href="#pqar">Personal Qualities</a></li> -->
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div id="par" class="tab-pane active">
 
-											<li th:if="${iterStat.index}!=0" th:name="${section.getId()}"
-												class="test"><a th:id="${iterStat.index}"
-												data-toggle="tab" href="#car"
-												th:text="${section.getSection()}">Competancy</a></li>
+								<div class="box-body table-responsive">
+									<table id="objective_table" class="table">
+										<thead>
+											<tr>
+												<th>Objectives</th>
+												<th>Weightage</th>
+												<th>Self Rating</th>
+												<th>Self Score</th>
+												<th>Manager Rating</th>
+												<th>Manager Score</th>
+												<th> </th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody id="tbody">
+										<th:block th:each="objective,itrIndex: ${allObjectives}">
+											<tr id="tRow" th:name="${objective.getId()}">
+												<td class="col-md-10 col-xs-7" th:text="${objective.description}" th:id="'objectiveDesc'+${objective.getId()}">
+													Delivering to the Customer's satisfaction/ expectation
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'wightage'+${objective.weightage.weightage}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfRating'+${objective.self_rating.score}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'selfScore'+${objective.self_score}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerRating'+${objective.manager_rating.score}">
+													0
+												</td>
+												<td class="col-md-1 col-xs-3 text-center" th:id="'managerScore'+${objective.manager_score}">
+													0
+												</td>
+
+
+												<td class="col-md-1 col-xs-1 text-center" th:id="${objective.getId()}">
+													<button class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>
+												</td>
+											</tr>
 										</th:block>
-										<!-- <li><a data-toggle="tab" href="#pqar">Personal Qualities</a></li> -->
-									</ul>
-								</div>
-								<div class="tab-content">
-									<div id="par" class="tab-pane active">
-
-										<div class="box-body table-responsive">
-											<table id="objective_table" class="table">
-												<thead>
-													<tr>
-														<th>Objectives</th>
-														<th>Weightage</th>
-														<th>Self Rating</th>
-														<th>Self Score</th>
-														<th>Manager Rating</th>
-														<th>Manager Score</th>
-														<th></th>
-														<th>Actions</th>
-													</tr>
-												</thead>
-												<tbody id="tbody">
-													<th:block th:each="objective,itrIndex: ${allObjectives}">
-														<tr id="tRow" th:name="${objective.getId()}">
-															<td class="col-md-10 col-xs-7"
-																th:text="${objective.getObjectiveDesc()}"
-																th:id="'objectiveDesc'+${objective.getId()}">
-																Delivering to the Customer's satisfaction/ expectation</td>
-															<td class="col-md-1 col-xs-3 text-center"
-																th:id="'wightage'+${objective.getId()}">0</td>
-															<td class="col-md-1 col-xs-3 text-center"
-																th:id="'selfRating'+${objective.getId()}">0</td>
-															<td class="col-md-1 col-xs-3 text-center"
-																th:id="'selfScore'+${objective.getId()}">0</td>
-															<td class="col-md-1 col-xs-3 text-center"
-																th:id="'managerRating'+${objective.getId()}">0</td>
-															<td class="col-md-1 col-xs-3 text-center"
-																th:id="'managerScore'+${objective.getId()}">0</td>
-
-
-															<td class="col-md-1 col-xs-1 text-center"
-																th:id="${objective.getId()}">
-																<button class="btn btn-info btn-edit"
-																	data-toggle="modal" data-target="#managermodal"
-																	type="button">
-																	<i class="fa fa-pencil"></i>
-																</button>
-															</td>
-														</tr>
-													</th:block>
-												</tbody>
-											</table>
-										</div>
-
-										<div class="clearfix"></div>
-									</div>
-
-
-
-
-
+										</tbody>
+									</table>
 								</div>
 
-
-
-
-
+							<div class="clearfix"></div>
 							</div>
 
 
@@ -620,171 +822,175 @@ function ajaxCall(data)
 
 
 						</div>
+
+
+
+
+
 					</div>
-					<!-- Manager header panel ends -->
-
-
-				</section>
-				<!-- Main content ends -->
-			</div>
-			<!-- Content Wrapper ends -->
-			<!-- Manager Modal Starts -->
 
 
 
 
-			<input type="hidden" id="objectiveid" name="objectiveid"
-				th:field="*{objectiveid}" th:value="${objectiveid}" /> <input
-				type="hidden" id="sectionid" name="sectionid"
-				th:field="*{sectionid}" th:value="${sectionid}" />
 
-
-
-			<div class="modal fade" id="managermodal" tabindex="-1" role="dialog"
-				aria-labelledby="myModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title" id="myModalLabel">Add Ratings and
-								Comments</h4>
-						</div>
-						<div class="modal-body">
-							<div class="row" id="objectiveSection">
-								<div class="col-md-9">
-									<div class="form-group" id="objectiveDesc">
-										<label class="sr-only">Objectives</label>
-										<textarea id="objective_modal" row="2" class="form-control"
-											Placeholder="Objectives"></textarea>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="form-group" id="weightagediv">
-
-
-										<select class="form-control" id="weightage"
-											th:field="*{weightage}">
-
-											<option selected="selected" value="1">Select
-												Weightage</option>
-											<option th:each="weight : ${weightageList}"
-												th:text="${weight.weightage}" th:value="${weight.id}">Employee
-												one</option>
-
-										</select>
-
-
-									</div>
-								</div>
-							</div>
-
-
-							<div class="row" id="employeeSection">
-								<div class="col-md-12">
-									<h4>Assesse Self Rating</h4>
-									<hr class="marginbottom15 margintop5" />
-								</div>
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="sr-only">Self Rating</label> <input
-											id="selfrating" type="text" class="form-control"
-											Placeholder="Self Rating" />
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="sr-only">Self Score</label> <input
-											id="selfscore" type="text" class="form-control"
-											Placeholder="Self Score" />
-									</div>
-								</div>
-								<div class="col-md-6"></div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<label class="sr-only">Employee Comments</label>
-										<textarea id="comments" row="2" class="form-control"
-											Placeholder="Employee Comments"></textarea>
-									</div>
-								</div>
-							</div>
-
-							<div class="row" id="managerSection">
-								<div class="col-md-12">
-									<h4>Assessor Rating</h4>
-									<hr class="marginbottom15 margintop5" />
-								</div>
-								<div class="col-md-3"
-									th:classappend="${#fields.hasErrors('manager_rating')}? 'has-error'">
-									<div class="form-group">
-										<label class="sr-only">Manager Rating</label>
-										<!-- <input id="manager_rating"  th:field="*{manager_rating}"  type="text" class="form-control" Placeholder="Manager Rating" /> -->
-
-										<select class="form-control" id="manager_rating"
-											th:field="*{manager_rating}">
-
-											<option selected="selected" disabled="disabled" value="1">Select
-												Rating</option>
-											<option th:each="rating : ${managerRating}"
-												th:text="${rating.score}" th:value="${rating.id}">Employee
-												one</option>
-
-										</select> <span class="help-block"
-											th:if="${#fields.hasErrors('manager_rating')}"
-											th:errors="*{manager_rating}">Incorrect email</span>
-
-
-									</div>
-								</div>
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="sr-only">Manager Score</label> <input
-											id="manager_score" type="text" class="form-control"
-											Placeholder="Manager Score" />
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<span id="errorspan" style="color: #a94442"> Please
-											select Rating ! </span>
-
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<label class="sr-only">Manager Comments</label>
-										<textarea id="manager_comments" th:field="*{manager_comments}"
-											row="2" class="form-control" Placeholder="Manager Comments"></textarea>
-									</div>
-								</div>
-							</div>
-
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default"
-								data-dismiss="modal">
-								<i class="fa fa-times"></i> Close
-							</button>
-							<button id="submitbtn" type="submit" class="btn btn-primary">
-								<i class="fa fa-check"></i> Save
-							</button>
-						</div>
-					</div>
 				</div>
 			</div>
+			<!-- Manager header panel ends -->
+
+
+        </section>
+		<!-- Main content ends -->
+      </div>
+	<!-- Content Wrapper ends -->
+	<!-- Manager Modal Starts -->
+
+
+
+
+						<input type="hidden" id="objectiveid" name="objectiveid"
+							th:field="*{objectiveid}" th:value="${objectiveid}" />
 
 
 
 
 
-			<!-- Manager Modal ends -->
+							<input type="hidden" id="sectionid" name="sectionid"
+							th:field="*{sectionid}" th:value="${sectionid}" />
 
 
 
-			<!-- Summary Rating Modal Starts -->
-			<div class="modal fade" id="summaryrating" tabindex="-1"
+		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Add Ratings and Comments</h4>
+					</div>
+					  <div class="modal-body">
+						  <div class="row" id="objectiveSection">
+							<div class="col-md-9">
+								<div class="form-group" id="objectiveDesc">
+									<label class="sr-only">Objectives</label>
+									<textarea id="objective_modal"  row="2" class="form-control" Placeholder="Objectives"></textarea>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group" id="weightagediv">
+
+
+										<select class="form-control" id="weightage"  th:field="*{weightage}" >
+
+										<option selected="selected"  value="1">Select Weightage</option>
+										<option th:each="weight : ${weightageList}" th:text="${weight.weightage}" th:value="${weight.id}">Employee one</option>
+
+									</select>
+
+
+								</div>
+							</div>
+						  </div>
+
+
+						  <div class="row" id="employeeSection">
+							<div class="col-md-12">
+								<h4>Assesse Self Rating</h4>
+								<hr class="marginbottom15 margintop5"/>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<!-- <label class="sr-only">Self Rating</label> -->
+
+									<select class="form-control" id="selfrating"  th:field="*{self_rating}" >
+
+										<option selected="selected" disabled="disabled" value="1">Select Rating</option>
+										<option th:each="rating1 : ${selfratingList}" th:text="${rating1.score}" th:value="${rating1.id}">Employee one</option>
+
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Self Score</label>
+									<input id="selfscore" type="text" class="form-control" Placeholder="Self Score" />
+								</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group" >
+							<span id="errorspanSelf" style="color: #a94442"> Please select Rating !  </span>
+
+							</div>
+							</div>
+							<div class="col-md-6"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="sr-only">Employee Comments</label>
+									<textarea id="comments" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+								</div>
+							</div>
+						  </div>
+
+						   <div class="row" id="managerSection">
+							<div class="col-md-12">
+								<h4>Assessor Rating</h4>
+								<hr class="marginbottom15 margintop5"/>
+							</div>
+							<div class="col-md-3" th:classappend="${#fields.hasErrors('manager_rating')}? 'has-error'">
+								<div class="form-group" >
+									<!-- <label class="sr-only">Manager Rating</label> -->
+									<!-- <input id="manager_rating"  th:field="*{manager_rating}"  type="text" class="form-control" Placeholder="Manager Rating" /> -->
+
+								<select class="form-control" id="manager_rating"  th:field="*{manager_rating}" >
+
+										<option selected="selected" disabled="disabled" value="1">Select Rating</option>
+										<option th:each="rating : ${ratingList}" th:text="${rating.score}" th:value="${rating.id}">Employee one</option>
+
+									</select>
+									<span class="help-block"
+													th:if="${#fields.hasErrors('manager_rating')}"
+													th:errors="*{manager_rating}">Incorrect email</span>
+
+
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label class="sr-only">Manager Score</label>
+									<input id="manager_score" type="text" class="form-control" Placeholder="Manager Score" />
+								</div>
+							</div>
+							<div class="col-md-6">
+							<div class="form-group" >
+							<span id="errorspan" style="color: #a94442"> Please select Rating !  </span>
+
+							</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<!-- <label class="sr-only">Manager Comments</label> -->
+									<textarea id="manager_comments" th:field="*{manager_comments}" row="2" class="form-control" Placeholder="Manager Comments"></textarea>
+								</div>
+							</div>
+						  </div>
+
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+						<button id="submitbtn" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+					  </div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<!-- Manager Modal ends -->
+
+
+
+	<!-- Summary Rating Modal Starts -->
+		<div class="modal fade" id="summaryrating" tabindex="-1"
 				role="dialog" aria-labelledby="summaryratinglabel"
 				data-keyboard="false" data-backdrop="static">
 				<div id="summaryratingcontent" class="modal-dialog modal-lg"
@@ -849,7 +1055,7 @@ function ajaxCall(data)
 
 									</th:block>
 
-									<!-- 	
+									<!--
 									<p  id="sectionpoints" class="label label-success score-container">
 										<em style="word-wrap: break-word; white-space: normal;" class="score-title">test Score</em>
 										<em class="score">0.2</em>
@@ -859,13 +1065,13 @@ function ajaxCall(data)
 
 
 									<h4 class="margintop20 marginbottom5">
-										<strong>Weightage Score</strong>
+										<strong>Final Score</strong>
 									</h4>
 
 									<p class="label label-info score-container">
 										<em style="word-wrap: break-word; white-space: normal;"
 											class="score-title"><input type="text" readonly="true"
-											value="Weightage score" /></em> <em class="score"><input
+											value="Weighted score" /></em> <em class="score"><input
 											id="weightage_score" type="text" readonly="true" value="0" /></em>
 
 									</p>
@@ -882,7 +1088,10 @@ function ajaxCall(data)
 					</div>
 				</div>
 			</div>
+
+
+
 		</form>
 	</div>
-</body>
-</html>
+	</body>
+	</html>

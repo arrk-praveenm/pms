@@ -163,8 +163,8 @@ caption {
 .skin-purple-light .main-header .navbar .sidebar-toggle:hover {
     background-color: #572773;
 }
-.content-header > .breadcrumb > li > a > .fa, 
-.content-header > .breadcrumb > li > a > .glyphicon, 
+.content-header > .breadcrumb > li > a > .fa,
+.content-header > .breadcrumb > li > a > .glyphicon,
 .content-header > .breadcrumb > li > a > .ion {
     color: #481365;
     font-size: 14px;
@@ -186,7 +186,7 @@ caption {
     margin: 5% auto;
     width: 500px;
 }
-.login-box-body .form-control-feedback, 
+.login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {
     color: #4eb894;
 }
@@ -234,8 +234,8 @@ caption {
 .sidebar-collapse .sidebar-menu li.treeview .treeview-menu span {
     width: 140px;
 }
-.sidebar-menu > li > a > .fa, 
-.sidebar-menu > li > a > .glyphicon, 
+.sidebar-menu > li > a > .fa,
+.sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
     float: left;
 }
@@ -668,7 +668,7 @@ blockquote {
 	padding: 5px 20px;
 }
 .panel-objective .panel-body p {
-	width: 90%;
+	width: 80%;
 	margin-bottom: 0;
 }
 .onlyborderleft {
@@ -688,6 +688,19 @@ blockquote {
     color: #000000 !important;
 }
 .scroller-left,  .scroller-right {
+	display: none;
+}
+.objective-weightage {
+	height: 25px;
+    margin-right: 10px;
+    padding: 0 2px;
+    width: 40px !important;
+}
+.popover {
+	min-width: 250px;
+	max-width: 258px;
+}
+.popper-content {
 	display: none;
 }
 @media max-width: 1199px) {
@@ -721,7 +734,7 @@ blockquote {
 		width: 75%;
 	}
 	.panel-objective .panel-body p {
-		width: 80%;
+		width: 65%;
 	}
 }
 @media (max-width: 767px) {
@@ -753,8 +766,10 @@ blockquote {
 	.btn-responsize {
 		margin-top: 2px;
 	}
-	.score-container {
-   	 	width: 32.9%;
+	.objective-weightage {
+		width: 100% !important;
+		margin-right: 0px;
+		margin-bottom: 10px;
 	}
 }
 @media (max-width: 480px) {
@@ -781,7 +796,7 @@ blockquote {
 		margin-top: 10px;
 	}
 	.panel-objective .panel-body p {
-		width: 70%;
+		width: 65%;
 	}
 	.score-container .score-title {
 		width: auto;
