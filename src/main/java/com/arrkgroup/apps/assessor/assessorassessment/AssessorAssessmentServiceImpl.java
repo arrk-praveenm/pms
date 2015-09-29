@@ -1,27 +1,39 @@
 package com.arrkgroup.apps.assessor.assessorassessment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arrkgroup.apps.dao.ModelObjectDao;
 import com.arrkgroup.apps.form.EmployeeBean;
 import com.arrkgroup.apps.form.AssessorAssessmentBean;
+import com.arrkgroup.apps.form.SectionBean;
+import com.arrkgroup.apps.form.SectionConsolidatedBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.SectionConsolidated;
 import com.arrkgroup.apps.service.ModelObjectService;
 
 @Service("AssessorAssessmentService")
 @Transactional
 public class AssessorAssessmentServiceImpl implements AssessorAssessmentService {
 
+	private final Logger log = LoggerFactory
+			.getLogger(AssessorAssessmentController.class);
+	
+	
 	@Autowired
 	AssessorAssessmentDao assessorAssessmentDao;
 	
@@ -31,6 +43,7 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 	@Override
 	public List<AssesseesAssessor>  getMyAssessees(String email) {
 		// TODO Auto-generated method stub
+		
 		return assessorAssessmentDao.getMyAssessees(email);
 	}
 	@Override
@@ -66,6 +79,21 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 		return assessorAssessmentDao.getAllSections();
 	}
 	
+	public List<SectionConsolidatedBean> getAllSectionsBean() {
+		// TODO Auto-generated method stub
+		List<Section> list= assessorAssessmentDao.getAllSections();
+		List<SectionConsolidatedBean> beans=new  ArrayList<SectionConsolidatedBean>();
+		for (Section section : list) {
+			
+			SectionConsolidatedBean bean =new SectionConsolidatedBean();
+			bean.setId(section.getId());
+			bean.setSection(section.getSection());
+		beans.add(bean);
+		}
+		
+		return beans;
+	}
+	
 	
 	public AssesseesAssessor  getAssesseesAssessor(int id)
 	{
@@ -80,18 +108,18 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 	
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID)
 	{
-		//System.out.println("in get getAssesseeObjectives");
+		//log.info("in get getAssesseeObjectives");
 		
 		AssesseesAssessor assessor=new AssesseesAssessor();
 		assessor = assessorAssessmentDao.getAssesseesAssessor(assesseID);
 		
-		//System.out.println("assesssor id is " +assessor.getId());
+		//log.info("assesssor id is " +assessor.getId());
 		
 		List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 		list= assessorAssessmentDao.getAssesseeObjectives(sectionID, assessor.getId());
 		
-		//System.out.println("list size is "+list.size());
+		//log.info("list size is "+list.size());
 		
 		return list;
 	
@@ -108,7 +136,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 		list= assessorAssessmentDao.getAssesseeObjectives(sectionID, assessor.getId());
 		
-		System.out.println("list size is  "+list.size());
+		log.info("list size is  "+list.size());
 		
 		return list;
 	}
@@ -145,6 +173,132 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	
 	
 	
+	
+	public void  saveSectionSummary(int sectionID,int employeeid,int roleid,int projectid){
+		
+		
+		
+		
+		int MAX_WEIGHTAGE=assessorAssessmentDao.getMaxWightage();
+		int MAX_RATING=assessorAssessmentDao.getMaxRating(); 		
+		
+		
+		AssesseesAssessor assessor=assessorAssessmentDao.getAssessees(employeeid,roleid,projectid);
+		
+		
+		List<SectionConsolidated> consolidated= assessorAssessmentDao.findById(assessor.getId());
+		
+		///// *** for checking exsting records
+		
+		List<AssesseeObjectives> list=assessorAssessmentDao.findSectionByAssessor(assessor.getId());
+		 Set<Integer> hashsetList = new HashSet<Integer>();
+		
+		 for (AssesseeObjectives assesseeObjectives : list) {
+		hashsetList.add(assesseeObjectives.getSection().getId());
+				
+		}
+		
+		log.info("no of sections"+hashsetList.size());
+		
+		for (Integer sections : hashsetList) {
+			
+			log.info("section id is"+sections.intValue());
+			List<AssesseeObjectives> objectives=assessorAssessmentDao.getAssesseeObjectives(sections.intValue(), assessor.getId());
+			int max_score_objective=0;
+			int score_manager_objective=0;
+			int score_self_objective=0; 
+
+			for (AssesseeObjectives assesseeObjectives : objectives) {
+				
+				max_score_objective +=assesseeObjectives.getWeightage().getWeightage()*MAX_RATING;
+				log.info("max score "+max_score_objective);
+				//log.info("manager score "+assesseeObjectives.getManager_score() +" "+"weightage "+assesseeObjectives.getWeightage().getWeightage());
+				//score_manager_objective +=assesseeObjectives.getManager_score() * assesseeObjectives.getWeightage().getWeightage();
+				score_manager_objective +=assesseeObjectives.getManager_score();
+				log.info("manager rating "+score_manager_objective);
+				
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		if(consolidated.size()>0)
+		{
+			
+			assessorAssessmentDao.updateSectionConsolidatedData(score_self_objective, score_manager_objective, max_score_objective, sections.intValue(), assessor.getId());
+			
+			
+		}else
+		{
+			assessorAssessmentDao.saveSectionConsolidatedData(score_self_objective, score_manager_objective, max_score_objective, sections.intValue(), assessor.getId());
+			
+		}
+		
+		
+			
+		}
+		
+		
+
+
+
+
+
+
+	}
+	
+	public List<SectionConsolidatedBean> findById(String selectedAsseesseID,String role_id,int projectid)
+	{
+		 List<SectionConsolidated> list=new ArrayList<SectionConsolidated>();
+		List<SectionConsolidatedBean> beans=new ArrayList<SectionConsolidatedBean>();
+		 
+		AssesseesAssessor assessor=new AssesseesAssessor();
+		
+		assessor=assessorAssessmentDao.getAssessees(Integer.parseInt(selectedAsseesseID),Integer.parseInt(role_id),projectid);
+		list=assessorAssessmentDao.findById(assessor.getId());
+		
+		log.info( "section consolidated  size is "+list.size());
+		
+		int MAX_RATING=assessorAssessmentDao.getMaxRating(); 
+		
+		
+		
+		for (SectionConsolidated sectionConsolidated : list) {
+			
+			float points=(sectionConsolidated.getSection_manager_score()/sectionConsolidated.getSection_max_score())*MAX_RATING;
+			
+			
+			SectionConsolidatedBean bean=new SectionConsolidatedBean();
+			bean.setId(sectionConsolidated.getSection().getId());
+			bean.setSection(sectionConsolidated.getSection().getSection());
+			bean.setSection_point(points);
+			
+			beans.add(bean);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return beans;
+		
+			
+		
+	}
 	
 	
 	

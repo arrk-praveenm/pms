@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "assessee_objectives")
 @NamedQueries({
-
+	@NamedQuery(name = AssesseeObjectives.FIND_SECTION_BY_ASSESSOR, query = "SELECT DISTINCT a from AssesseeObjectives a where a.assesseeAssessor.id=:assesseeAssessorId"),
 	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1, query = "update AssesseeObjectives set assessee_comments=:comments , self_rating.id=:assesseeRatingId ,weightage.id=:weight, self_score=:self_score where id = :assessebjectiveId"),
 	@NamedQuery(name = AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V2, query = "update AssesseeObjectives set manager_comments=:managerComments , manager_rating.id=:managerRating, weightage.id=:weight, manager_score=:manager_score where id = :assessebjectiveId"),
 	@NamedQuery(name = AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_ASSESSE_AND_SECTION, query = "FROM AssesseeObjectives so where so.assesseeAssessor.id=:assesseID and so.section.id=:sectionID"),
@@ -44,6 +44,7 @@ public class AssesseeObjectives {
 	public static final String GET_ASSESSEE_ASSESSOR_ID = "AssesseeObjectives.GET_ASSESSEE_ASSESSOR_ID";
 	public static final String GET_ALL_ASSESSEE_SECTION_ID = "AssesseeObjectives.GET_ALL_ASSESSEE_SECTION_ID";
 	public static final String UPDATE_WEIGHTAGE_BY_OBJECTIVEID = "AssesseeObjectives.UPDATE_WEIGHTAGE_BY_OBJECTIVEID";
+	public static final String FIND_SECTION_BY_ASSESSOR = "AssesseeObjectives.FIND_SECTION_BY_ASSESSOR";
 
 
 	@Id

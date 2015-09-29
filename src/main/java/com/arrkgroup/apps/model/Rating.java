@@ -14,11 +14,14 @@ import javax.persistence.Table;
 @Table(name = "rating")
 @NamedQueries({
 
+	@NamedQuery(name = Rating.GET_RATING_MAX, query = "select max(r.score) FROM Rating r "),
 	@NamedQuery(name = Rating.GET_RATING_ID, query = "FROM Rating where id=:id "),
 	@NamedQuery(name= Rating.GET_ALL_RATING, query = "FROM Rating where score != 0")
 	
 })
 public class Rating {
+
+	public static final String GET_RATING_MAX= "Project.GET_RATING_MAX";
 	public static final String GET_RATING_ID= "Project.GET_RATING_ID";
 	public static final String GET_ALL_RATING= "Project.GET_ALL_RATING";
 	

@@ -122,9 +122,6 @@ body {
 .table-bordered {
     border: 1px solid #ddd;
 }
-/*.close {
-	font-size: 15px;
-}*/
 label {
 	font-size: 12px;
 }
@@ -166,8 +163,8 @@ caption {
 .skin-purple-light .main-header .navbar .sidebar-toggle:hover {
     background-color: #572773;
 }
-.content-header > .breadcrumb > li > a > .fa, 
-.content-header > .breadcrumb > li > a > .glyphicon, 
+.content-header > .breadcrumb > li > a > .fa,
+.content-header > .breadcrumb > li > a > .glyphicon,
 .content-header > .breadcrumb > li > a > .ion {
     color: #481365;
     font-size: 14px;
@@ -189,7 +186,7 @@ caption {
     margin: 5% auto;
     width: 500px;
 }
-.login-box-body .form-control-feedback, 
+.login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {
     color: #4eb894;
 }
@@ -237,8 +234,8 @@ caption {
 .sidebar-collapse .sidebar-menu li.treeview .treeview-menu span {
     width: 140px;
 }
-.sidebar-menu > li > a > .fa, 
-.sidebar-menu > li > a > .glyphicon, 
+.sidebar-menu > li > a > .fa,
+.sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
     float: left;
 }
@@ -552,18 +549,33 @@ div.jqi .jqibuttons button:focus {
 .score-container {
 	padding: 10px;
 	display: inline-block;
-	margin-top: 10px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	font-size: 16px;
+	width: 24.5%;
 }
 .score-container .score-title {
 	display: block;
 	font-style: normal;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	white-space: normal;
-	width: 150px;
+	/*width: 150px;*/
+}
+.score-container .score-title input {
+	width: 100%;
+    background-color: transparent;
+    border: 0;
+    text-align: center;
 }
 .score-container .score {
 	font-style: normal; font-size: 30px;
+}
+.score-container .score input {
+	width:100%;
+	font-size: 24px;
+	background-color: transparent;
+    border: 0;
+    text-align: center;
 }
 .mandatory {
 	color: #ff0000;
@@ -772,6 +784,7 @@ blockquote {
 	}
 	.score-container {
 		display: block;
+		width: 100%;
 	}
 	.custom-panel-heading h3 {
 		width: 100%;

@@ -32,6 +32,10 @@ public class Section {
 	@Column(name = "title", nullable = false)
 	private String section;
 	
+	@Column(name = "section_weightage")
+	private float section_weightage;
+	
+	
 	@Column(name = "last_modified_date", nullable = false)
 	private Date lastModifiedDate=new Date();
 	
@@ -44,6 +48,15 @@ public class Section {
 	}
 	
 	
+	
+	public float getSection_weightage() {
+		return section_weightage;
+	}
+
+	public void setSection_weightage(float section_weightage) {
+		this.section_weightage = section_weightage;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -19,7 +19,7 @@ import com.arrkgroup.apps.model.AssesseesAssessor;
 
 
 public class AssessorAssessmentBean {
-	
+
 	int id;
 
 	int objectiveid;
@@ -27,15 +27,18 @@ public class AssessorAssessmentBean {
 	int roleid;
 	private Date last_modified_date;
 
+	int projectId;
+
+
 int weightage;
-	
-	
+
+
 	private int self_rating;
 
 
 	private int self_score;
 
-	
+
 	private int manager_rating;
 
 	private int manager_score;
@@ -48,13 +51,31 @@ int weightage;
 
 
 	private int max_score;
-	
-	 
+
+
 
 	    private int employee_id;
 
 
 
+
+
+
+
+
+
+
+
+		public int getProjectId() {
+			return projectId;
+		}
+
+
+
+
+		public void setProjectId(int projectId) {
+			this.projectId = projectId;
+		}
 
 
 
@@ -113,7 +134,7 @@ int weightage;
 		}
 
 
-		
+
 
 
 		public int getSectionid() {
@@ -256,8 +277,8 @@ int weightage;
 
 
 
-	
 
-	
-	
+
+
+
 }
