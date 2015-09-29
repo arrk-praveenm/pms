@@ -208,11 +208,12 @@ public class AssignObjectivesController {
 			@ModelAttribute("textAreas") String saveObjectDesc,
 			@ModelAttribute("updateobjectiveId") String saveObjectiveId,
 			@ModelAttribute("updateSectionid") String updateSectionid,
-			@RequestParam("weightage") String weightage,
+			//@RequestParam("weightage") String weightage,
 			Principal principal,
 			BindingResult result, Map<String, Object> model) {
 		AssesseeObjectives assesseeObjectives=new AssesseeObjectives();
 		assesseeObjectives.setDescription(saveObjectDesc);
+		String weightage="1";
 		if(Integer.parseInt(weightage)!=0)
 		{
 		assesseeObjectives.setWeightage(modelObjectService.findWeightageById(Integer.parseInt(weightage)));
@@ -324,6 +325,27 @@ public class AssignObjectivesController {
 		return allsectionObjectives;
 
 	}
+	
+	
+	@RequestMapping(value = "/assessor/ajax/saveWeightage", method = RequestMethod.GET)
+	public @ResponseBody
+	boolean saveWeightage(@RequestParam("weightage") String weightageId,
+			@RequestParam("objectiveId") String objectiveId)
+			{
+		log.info("Weightage "+weightageId);
+		log.info("objectiveId "+objectiveId);
+		
+		if(Integer.parseInt(weightageId)!=0)
+		{
+			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), Integer.parseInt(weightageId));
+	
+		}else{
+			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), DEFAULT_WEIGHTAGE_ID);
+	
+		}
+		
+		return true;
+			}
 //	convertStringToDate(assessmentFromDate.substring(0, 10))
 	private Date convertStringToDate(String datestring)
 	{

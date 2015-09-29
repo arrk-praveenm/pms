@@ -155,6 +155,12 @@ private Date convertStringToDate(String datestring)
 		// TODO Auto-generated method stub
 		return assignObjectivesDao.getALLAssesseObjectivesBySectionId(assesseeObjectives);
 	}
+
+	@Override
+	public boolean saveWeightage(int objectiveId, int weightageId) {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.saveWeightage(objectiveId, weightageId);
+	}
 	
 	
 
