@@ -42,9 +42,40 @@ $(document).ready(function(){
 
 	      	ajaxCall(data);
 			 }else{
+				 
+				 
+				 if([[${projectId}]]!=null){
+					 
+				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
+						  {
+					
+
+					if(  $(this).val()==[[${roleid}]])
+						{
+						  $('.test').removeClass("active test").addClass("test");
+
+				          $('li[name="' + [[${sectionToLoad}]] + '"]').addClass("active test");
+						$(this).attr("selected","selected");
+				     	var data={selectedAsseesseID:0,
+				      			sectionToLoad:[[${sectionToLoad}]],
+				      			role_id:[[${roleid}]],
+				      			projectId:[[${projectId}]]
+				      			};
+
+
+				      	ajaxCall(data);
+						}
+					  
+						   /* if( jQuery(this).text() == 'Monday' )
+						   {
+						    jQuery(this).attr("selected","selected");
+						    } */
+						  });
+				 }else{
 		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
 		 $("#margin").hide();
+				 }
 			 }
 		 }
 	 else{
@@ -77,9 +108,7 @@ $(document).ready(function(){
 
       if($("#selectAssessee").val()!=0)
           {
-        //  alert("Test"+$("#selectAssessee").val());
-        //  alert([[${roleid}]]);
-         // alert([[${sectionToLoad}]]);
+      
     	  $("#selectRoleRow").hide();
 
       /*     $('.test').removeClass("active test").addClass("test");
@@ -110,13 +139,15 @@ $(document).ready(function(){
 
 $("#submitbtn").on("click",function(){
 
-
-	//alert("role is " +);
 	   var classValue="help-block";
-
+	   
 	 //incase of employee
 if($("#selectAssessee").val()==0)
 	{
+
+	$("#projectId").val($(selectedRole).children(":selected").attr("name"));
+	$("#roleid").val($(selectedRole).val());
+	
 	  if($("#selfrating").val() == null)
 	   {
 
@@ -138,7 +169,7 @@ if($("#selectAssessee").val()==0)
 //incase of manager or Assessor
 if($("#selectAssessee").val()>0)
 	{
-	  if($("#selfrating").val() == null)
+	 /*  if($("#selfrating").val() == null)
 	   {
 
 	  $("#selfrating").css({"border-color": "#a94442"});
@@ -151,7 +182,7 @@ if($("#selectAssessee").val()>0)
 		   {
 		   return true;
 
-		   }
+		   } */
 
 	   if($("#manager_rating").val() == null)
 		   {
@@ -195,10 +226,10 @@ $(".test").on("click",function(){
 
 	var id = $(selectAssessee).children(":selected").attr("name");
 
-
+	$("#sectionid").val($(this).attr("name"));
 
 	if($("#selectAssessee").val()==0)
-   	 {	
+   	 {		
 		
 	   	 //deleted
 		 if($("#selectedRole").val()>0)
@@ -213,6 +244,7 @@ $(".test").on("click",function(){
 				};
 		 ajaxCall(data);
 		   	 }else{
+		   	
 		   		var list=[[${allRolesofCurrentUser}]];
 
 		   		var data={selectedAsseesseID:0,
@@ -249,15 +281,15 @@ $("#selectedRole").on('change', function(){
  if($("#selectedRole").val()!=0)
   	 {
 
-
-	var data={selectedAsseesseID:0,
+	 $("#section0").trigger("click");
+	/* var data={selectedAsseesseID:0,
 			sectionToLoad:0,
 			role_id:$("#selectedRole").val(),
 			projectId: $(selectedRole).children(":selected").attr("name")
 			};
 
 
-	 ajaxCall(data);
+	 ajaxCall(data); */
   	 }else{
 
   		 $("#selectedAssesseeSummary").hide();
@@ -313,6 +345,7 @@ function ajaxCall(data)
             	 var managerRating="managerRating"+response[row].id;
             	 var managerScore="managerScore"+response[row].id;
             	 var managerComments="managerComments"+response[row].id;
+            	 var employeeComments="employeeComments"+response[row].id;
             var btn="btn"+response[row].id;
 
 
@@ -320,12 +353,16 @@ function ajaxCall(data)
             	 var classValue=" text-center";
             	 var hidden="visibility:hidden";
             	 var comments=response[row].manager_comments;
+            	 var asscomments= response[row].assessee_comments;
 
             	 if(comments == null)
             		 {
             		 comments="";
             		 }
-
+            	 if(asscomments == null)
+        		 {
+            		 asscomments="";
+        		 }
 
             	  var rowdata = $(  "<tr id="+ response[row].id +" />")
       		    $("#objective_table").append(rowdata);
@@ -333,13 +370,15 @@ function ajaxCall(data)
       		    rowdata.append($("<td id="+weightage+" class="+classValue+" name="+response[row].weightage.id+" >" + response[row].weightage.weightage + "</td>"));
       		    rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
+      		
     		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
     		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>"));
-
+    		    rowdata.append($("<td id="+employeeComments+"  style="+hidden+"   class="+classValue+">" + asscomments + "</td>"));
     		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>"));
 
-
+    		     $("#"+managerComments).hide();
+    		     $("#"+employeeComments).hide();
 
              }
 
@@ -352,7 +391,7 @@ function ajaxCall(data)
 		   	  $("#selfrating").css({"border-color": "#d2d6de"});
 
 		   	 $("#roleid").val($("#selectedRole").val());
-
+		   
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
 		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
 		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
@@ -360,8 +399,8 @@ function ajaxCall(data)
 		    	  var managercomment='#'+'managerComments'+$(this).attr("name");
 		    	    var selfRating_id='#'+'selfRating'+$(this).attr("name");
 		    	  var selfScore_id='#'+'selfScore'+$(this).attr("name");
-
-
+		    	  var employeeComments='#'+'employeeComments'+$(this).attr("name");
+		    		
 		    	  $("#objective_modal").val($(objective_id).text());
 
 
@@ -404,12 +443,13 @@ function ajaxCall(data)
 		    //	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
 		    	  $("#objectiveid").val($(this).attr("name"));
-
+					
+		    	  $("#employeeComments").val($(employeeComments).text());
 		    	  $("#manager_comments").val($(managercomment).text());
-
 
 		    	  if($("#selectAssessee").val()==0)
 		    	   	 {
+		    		  $("#userType").val("assesse");
 		    		  $("#objectiveSection").children().prop('disabled',true);
 		    		  /*
 		    		    //$("#weightagediv").find("select").prop("readonly",true);
@@ -421,7 +461,7 @@ function ajaxCall(data)
 				 		//find(':input').prop('disabled', false);
 				 		$("#managerSection select:not(:selected)").attr('disabled', true);
 				 		$("#managerSection select").attr('readonly', true); */
-				 		 $("#weightagediv option:not(:selected)").attr('disabled', true);
+				 		 $("#weightagediv").find("select").prop("disabled",true);
 						$("#managerSection").find("input,textarea,select").prop("disabled",true);
 				 		$("#selfscore").attr("disabled",true);
 				 		$("#objective_modal").attr("disabled",true);
@@ -430,6 +470,8 @@ function ajaxCall(data)
 
 	    			  } else
 		 		 {
+
+	    			 		 $("#userType").val("assessor");
 		 		$("#objectiveSection").children().prop('disabled',true);
 		 		$("#employeeSection").find("input,textarea,select").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
@@ -694,7 +736,8 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="projectId"
 							th:value="${projectId}" th:field="*{projectId}" />
-
+							 
+<input type="hidden" id="userType" th:field="*{userType}" value="assesse"/>
 
 	 <input type="hidden"
 							id="current_section_id" name="current_section_id"
@@ -790,7 +833,7 @@ function ajaxCall(data)
 												<th>Self Score</th>
 												<th>Manager Rating</th>
 												<th>Manager Score</th>
-												<th> </th>
+												
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -872,6 +915,7 @@ function ajaxCall(data)
 
 
 		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -936,7 +980,8 @@ function ajaxCall(data)
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="sr-only">Employee Comments</label>
-									<textarea id="comments" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+									<textarea id="employeeComments" th:field="*{employee_comments}" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+									
 								</div>
 							</div>
 						  </div>
@@ -986,6 +1031,7 @@ function ajaxCall(data)
 
 					  </div>
 					  <div class="modal-footer">
+					 
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
 						<button id="submitbtn" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
 					  </div>

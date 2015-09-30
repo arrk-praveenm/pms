@@ -265,10 +265,12 @@ float managerscore=manger_score;
 
 	@Override
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
+		
+	
 		// TODO Auto-generated method stub
 		 int n=	entityManager
 					.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
-							).setParameter("comments",bean.getEmployee_comments())
+							).setParameter("assessee_comments",bean.getEmployee_comments())
 							.setParameter("assesseeRatingId", bean.getSelf_rating())
 							.setParameter("self_score", bean.getSelf_score())
 							.setParameter("weight", bean.getWeightage())
@@ -291,6 +293,15 @@ float managerscore=manger_score;
 				.createNamedQuery(AssesseesAssessor.FIND_ROLES_OF_ASSESSEE,
 						AssesseesAssessor.class).setParameter("email", email)
 				.getResultList();
+	}
+	@Override
+	public AssesseeObjectives getAssesseObjective(int assesseeObjectiveId) {
+		// TODO Auto-generated method stub
+		return entityManager
+				.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_ASSESSOR_ID,AssesseeObjectives.class
+						)
+						.setParameter("assessebjectiveId", assesseeObjectiveId).getSingleResult();
+
 	}
 
 

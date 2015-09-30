@@ -29,7 +29,7 @@ public class AssessorAssessmentBean {
 
 	int projectId;
 
-
+ String userType;
 int weightage;
 
 
@@ -117,6 +117,20 @@ int weightage;
 
 		public void setObjectiveid(int objectiveid) {
 			this.objectiveid = objectiveid;
+		}
+
+
+
+
+		public String getUserType() {
+			return userType;
+		}
+
+
+
+
+		public void setUserType(String userType) {
+			this.userType = userType;
 		}
 
 

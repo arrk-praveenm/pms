@@ -137,10 +137,13 @@ public class AssessorAssessmentController {
 
 		log.info(" request for objectives to load for section id is "
 				+ sectionToLoad);
-System.out.println("test ");
+
 		List<AssesseeObjectives> allassesseeObjectives=null;
 try{
 		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id), Integer.parseInt(projectId));
+		 
+		 
+		 
 }catch(Exception e)
 {
 	System.out.println(e.getMessage());
@@ -303,10 +306,12 @@ List<SectionConsolidatedBean> getsummarydata(
 
 
 	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST)
-	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,BindingResult error,Model model,Principal principal)
+	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+		//	@ModelAttribute("userType") String userType,
+			BindingResult error,Model model,Principal principal)
 	{
-
-
+		//String userType="Test";
+//assesse
 /*
 	log.info("manager rating is  " + bean.getManager_rating());
 	log.info("manager rating is  " + bean.getManager_comments());
@@ -339,9 +344,12 @@ List<SectionConsolidatedBean> getsummarydata(
 
 
 		model.addAttribute("roleid", bean.getRoleid());
-		log.info("role id "+bean.getRoleid());
+		model.addAttribute("projectId", bean.getProjectId());
+		log.info(bean.getProjectId()+" role id "+bean.getRoleid());
 		boolean flag=false;
-		if(bean.getSelf_rating()!=0)
+		
+		
+		if(bean.getUserType().equalsIgnoreCase("assesse"))
 		{
 
 			//saving assessee data
@@ -352,7 +360,7 @@ List<SectionConsolidatedBean> getsummarydata(
 					bean.getEmployee_id(), bean.getRoleid());*/
 
 
-		}else if(bean.getManager_rating()!=0){
+		}else if(bean.getUserType().equalsIgnoreCase("assessor")){
 
 			flag= assessorAssessmentService.saveAssessorAssessment(bean);
 			isAssessorOREmployee=true;

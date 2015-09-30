@@ -40,6 +40,7 @@ public interface AssessorAssessmentDao {
 	
 	public int updateSectionConsolidatedData(int self_score,int manger_score,int max_score,int section_id,int assessor_id);
 	
+	public AssesseeObjectives getAssesseObjective(int assesseeObjectiveId);
 	
 
 	

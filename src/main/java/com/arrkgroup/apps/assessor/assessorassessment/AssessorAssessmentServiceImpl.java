@@ -159,7 +159,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 	@Override
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
 		// TODO Auto-generated method stub
-		
+		bean.setWeightage(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getWeightage().getId());
 		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 		return assessorAssessmentDao.saveSelfAssessment(bean);
 	}
