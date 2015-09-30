@@ -29,7 +29,7 @@ public class AssignObjectivesServiceImpl implements AssignObjectivesService{
 	@Autowired
 	ModelObjectDao modelObjectiveDao;
 	
-	private static final String STATUS = "Initiated";
+	private static final String STATUS = "assignedObjectives";
 	private static final String EDIT_FLAG = "false";
 	private static final int DEFAULT_WEIGHTAGE_ID = 1;
 	private static final int DEFAULT_RATING_ID = 1;
