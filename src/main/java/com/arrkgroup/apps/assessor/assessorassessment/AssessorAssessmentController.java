@@ -337,8 +337,9 @@ List<SectionConsolidatedBean> getsummarydata(
 	//	boolean flag = assessorAssessmentService.saveSectionData(bean);
 
 
-
+		model.addAttribute("projectid", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
+		model.addAttribute("assesseeid", bean.getEmployee_id());
 		log.info("role id "+bean.getRoleid());
 		boolean flag=false;
 		if(bean.getSelf_rating()!=0)
@@ -374,7 +375,7 @@ List<SectionConsolidatedBean> getsummarydata(
 
 		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
 
-
+      System.out.println();
 
 
 
