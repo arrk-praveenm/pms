@@ -10,10 +10,13 @@ $(document).ready(function(){
 
 
 	   var selectedSection = $('#First_section_id').val();
-	  var  selectedAsseesse= $("#selectAssessee").val();
+	  var  selectedAsseesse= [[${assesseeid}]];
+
 	  var role=$("#roleid").val();
-	  var projectId=1;
+	  var projectId=[[${projectid}]];
 	  var summarydata;
+      var roleid=[[${roleid}]];
+
 
 
 	 if([[${assessorAssessees}]]==null)
@@ -42,8 +45,7 @@ $(document).ready(function(){
 
 	      	ajaxCall(data);
 			 }else{
-				 
-				 
+				
 				 if([[${projectId}]]!=null){
 					 
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
@@ -81,9 +83,50 @@ $(document).ready(function(){
 	 else{
 	//	//for Assessor screen
 
-	$('select option[value="' + selectedAsseesse + '"]').attr("selected","");
+/* 	$('select option[value="' + selectedAsseesse + '"]').attr("selected","");
 
-	  $('option[name="' + role + '"]'+' ' +'option[id="'+projectId+'"]').attr("selected","selected");
+	  $('option[name="' + roleid + '"]').attr("selected","selected");
+
+	  $('option[id="' + projectId + '"]').attr("selected","selected");
+
+
+	   */
+
+
+
+
+
+
+	  $("#selectAssessee").find("option[id="+[[${projectId}]]+"]").each(function()
+		      {
+
+
+
+		      if(selectedAsseesse == $(this).val())
+		      {
+
+
+
+		     		if($(this).attr("name") == roleid)
+		    		 {
+
+
+
+		  			    $(this).attr("selected","selected");
+		    		 }
+
+
+		      }
+
+
+		        });
+
+
+
+
+
+
+
 
 
       if (selectedAsseesse > 0) {
@@ -229,11 +272,13 @@ $(".test").on("click",function(){
 	$("#sectionid").val($(this).attr("name"));
 
 	if($("#selectAssessee").val()==0)
-   	 {		
-		
+
+   	 {
+
+
 	   	 //deleted
 		 if($("#selectedRole").val()>0)
-		   	 {	
+		   	 {
 			  $("#roleid").val($("#selectedRole").val());
 
 		var data={selectedAsseesseID:0,
@@ -666,8 +711,8 @@ function ajaxCall(data)
              {
         	 pointvalue=0;
              }
-     
-     		 
+
+
    		 // var pointvalue=value;
 
    		$('input[name="' + point + '"]').val(pointvalue);

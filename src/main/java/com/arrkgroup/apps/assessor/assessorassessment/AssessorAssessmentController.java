@@ -204,10 +204,10 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 					Role role=new Role();
 					Project proj=new Project();
 					 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
-					// employee=assessorAssessmentService.getAssesseeBean(assessees.getAssesseeId().getId());
+					
 					proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
 
-					// String Name=employee.getFullname();
+					
 					assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()+" - "+role.getTitle());
 					assesseRoleBean.setRoleId(role.getId());
 					assesseRoleBean.setProjectId(proj.getId());
@@ -221,7 +221,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 			 {
 			 allObjectives =assessorAssessmentService.getAssesseeObjectives(sectionIDtoLoad, modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId(), allRolesofCurrentUser.get(0).getRoleId(),allRolesofCurrentUser.get(0).getProjectId());
 			 }
-					 //modelObjectService.getObjectiveBySectionId(sectionIDtoLoad);
+					
 			System.out.println("User Roles Size"+allRolesofCurrentUser.size());
 		}
 
@@ -239,14 +239,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 		model.addAttribute("allSectionsBeans",
 				assessorAssessmentService.getAllSectionsBean());
 
-		/*
-		 model.put("allObjectives", allObjectives);
-		model.addAttribute("assessorAssessees", assessorAssessees);
-
-		model.addAttribute("managerRating", modelObjectService.getAllRatings());
-		model.addAttribute("weightageList",
-				modelObjectService.getAllWeightages());
-*/
+	
 
 		model.addAttribute("allObjectives", allObjectives);
 		model.addAttribute("allRolesofCurrentUser", allRolesofCurrentUser);
@@ -307,29 +300,9 @@ List<SectionConsolidatedBean> getsummarydata(
 
 	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST)
 	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
-		//	@ModelAttribute("userType") String userType,
-			BindingResult error,Model model,Principal principal)
+					BindingResult error,Model model,Principal principal)
 	{
-		//String userType="Test";
-//assesse
-/*
-	log.info("manager rating is  " + bean.getManager_rating());
-	log.info("manager rating is  " + bean.getManager_comments());
-	log.info("weightafe is  " + bean.getWeightage());
 
-	model.addAttribute("roleid", bean.getRoleid());
-	log.info("role id " + bean.getRoleid());
-
-	boolean flag = assessorAssessmentService.saveSectionData(bean);
-	assessorAssessmentService.saveSectionSummary(bean.getSectionid(),
-			bean.getEmployee_id(), bean.getRoleid());
-
-	setDefaultLoad(model, "mahesh.mohite@arrkgroup.com",
-			bean.getSectionid());
-
-
-
-	*/
 
 
 
@@ -339,13 +312,15 @@ List<SectionConsolidatedBean> getsummarydata(
 		log.info("Employee rating is  "+bean.getSelf_rating());
 		log.info("weightage is  "+bean.getWeightage());
 
-	//	boolean flag = assessorAssessmentService.saveSectionData(bean);
 
 
 
-		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("projectId", bean.getProjectId());
-		log.info(bean.getProjectId()+" role id "+bean.getRoleid());
+		model.addAttribute("roleid", bean.getRoleid());
+		model.addAttribute("assesseeid", bean.getEmployee_id());
+		
+		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());	
+
 		boolean flag=false;
 		
 		
@@ -356,8 +331,7 @@ List<SectionConsolidatedBean> getsummarydata(
 			flag=assessorAssessmentService.saveSelfAssessment(bean);
 			isAssessorOREmployee=false;
 
-		/*	assessorAssessmentService.saveSectionSummary(bean.getSectionid(),
-					bean.getEmployee_id(), bean.getRoleid());*/
+		
 
 
 		}else if(bean.getUserType().equalsIgnoreCase("assessor")){
@@ -376,13 +350,13 @@ List<SectionConsolidatedBean> getsummarydata(
 					bean.getEmployee_id(), bean.getRoleid(),bean.getProjectId());
 		}
 
-		//= assessorAssessmentService.saveAssessorAssessment(bean);
+		
 
 		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
 		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
 
-
+      System.out.println();
 
 
 
