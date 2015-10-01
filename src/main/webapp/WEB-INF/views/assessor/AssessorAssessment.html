@@ -49,13 +49,11 @@ $(document).ready(function(){
 
 	      	ajaxCall(data);
 			 }else{
-			
-				 
 				 if([[${projectId}]]!=null){
-					 
+
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
 						  {
-					
+
 
 					if(  $(this).val()==[[${roleid}]])
 						{
@@ -72,7 +70,7 @@ $(document).ready(function(){
 
 				      	ajaxCall(data);
 						}
-					  
+
 						   /* if( jQuery(this).text() == 'Monday' )
 						   {
 						    jQuery(this).attr("selected","selected");
@@ -160,7 +158,7 @@ $(document).ready(function(){
 
       if($("#selectAssessee").val()!=0)
           {
-      
+
     	  $("#selectRoleRow").hide();
 
       /*     $('.test').removeClass("active test").addClass("test");
@@ -192,14 +190,14 @@ $(document).ready(function(){
 $("#submitbtn").on("click",function(){
 
 	   var classValue="help-block";
-	   
+
 	 //incase of employee
 if($("#selectAssessee").val()==0)
 	{
 
 	$("#projectId").val($(selectedRole).children(":selected").attr("name"));
 	$("#roleid").val($(selectedRole).val());
-	
+
 	  if($("#selfrating").val() == null)
 	   {
 
@@ -298,7 +296,7 @@ $(".test").on("click",function(){
 				};
 		 ajaxCall(data);
 		   	 }else{
-		   	
+
 		   		var list=[[${allRolesofCurrentUser}]];
 
 		   		var data={selectedAsseesseID:0,
@@ -336,7 +334,7 @@ $("#selectedRole").on('change', function(){
   	 {
 	 $("#buttonsDiv").show();
 	 $("#section0").trigger("click");
-	
+
 	 $("#projectId").val($(selectedRole).children(":selected").attr("name"));
 	// $(selectedRole).children(":selected").attr("name")
 	/* var data={selectedAsseesseID:0,
@@ -427,7 +425,7 @@ function ajaxCall(data)
       		    rowdata.append($("<td id="+weightage+" class="+classValue+" name="+response[row].weightage.id+" >" + response[row].weightage.weightage + "</td>"));
       		    rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-      		
+
     		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
     		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>"));
@@ -471,7 +469,7 @@ function ajaxCall(data)
 		   	  $("#selfrating").css({"border-color": "#d2d6de"});
 
 		   	 $("#roleid").val($("#selectedRole").val());
-		   
+
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
 		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
 		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
@@ -480,7 +478,7 @@ function ajaxCall(data)
 		    	    var selfRating_id='#'+'selfRating'+$(this).attr("name");
 		    	  var selfScore_id='#'+'selfScore'+$(this).attr("name");
 		    	  var employeeComments='#'+'employeeComments'+$(this).attr("name");
-		    		
+
 		    	  $("#objective_modal").val($(objective_id).text());
 
 
@@ -523,7 +521,7 @@ function ajaxCall(data)
 		    //	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
 		    	  $("#objectiveid").val($(this).attr("name"));
-					
+
 		    	  $("#employeeComments").val($(employeeComments).text());
 		    	  $("#manager_comments").val($(managercomment).text());
 
@@ -541,6 +539,29 @@ function ajaxCall(data)
 				 		//find(':input').prop('disabled', false);
 				 		$("#managerSection select:not(:selected)").attr('disabled', true);
 				 		$("#managerSection select").attr('readonly', true); */
+				 		var projectValue=$(selectedRole).children(":selected").attr("name");
+				 		var roleValue=$("#selectedRole").val()
+				 		
+				 		if([[${allRolesofCurrentUser}]]!=0)
+					 	{
+								for(itr in [[${allRolesofCurrentUser}]])
+									{
+										if([[${allRolesofCurrentUser}]][itr].projectId==projectValue)
+											{
+											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
+												{
+												
+												if([[${allRolesofCurrentUser}]][itr].assessmentStatus!="AssessementCompleted")
+													{
+													$("#managerSection").hide();
+													}
+												}
+											}
+									
+									}
+						 	
+						 	}
+					 	
 				 		 $("#weightagediv").find("select").prop("disabled",true);
 						$("#managerSection").find("input,textarea,select").prop("disabled",true);
 				 		$("#selfscore").attr("disabled",true);
@@ -816,7 +837,7 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="projectId"
 							th:value="${projectId}" th:field="*{projectId}" />
-							 
+
 <input type="hidden" id="userType" th:field="*{userType}" value="assesse"/>
 
 	 <input type="hidden"
@@ -882,16 +903,16 @@ function ajaxCall(data)
 
 				 	<div class="row col-sm-6 pull-left" id="buttonsDiv">
 			
-							<button class="btn btn-info" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessor Submit</button>
+							<button class="btn btn-success" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-check"></i> Assessor Submit</button>
 						
 						
-							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessee Submit</button>
+							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-user"></i> Assessee Submit</button>
 						
 						
-							<button class="btn btn-info" id="dispute" type="button"><i class="fa fa-pencil"></i> Dispute</button>
+							<button class="btn btn-danger" id="dispute" type="button"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
 					
 					
-							<button class="btn btn-default" id="closeDispute" type="button"><i class="fa fa-pencil"></i> Close Accessement</button>
+							<button class="btn btn-warning" id="closeDispute" type="button"><i class="fa fa-user-times"></i> Close Accessement</button>
 						
 					</div>
  
@@ -934,7 +955,7 @@ function ajaxCall(data)
 												<th>Self Score</th>
 												<th>Manager Rating</th>
 												<th>Manager Score</th>
-												
+
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -980,26 +1001,30 @@ function ajaxCall(data)
 						</div>
 
 
-						
+
 
 
 					</div>
 
-				<!--  	<div class="row col-sm-12" id="buttonsDiv">
-			
-							<button class="btn btn-info" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessor Submit</button>
+
+				<!--  	
 						
-						
+
+				 	<div class="row col-sm-12" id="buttonsDiv">
+
+							<button class="btn btn-info" id="assessorSubmit" type="button"><i class="fa fa-pencil"></i> Assessor Submit</button>
+
+
 							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessee Submit</button>
-						
-						
+
+
 							<button class="btn btn-info" id="dispute" type="button"><i class="fa fa-pencil"></i> Dispute</button>
-					
-					
+
+
 							<button class="btn btn-default" id="closeDispute" type="button"><i class="fa fa-pencil"></i> Close Accessement</button>
-						
+
 					</div>
-  -->
+-->
 
 
 				</div>
@@ -1029,7 +1054,7 @@ function ajaxCall(data)
 
 
 		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		
+
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -1041,7 +1066,7 @@ function ajaxCall(data)
 							<div class="col-md-9">
 								<div class="form-group" id="objectiveDesc">
 									<label class="sr-only">Objectives</label>
-									<textarea id="objective_modal"  row="2" class="form-control" Placeholder="Objectives"></textarea>
+									<textarea id="objective_modal"  row="4" class="form-control" Placeholder="Objectives"></textarea>
 								</div>
 							</div>
 							<div class="col-md-3">
@@ -1095,7 +1120,7 @@ function ajaxCall(data)
 								<div class="form-group">
 									<label class="sr-only">Employee Comments</label>
 									<textarea id="employeeComments" th:field="*{employee_comments}" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
-									
+
 								</div>
 							</div>
 						  </div>
@@ -1145,7 +1170,7 @@ function ajaxCall(data)
 
 					  </div>
 					  <div class="modal-footer">
-					 
+
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
 						<button id="submitbtn" type="submit" class="btn btn-primary" name="save" value="Save"><i class="fa fa-check"></i> Save</button>
 					  </div>

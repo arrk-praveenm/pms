@@ -35,8 +35,10 @@ public class AssessorAssessmentController {
 
 	private final String ASSESSORASSESSMENT = "assessor/AssessorAssessment";
 	private final String LOGIN = "login/login";
-
-
+	private final String SELFRATING_COMPLETED="selfRatingCompleted";
+	private final String ASSESSEMENT_COMPLETED="AssessementCompleted";
+	private static final String STATUS = "assignedObjectives";
+	
 	private final Logger log = LoggerFactory
 			.getLogger(AssessorAssessmentController.class);
 
@@ -142,9 +144,9 @@ public class AssessorAssessmentController {
 		List<AssesseeObjectives> allassesseeObjectives=null;
 try{
 		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id), Integer.parseInt(projectId));
-		 
-		 
-		 
+
+
+
 }catch(Exception e)
 {
 	System.out.println(e.getMessage());
@@ -187,7 +189,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 			proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
 
 			 String Name=employee.getFullname();
-				employee.setFullname(Name+"  -  "+proj.getProject_name()+" - "+role.getTitle());
+				employee.setFullname(proj.getProject_name()+" - "+role.getTitle()+" - "+Name+"  -  "+assessees.getStatus());
 			   employee.setRole_id(role.getId());
 			   employee.setProjectId(proj.getId());
 				assessorAssessees.add(employee);
@@ -205,13 +207,14 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 					Role role=new Role();
 					Project proj=new Project();
 					 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
-					
+
 					proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
 
-					
-					assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()+" - "+role.getTitle());
+
+					assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()+" - "+role.getTitle()+" - "+assessees.getStatus());
 					assesseRoleBean.setRoleId(role.getId());
 					assesseRoleBean.setProjectId(proj.getId());
+					assesseRoleBean.setAssessmentStatus(assessees.getStatus());
 					allRolesofCurrentUser.add(assesseRoleBean);
 
 
@@ -222,7 +225,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 			 {
 			 allObjectives =assessorAssessmentService.getAssesseeObjectives(sectionIDtoLoad, modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId(), allRolesofCurrentUser.get(0).getRoleId(),allRolesofCurrentUser.get(0).getProjectId());
 			 }
-					
+
 			System.out.println("User Roles Size"+allRolesofCurrentUser.size());
 		}
 
@@ -240,7 +243,7 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 		model.addAttribute("allSectionsBeans",
 				assessorAssessmentService.getAllSectionsBean());
 
-	
+
 
 		model.addAttribute("allObjectives", allObjectives);
 		model.addAttribute("allRolesofCurrentUser", allRolesofCurrentUser);
@@ -319,12 +322,12 @@ List<SectionConsolidatedBean> getsummarydata(
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
-		
-		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());	
+
+		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());
 
 		boolean flag=false;
-		
-		
+
+
 		if(bean.getUserType().equalsIgnoreCase("assesse"))
 		{
 
@@ -332,7 +335,7 @@ List<SectionConsolidatedBean> getsummarydata(
 			flag=assessorAssessmentService.saveSelfAssessment(bean);
 			isAssessorOREmployee=false;
 
-		
+
 
 
 		}else if(bean.getUserType().equalsIgnoreCase("assessor")){
@@ -351,7 +354,7 @@ List<SectionConsolidatedBean> getsummarydata(
 					bean.getEmployee_id(), bean.getRoleid(),bean.getProjectId());
 		}
 
-		
+
 
 		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
@@ -375,17 +378,27 @@ List<SectionConsolidatedBean> getsummarydata(
 		
 		if(bean.getEmployee_id()==0)
 		{
-			//check objective status and return success or failure message
 			
+			//ASSESSEMENT_COMPLETED
+			
+			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId());
+			bean.setAssesseeAssessorStatus(STATUS);
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean, SELFRATING_COMPLETED);
 			isAssessorOREmployee=false;
 		}else if(bean.getEmployee_id()!=0)
 		{
 			log.info("Employee ID ");
-			//check objective status and return success or failure message
+			
 			Map<Integer, List<AssesseeObjectives>> errorMessage=	assessorAssessmentService.checkAllObjectiveStatus(bean);
 			
-			
+			if(errorMessage==null)
+			{
+				//check objective status and return success or failure message
+				bean.setAssesseeAssessorStatus(SELFRATING_COMPLETED);
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean, ASSESSEMENT_COMPLETED);
+			}else{
 			model.addAttribute("errorMessage",errorMessage);
+			}
 			isAssessorOREmployee=true;
 		}
 		

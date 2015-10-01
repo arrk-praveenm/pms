@@ -34,6 +34,12 @@ import javax.persistence.Table;
 					   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
 	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate where id = :assesseesAssessorId"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ROLES_OF_ASSESSEE, query = "from AssesseesAssessor aa where aa.assesseeId.id=(select id from  Employee ee where ee.email=:email) "),
+
+
+	@NamedQuery(name = AssesseesAssessor.UPDATE_STATUS, query = "update AssesseesAssessor set status=:status where projectId.id=:project_id "
+			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition ")
+
+
 })
 public class AssesseesAssessor {
 	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
@@ -51,6 +57,8 @@ public class AssesseesAssessor {
 	public static final String FIND_ASSESSEES_BY_ID = "AssesseesAssessor.FIND_ASSESSEES_BY_ID";
 
 
+
+	public static final String UPDATE_STATUS = "AssesseesAssessor.UPDATE_STATUS";
 
 
 	@Id

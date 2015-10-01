@@ -29,10 +29,10 @@ public class AssessorAssessmentBean {
 
 	int projectId;
 
- String userType;
-int weightage;
-
-
+	String userType;
+ 	int weightage;
+    String assesseeAssessorStatus; 
+ 	
 	private int self_rating;
 
 
@@ -103,6 +103,20 @@ int weightage;
 
 		public void setRoleid(int roleid) {
 			this.roleid = roleid;
+		}
+
+
+
+
+		public String getAssesseeAssessorStatus() {
+			return assesseeAssessorStatus;
+		}
+
+
+
+
+		public void setAssesseeAssessorStatus(String assesseeAssessorStatus) {
+			this.assesseeAssessorStatus = assesseeAssessorStatus;
 		}
 
 

@@ -42,5 +42,7 @@ public interface AssessorAssessmentService {
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean);
 
 	public Map<Integer, List<AssesseeObjectives>> checkAllObjectiveStatus(AssessorAssessmentBean bean);
+	
+	public boolean  updateAssesseesAssessorStatus(AssessorAssessmentBean bean,String status);
 
 }

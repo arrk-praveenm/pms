@@ -713,6 +713,9 @@ blockquote {
 .incomplete-row td {
 	background-color: #f2dede;
 }
+#objective_modal {
+	min-height: 80px;
+}
 @media max-width: 1199px) {
 
 }

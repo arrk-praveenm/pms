@@ -5,6 +5,7 @@ public class AssesseRoleBean {
 	int roleId;
 	int projectId;
 	String assesseeProjectRole;
+	String assessmentStatus;
 	
 	public int getRoleId() {
 		return roleId;
@@ -23,6 +24,12 @@ public class AssesseRoleBean {
 	}
 	public void setAssesseeProjectRole(String assesseeProjectRole) {
 		this.assesseeProjectRole = assesseeProjectRole;
+	}
+	public String getAssessmentStatus() {
+		return assessmentStatus;
+	}
+	public void setAssessmentStatus(String assessmentStatus) {
+		this.assessmentStatus = assessmentStatus;
 	}
 	
 	
