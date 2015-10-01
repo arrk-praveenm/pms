@@ -298,14 +298,14 @@ List<SectionConsolidatedBean> getsummarydata(
 
 
 
-	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST)
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params="save")
 	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
 					BindingResult error,Model model,Principal principal)
 	{
 
 
 
-
+		System.out.println("SAVE");
 		log.info("manager rating is  "+bean.getManager_rating());
 		log.info("manager comments is  "+bean.getManager_comments());
 		log.info("Employee score is  "+bean.getSelf_score());
@@ -360,6 +360,30 @@ List<SectionConsolidatedBean> getsummarydata(
 
 
 
+		return principal != null ? ASSESSORASSESSMENT : LOGIN;
+	}
+	
+	
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params="assesseeSubmit")
+	private String assesseeSubmit( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+					BindingResult error,Model model,Principal principal)
+	{
+		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		System.out.println("NEW");
+		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());
+		
+		if(bean.getEmployee_id()==0)
+		{
+			//check objective status and return success or failure message
+			
+			isAssessorOREmployee=false;
+		}
+		
+		model.addAttribute("projectId", bean.getProjectId());
+		model.addAttribute("roleid", bean.getRoleid());
+		model.addAttribute("assesseeid", bean.getEmployee_id());
+		System.out.println("Section "+bean.getSectionid());
+		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 	}
 

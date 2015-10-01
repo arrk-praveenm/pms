@@ -82,7 +82,7 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 	{
 
 		System.out.println();
-		
+
 
 		return entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID,
@@ -265,8 +265,8 @@ float managerscore=manger_score;
 
 	@Override
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean) {
-		
-	
+
+
 		// TODO Auto-generated method stub
 		 int n=	entityManager
 					.createNamedQuery(AssesseeObjectives.UPDATE_ASSESSE_OBJECTIVE_BY_OBJECTIVEID_V1
@@ -303,6 +303,40 @@ float managerscore=manger_score;
 						.setParameter("assessebjectiveId", assesseeObjectiveId).getSingleResult();
 
 	}
+
+
+
+
+	public boolean  updateAssesseesAssessorStatus(int assesse_id,String status,String statuscondition,int role_id, int projectId)
+
+	{
+
+
+ int count=	entityManager
+	.createNamedQuery(AssesseesAssessor.UPDATE_STATUS
+			).setParameter("assesseeId", assesse_id)
+						.setParameter("status", status)
+						.setParameter("roleId", role_id)
+						.setParameter("project_id", projectId)
+						.setParameter("statusCondition", statuscondition)
+			.executeUpdate();
+
+
+if(count>0)
+{
+	return true;
+}
+else
+{
+
+return false;
+}
+
+
+
+	}
+
+
 
 
 

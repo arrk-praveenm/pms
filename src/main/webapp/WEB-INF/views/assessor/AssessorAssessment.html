@@ -26,6 +26,10 @@ $(document).ready(function(){
 		 //for employee screen
 		 $("#selectAssesseeRow").hide();
 		 $("#margin").hide();
+		 $("#closeDispute").hide();
+		 $("#dispute").hide();
+		 $("#assessorSubmit").hide();
+		 //closeDispute assesseSubmit assessorSubmit dispute
 		 //selectRoleRow
 		 if([[${allObjectives}]]!=null)
 			 {
@@ -45,7 +49,6 @@ $(document).ready(function(){
 
 	      	ajaxCall(data);
 			 }else{
-
 				 if([[${projectId}]]!=null){
 
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
@@ -77,6 +80,7 @@ $(document).ready(function(){
 		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
 		 $("#margin").hide();
+		 $("#buttonsDiv").hide();
 				 }
 			 }
 		 }
@@ -94,7 +98,10 @@ $(document).ready(function(){
 
 
 
-
+	   $("#closeDispute").hide();
+		 $("#dispute").hide();
+		 $("#assesseSubmit").hide();
+		 //closeDispute assesseSubmit assessorSubmit dispute
 
 
 	  $("#selectAssessee").find("option[id="+[[${projectId}]]+"]").each(function()
@@ -168,7 +175,7 @@ $(document).ready(function(){
       	ajaxCall(data); */
           }else{
 
-
+        	  $("#buttonsDiv").hide();
         	  $("#selectRoleRow").hide();
 		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -249,7 +256,7 @@ if($("#selectAssessee").val()>0)
 $("#selectAssessee").on('change', function(){
 
 	if($("#selectAssessee").val() > 0)
-	 {
+	 {$("#buttonsDiv").show();
 	   $("#section0").trigger("click");
 
 	   $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
@@ -325,8 +332,11 @@ $("#selectedRole").on('change', function(){
 
  if($("#selectedRole").val()!=0)
   	 {
-
+	 $("#buttonsDiv").show();
 	 $("#section0").trigger("click");
+
+	 $("#projectId").val($(selectedRole).children(":selected").attr("name"));
+	// $(selectedRole).children(":selected").attr("name")
 	/* var data={selectedAsseesseID:0,
 			sectionToLoad:0,
 			role_id:$("#selectedRole").val(),
@@ -929,7 +939,20 @@ function ajaxCall(data)
 
 					</div>
 
+				 	<div class="row col-sm-12" id="buttonsDiv">
 
+							<button class="btn btn-info" id="assessorSubmit" type="button"><i class="fa fa-pencil"></i> Assessor Submit</button>
+
+
+							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessee Submit</button>
+
+
+							<button class="btn btn-info" id="dispute" type="button"><i class="fa fa-pencil"></i> Dispute</button>
+
+
+							<button class="btn btn-default" id="closeDispute" type="button"><i class="fa fa-pencil"></i> Close Accessement</button>
+
+					</div>
 
 
 
@@ -1081,7 +1104,7 @@ function ajaxCall(data)
 					  <div class="modal-footer">
 
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-						<button id="submitbtn" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+						<button id="submitbtn" type="submit" class="btn btn-primary" name="save" value="Save"><i class="fa fa-check"></i> Save</button>
 					  </div>
 				</div>
 			</div>
