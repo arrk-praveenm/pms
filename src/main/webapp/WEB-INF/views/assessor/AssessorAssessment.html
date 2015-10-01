@@ -45,12 +45,12 @@ $(document).ready(function(){
 
 	      	ajaxCall(data);
 			 }else{
-				
+
 				 if([[${projectId}]]!=null){
-					 
+
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
 						  {
-					
+
 
 					if(  $(this).val()==[[${roleid}]])
 						{
@@ -67,7 +67,7 @@ $(document).ready(function(){
 
 				      	ajaxCall(data);
 						}
-					  
+
 						   /* if( jQuery(this).text() == 'Monday' )
 						   {
 						    jQuery(this).attr("selected","selected");
@@ -151,7 +151,7 @@ $(document).ready(function(){
 
       if($("#selectAssessee").val()!=0)
           {
-      
+
     	  $("#selectRoleRow").hide();
 
       /*     $('.test').removeClass("active test").addClass("test");
@@ -183,14 +183,14 @@ $(document).ready(function(){
 $("#submitbtn").on("click",function(){
 
 	   var classValue="help-block";
-	   
+
 	 //incase of employee
 if($("#selectAssessee").val()==0)
 	{
 
 	$("#projectId").val($(selectedRole).children(":selected").attr("name"));
 	$("#roleid").val($(selectedRole).val());
-	
+
 	  if($("#selfrating").val() == null)
 	   {
 
@@ -289,7 +289,7 @@ $(".test").on("click",function(){
 				};
 		 ajaxCall(data);
 		   	 }else{
-		   	
+
 		   		var list=[[${allRolesofCurrentUser}]];
 
 		   		var data={selectedAsseesseID:0,
@@ -415,7 +415,7 @@ function ajaxCall(data)
       		    rowdata.append($("<td id="+weightage+" class="+classValue+" name="+response[row].weightage.id+" >" + response[row].weightage.weightage + "</td>"));
       		    rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
-      		
+
     		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
     		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
     		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>"));
@@ -436,7 +436,7 @@ function ajaxCall(data)
 		   	  $("#selfrating").css({"border-color": "#d2d6de"});
 
 		   	 $("#roleid").val($("#selectedRole").val());
-		   
+
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
 		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
 		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
@@ -445,7 +445,7 @@ function ajaxCall(data)
 		    	    var selfRating_id='#'+'selfRating'+$(this).attr("name");
 		    	  var selfScore_id='#'+'selfScore'+$(this).attr("name");
 		    	  var employeeComments='#'+'employeeComments'+$(this).attr("name");
-		    		
+
 		    	  $("#objective_modal").val($(objective_id).text());
 
 
@@ -488,7 +488,7 @@ function ajaxCall(data)
 		    //	  $("#selfrating").val($(selfRating_id).text());
 		    	  $("#selfscore").val($(selfScore_id).text());
 		    	  $("#objectiveid").val($(this).attr("name"));
-					
+
 		    	  $("#employeeComments").val($(employeeComments).text());
 		    	  $("#manager_comments").val($(managercomment).text());
 
@@ -781,7 +781,7 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="projectId"
 							th:value="${projectId}" th:field="*{projectId}" />
-							 
+
 <input type="hidden" id="userType" th:field="*{userType}" value="assesse"/>
 
 	 <input type="hidden"
@@ -878,7 +878,7 @@ function ajaxCall(data)
 												<th>Self Score</th>
 												<th>Manager Rating</th>
 												<th>Manager Score</th>
-												
+
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -933,6 +933,9 @@ function ajaxCall(data)
 
 
 
+
+
+
 				</div>
 			</div>
 			<!-- Manager header panel ends -->
@@ -960,7 +963,7 @@ function ajaxCall(data)
 
 
 		<div class="modal fade" id="managermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		
+
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -1026,7 +1029,7 @@ function ajaxCall(data)
 								<div class="form-group">
 									<label class="sr-only">Employee Comments</label>
 									<textarea id="employeeComments" th:field="*{employee_comments}" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
-									
+
 								</div>
 							</div>
 						  </div>
@@ -1076,7 +1079,7 @@ function ajaxCall(data)
 
 					  </div>
 					  <div class="modal-footer">
-					 
+
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
 						<button id="submitbtn" type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
 					  </div>
