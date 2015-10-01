@@ -1,6 +1,7 @@
 package com.arrkgroup.apps.assessor.assessorassessment;
 
 import java.util.List;
+import java.util.Map;
 
 import com.arrkgroup.apps.form.AssessorAssessmentBean;
 import com.arrkgroup.apps.form.EmployeeBean;
@@ -40,6 +41,6 @@ public interface AssessorAssessmentService {
 	public boolean saveAssessorAssessment(AssessorAssessmentBean bean);
 	public boolean saveSelfAssessment(AssessorAssessmentBean bean);
 
-
+	public Map<Integer, List<AssesseeObjectives>> checkAllObjectiveStatus(AssessorAssessmentBean bean);
 
 }

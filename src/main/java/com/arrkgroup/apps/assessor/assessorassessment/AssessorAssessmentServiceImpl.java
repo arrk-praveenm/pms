@@ -1,9 +1,10 @@
 package com.arrkgroup.apps.assessor.assessorassessment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -14,17 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arrkgroup.apps.dao.ModelObjectDao;
-import com.arrkgroup.apps.form.EmployeeBean;
 import com.arrkgroup.apps.form.AssessorAssessmentBean;
-import com.arrkgroup.apps.form.SectionBean;
+import com.arrkgroup.apps.form.EmployeeBean;
 import com.arrkgroup.apps.form.SectionConsolidatedBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
-import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.model.SectionConsolidated;
-import com.arrkgroup.apps.service.ModelObjectService;
 
 @Service("AssessorAssessmentService")
 @Transactional
@@ -298,6 +296,58 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		
 			
 		
+	}
+	@Override
+	public Map<Integer, List<AssesseeObjectives>> checkAllObjectiveStatus(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		List<Section> list= assessorAssessmentDao.getAllSections();
+		Map<Integer, List<AssesseeObjectives>> errorMessage=new HashMap<Integer, List<AssesseeObjectives>>();
+		int count=0 , count1=0;
+		for(Section section:list)
+		{	count++;
+			AssesseesAssessor assessor=new AssesseesAssessor();
+			assessor = assessorAssessmentDao.getAssessees(bean.getEmployee_id(),bean.getRoleid(),bean.getProjectId());
+		List<AssesseeObjectives> assesseeObjectivesList= assessorAssessmentDao.getAssesseeObjectives(section.getId(), assessor.getId());
+		List<AssesseeObjectives> errorAssesseeObjectives=new ArrayList<AssesseeObjectives>();
+		for(AssesseeObjectives assesseeObjectives: assesseeObjectivesList)
+		{
+			boolean added=false;
+			count1++;
+			if(!added && assesseeObjectives.getWeightage().getId()!=1)
+			{
+				if(!added && assesseeObjectives.getSelf_rating().getId()==1)
+				{
+					System.out.println(assesseeObjectives.getSection().getSection()+" Self Rating Zero "+assesseeObjectives.getDescription());
+					errorAssesseeObjectives.add(assesseeObjectives);
+					added=true;
+					
+				}
+				
+				if(!added && assesseeObjectives.getManager_rating().getId()==1)
+				{
+					System.out.println(assesseeObjectives.getSection().getSection()+" Manager Reating Zero  "+assesseeObjectives.getDescription());
+					errorAssesseeObjectives.add(assesseeObjectives);
+					added=true;
+					
+				}
+			}else{
+				System.out.println(assesseeObjectives.getSection().getSection()+" Weightage Zero "+assesseeObjectives.getDescription());
+				errorAssesseeObjectives.add(assesseeObjectives);
+				added=true;
+			}
+			
+		}
+		errorMessage.put(section.getId(), errorAssesseeObjectives);
+		System.out.println(count+"  "+count1);
+		
+		}
+		System.out.println("Size of Map "+errorMessage.size());
+		if(errorMessage.size()==0)
+		{
+			errorMessage=null;
+		}
+		
+		return errorMessage;
 	}
 	
 	

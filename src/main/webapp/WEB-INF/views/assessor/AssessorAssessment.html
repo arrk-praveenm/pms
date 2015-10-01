@@ -262,7 +262,7 @@ $("#selectAssessee").on('change', function(){
 	   $("#section0").trigger("click");
 
 	   $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
-
+	   $("#projectId").val($(selectAssessee).children(":selected").attr("id"));
   	 }else{
   		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -390,11 +390,11 @@ function ajaxCall(data)
 
            	 $("#tbody").empty();
 
-
+           
 
              for (row in response) {
 
-
+            	  
             	 var objective="objective"+response[row].id;
             	 var weightage="weightage"+response[row].id;
             	 var selfRating="selfRating"+response[row].id;
@@ -437,9 +437,32 @@ function ajaxCall(data)
     		     $("#"+managerComments).hide();
     		     $("#"+employeeComments).hide();
 
+    		
+    		     
              }
 
+             if(data.selectedAsseesseID>0)
+        	  {
+        	  //sectionToLoad
+        	  if([[${errorMessage}]]!=null)
+            	  {
+			    	 $.map([[${errorMessage}]], function( value, key ) {
+	 					 
+		   	           	  	//errorMessage
+							if(data.sectionToLoad==key){
+						
+								for( itr in value)
+									{
+									//alert(value[itr].id);
 
+									$("#"+value[itr].id).addClass("incomplete-row");
+									}
+							
+				           	  	}
+	           	 		 });
+            	  }
+          }
+        
            //on clcik of edit button
 		     $(".btn-edit").on( "click", function(){
 		    	 $("#errorspanSelf").hide();
@@ -854,13 +877,34 @@ function ajaxCall(data)
 						</div>
 
 					<hr class="margintop10"  id="margin"/>
-						<div class="form-group text-right" id="selectedAssesseeSummary">
+						<div class="form-group" id="selectedAssesseeSummary">
+						
 
+				 	<div class="row col-sm-6 pull-left" id="buttonsDiv">
+			
+							<button class="btn btn-info" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessor Submit</button>
+						
+						
+							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessee Submit</button>
+						
+						
+							<button class="btn btn-info" id="dispute" type="button"><i class="fa fa-pencil"></i> Dispute</button>
+					
+					
+							<button class="btn btn-default" id="closeDispute" type="button"><i class="fa fa-pencil"></i> Close Accessement</button>
+						
+					</div>
+ 
 
-						<button id="submitbtn_summary" class="btn btn-info btn-green"
+					
+				
+
+						<button id="submitbtn_summary" class="btn btn-info btn-green pull-right"
 									type="button">
 									<i class="fa fa-file-text">&nbsp;</i> Summary Ratings
-								</button>
+						</button>
+						
+						<div class="clearfix"></div>
 
 						</div>
 
@@ -941,9 +985,9 @@ function ajaxCall(data)
 
 					</div>
 
-				 	<div class="row col-sm-12" id="buttonsDiv">
+				<!--  	<div class="row col-sm-12" id="buttonsDiv">
 			
-							<button class="btn btn-info" id="assessorSubmit" type="button"><i class="fa fa-pencil"></i> Assessor Submit</button>
+							<button class="btn btn-info" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessor Submit</button>
 						
 						
 							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-pencil"></i> Assessee Submit</button>
@@ -955,7 +999,7 @@ function ajaxCall(data)
 							<button class="btn btn-default" id="closeDispute" type="button"><i class="fa fa-pencil"></i> Close Accessement</button>
 						
 					</div>
- 
+  -->
 
 
 				</div>

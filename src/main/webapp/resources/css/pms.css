@@ -710,6 +710,9 @@ blockquote {
     top: -20px;
     left: 50px;
 }
+.incomplete-row td {
+	background-color: #f2dede;
+}
 @media max-width: 1199px) {
 
 }

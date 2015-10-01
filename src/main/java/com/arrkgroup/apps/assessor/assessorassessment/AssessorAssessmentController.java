@@ -3,6 +3,7 @@ package com.arrkgroup.apps.assessor.assessorassessment;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -377,6 +378,15 @@ List<SectionConsolidatedBean> getsummarydata(
 			//check objective status and return success or failure message
 			
 			isAssessorOREmployee=false;
+		}else if(bean.getEmployee_id()!=0)
+		{
+			log.info("Employee ID ");
+			//check objective status and return success or failure message
+			Map<Integer, List<AssesseeObjectives>> errorMessage=	assessorAssessmentService.checkAllObjectiveStatus(bean);
+			
+			
+			model.addAttribute("errorMessage",errorMessage);
+			isAssessorOREmployee=true;
 		}
 		
 		model.addAttribute("projectId", bean.getProjectId());
