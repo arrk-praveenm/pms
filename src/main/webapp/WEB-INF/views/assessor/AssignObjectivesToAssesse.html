@@ -44,7 +44,7 @@ if(allObjectives!=null)
 	 triggerToObjectives();
 		});
 	//set to count value to one which will restrict to call the multiple time of on change of assessmentFromDate
-	var count=1;
+	/* var count=1;
 	$("#assessmentFromDate").click(function(){
 		count =1;
 		});
@@ -57,23 +57,24 @@ if(allObjectives!=null)
 			count=2;
 			triggerToObjectives();
 			}
-		}) ;
-	
+		}) ; */
+		
 	$("#projectName").on('change', function(){
 	
 		triggerToObjectives();
 		});
 
-	$("#assessmentToDate").on('change', function(){
+	/* $("#assessmentToDate").on('change', function(){
 		if(count==1)
 		{
 		count=2;
 		triggerToObjectives();
 		}
-				});
-	$("#assessor").on('change', function(){
+				}); */
+	/* $("#assessor").on('change', function(){
+	
 		triggerToObjectives();
-				});
+				}); */
 
 	$("#assesseeRole").on('change', function(){
 		triggerToObjectives();
@@ -86,12 +87,12 @@ if(allObjectives!=null)
 		//$("#modal_alert_messages").modal('show');
 
 		if($("#assessee").val()!="0") {
-		if($("#assessmentFromDate").val()!="") {
+		//if($("#assessmentFromDate").val()!="") {
 			if($("#projectName").val()!="") {
 			if($("#assessmentCycle").val()!="0"){
-				if($("#assessor").val()!="0") {
+			//	if($("#assessor").val()!="0") {
 					if($("#assesseeRole").val()!="0") {
-						if($("#assessmentToDate").val()!=""){
+						//if($("#assessmentToDate").val()!=""){
 							    var	sectionLoad={
 						              sectionLoad:"0",
 						              assesseeid:$("#assessee").val(),
@@ -102,14 +103,15 @@ if(allObjectives!=null)
 						              assessor:  $("#assessor").val(),
 						              assesseeRole: $("#assesseeRole").val()
 						             } 
+							
 							    
 								  ajaxcall(sectionLoad, false); 
-							    }
+							 //   }
 							}
-						}
+						//}
 					}
 				}
-			}
+			//}
 		}
 	};
 //
@@ -355,9 +357,8 @@ if(allObjectives!=null)
 	                type: 'GET',
 	                data: sectionLoad,
 	                success: function(response) {
-	                	
-		              
-					if(response=="")
+		               
+					if(response[0]=="")
 	                {
 		                
 		                if(!status)
@@ -378,8 +379,18 @@ if(allObjectives!=null)
 	            		$("#sectionsBody").show();
 	            		$("#addObjectiveform").show();
 	                	 $("#sectionObjectives-prnt").show();
+	                	 alert(response[1]);
+	                	 if(response[1]!= "")
+	                	 {
+	                		 $("#assessor").val(response[1].assessorId.id);
+	                		
+
+				
+	                		 $("#assessmentFromDate").val(convertJsonDateToString(response[1].start_date));
+	                			$("#assessmentToDate").val(convertJsonDateToString(response[1].end_date));
+		                	 }
 	                	 
-	                jQuery.each( response, function( iterStat, objectiveDesc ) {
+	                jQuery.each( response[0], function( iterStat, objectiveDesc ) {
                     var section=sectionLoad.sectionLoad;
 	                
 	                    LodaObjectives(iterStat,objectiveDesc, section);
@@ -410,6 +421,13 @@ if(allObjectives!=null)
 				 $("#inputAssessmentFromDate").val($("#assessmentFromDate").val());//
 				 $("#inputAssessee").val($("#assessee").val());
 						});
+
+			function convertJsonDateToString(date)
+			{
+				 var myDateJson = JSON.stringify(date);
+       		  var myNewDate = new Date(JSON.parse(myDateJson));
+      		return $.datepicker.formatDate('dd/mm/yy', myNewDate, 'en');
+				};
 			
 });
 

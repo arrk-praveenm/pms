@@ -28,11 +28,11 @@ import javax.persistence.Table;
 			   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
    @NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
 		   + " and s.projectId.id=:project_name "
-		   + "and s.assesseeId.id=:assesseeId  and s.roleId.id=:roleId)"),
+		   + "and s.assesseeId.id=:assesseeId  and s.roleId.id=:roleId and s.status in (:statusList)"),
 	@NamedQuery(name = AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, query="FROM AssesseesAssessor s where s.cycleId.id=:cycleId "
 					   + "and  s.projectId.id=:project_name "
-					   + "and s.assesseeId.id=:assesseeId and s.assessorId.id=:assessorId and s.roleId.id=:roleId)"),
-	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate where id = :assesseesAssessorId"),
+					   + "and s.assesseeId.id=:assesseeId and s.roleId.id=:roleId and s.status in (:statusList))"),
+	@NamedQuery(name = AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID, query = "update AssesseesAssessor set start_date=:startdate , end_date=:enddate , assessorId.id=:assessorId where id = :assesseesAssessorId"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ROLES_OF_ASSESSEE, query = "from AssesseesAssessor aa where aa.assesseeId.id=(select id from  Employee ee where ee.email=:email) "),
 
 

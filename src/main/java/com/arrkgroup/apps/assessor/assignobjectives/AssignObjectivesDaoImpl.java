@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	
 	private static final int DEFAULT_WEIGHTAGE_ID = 1;
 	private static final int DEFAULT_RATING_ID = 1;
+	private static final String ASSIGNEDOBJECTIVES = "assignedObjectives";
+	private static final String SELFRATINGCOMPLETED = "selfRatingCompleted";
 
 	@Override
 	public List<Cycle> getAllAssessmentCycles() {
@@ -57,39 +60,44 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Transactional
 	public boolean copyRoleObjectives(AssesseesAssessor assesseesAssessor) {
 		try{
-			
+			List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
 			AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
-					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+					//.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+					.setParameter("statusList", statusList)
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
 			entityManager
 			.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
-					).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
+					).setParameter("startdate", assesseesAssessor.getStart_date())
+					.setParameter("enddate", assesseesAssessor.getEnd_date())
+					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+					.setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
 			copyingRoleObjectives( assesseesAssessorUpdate);
 			
-				}catch(NoResultException re){
-		try {
-			
-			AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
-					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
-					.setParameter("start_date", assesseesAssessor.getStart_date())
-					.setParameter("end_date", assesseesAssessor.getEnd_date())
-					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
-					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
-					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
-					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
-			
-			copyingRoleObjectives( assesseesAssessor1);
-			
-		}catch (NoResultException nre){
-		
-			
-			entityManager.persist(assesseesAssessor);
-			copyingRoleObjectives( assesseesAssessor);
-			
-		}
+	}catch(NoResultException re){
+		//
+				try {
+					
+					AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+							.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
+							.setParameter("start_date", assesseesAssessor.getStart_date())
+							.setParameter("end_date", assesseesAssessor.getEnd_date())
+							.setParameter("project_name", assesseesAssessor.getProjectId().getId())
+							.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
+							.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+							.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
+					
+					copyingRoleObjectives( assesseesAssessor1);
+					
+				}catch (NoResultException nre){
+				
+					
+					entityManager.persist(assesseesAssessor);
+					copyingRoleObjectives( assesseesAssessor);
+					
+				}
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,6 +131,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 		
 		try{
 			//if No records goes to catch block
+			List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
 			List<AssesseesAssessor> OtherassesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
 					//.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
@@ -130,6 +139,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 					.setParameter("project_name", OtherAssesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", OtherAssesseesAssessor.getAssesseeId().getId())
 					//.setParameter("assessorId", OtherAssesseesAssessor.getAssessorId().getId())
+					.setParameter("statusList", statusList)
 					.setParameter("roleId", OtherAssesseesAssessor.getRoleId().getId()).getResultList();
 try{
 	System.out.println("Test 1");
@@ -137,14 +147,20 @@ try{
 			.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 			.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 			.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
-			.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+			//.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+			.setParameter("statusList", statusList)
 			.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
 	System.out.println("Test 11");
 	entityManager
 	.createNamedQuery(AssesseesAssessor.UPDATE_ASSESSE_ASSESSOR_BY_ID
-			).setParameter("startdate", assesseesAssessor.getStart_date()).setParameter("enddate", assesseesAssessor.getEnd_date()).setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId()).executeUpdate();
+			).setParameter("startdate", assesseesAssessor.getStart_date())
+			.setParameter("enddate", assesseesAssessor.getEnd_date())
+			.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+			.setParameter("assesseesAssessorId", assesseesAssessorUpdate.getId())
+			.executeUpdate();
 	copyingAssesseeObjectives(assesseesAssessorUpdate, OtherassesseesAssessor1);
 		}catch(NoResultException re){
+			//
 		try {
 			System.out.println("Test 2");
 			AssesseesAssessor assesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
@@ -203,10 +219,20 @@ try{
 	public List<AssesseeObjectives> getAssesseObjectives(
 			CopyObjectivesBean copyObjectivesBean, int sectionId) {
 		// TODO Auto-generated method stub
-		
+		List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
+				
 		return entityManager.createNamedQuery(AssesseeObjectives.GET_ASSESSEE_OBJECTIVES_BY_PROJECTNAME_STARTDATE_AND_SECTION, AssesseeObjectives.class)
-				.setParameter("employeeId", copyObjectivesBean.getAssessee()).setParameter("projectName", copyObjectivesBean.getProjectName()).setParameter("StartDate", convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)))
-				.setParameter("id",sectionId).setParameter("Cycle", copyObjectivesBean.getAssessmentCycle()).setParameter("assessorId", copyObjectivesBean.getAssessor()).setParameter("roleId",copyObjectivesBean.getAssesseeRole()).setParameter("endDate", convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10))).getResultList();
+				.setParameter("employeeId", copyObjectivesBean.getAssessee())
+				.setParameter("projectName", copyObjectivesBean.getProjectName())
+				//.setParameter("StartDate", convertStringToDate(copyObjectivesBean.getAssessmentFromDate().substring(0, 10)))
+				.setParameter("id",sectionId).setParameter("Cycle", copyObjectivesBean.getAssessmentCycle())
+			//	.setParameter("assessorId", copyObjectivesBean.getAssessor())
+				.setParameter("roleId",copyObjectivesBean.getAssesseeRole())
+			
+				.setParameter("statusList",statusList)
+				//.setParameter("statusTwo",SELFRATINGCOMPLETED)
+			//	.setParameter("endDate", convertStringToDate(copyObjectivesBean.getAssessmentToDate().substring(0, 10)))
+				.getResultList();
 	}//
 	
 	
@@ -321,6 +347,30 @@ try{
 		;
 		
 		return true;
+	}
+
+	@Override
+	public AssesseesAssessor getAssesseeAssessorWithoutPeriod(
+			CopyObjectivesBean copyObjectivesBean) {
+		// TODO Auto-generated method stub
+		try{
+			List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
+			
+			AssesseesAssessor assesseesAssessor=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, AssesseesAssessor.class)
+					.setParameter("cycleId", copyObjectivesBean.getAssessmentCycle() )
+					//.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
+					//.setParameter("end_date", OtherAssesseesAssessor.getEnd_date())
+					.setParameter("project_name", copyObjectivesBean.getProjectName())
+					.setParameter("assesseeId", copyObjectivesBean.getAssessee())
+					.setParameter("statusList", statusList)
+					.setParameter("roleId",copyObjectivesBean.getAssesseeRole()).getSingleResult();
+			
+			
+			return assesseesAssessor;
+		}catch(Exception e){
+			System.out.println("Bo records "+e);
+		return null;
+		}
 	}
 	
 

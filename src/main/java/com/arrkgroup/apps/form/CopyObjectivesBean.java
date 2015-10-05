@@ -13,6 +13,7 @@ public class CopyObjectivesBean {
 	int otherAssessee;
 	int assesseeRole;
 	
+	
 	public int getOtherAssessee() {
 		return otherAssessee;
 	}

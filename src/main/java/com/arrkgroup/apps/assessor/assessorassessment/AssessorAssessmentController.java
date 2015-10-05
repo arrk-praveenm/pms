@@ -391,8 +391,12 @@ List<SectionConsolidatedBean> getsummarydata(
 			
 			Map<Integer, List<AssesseeObjectives>> errorMessage=	assessorAssessmentService.checkAllObjectiveStatus(bean);
 			
+			System.out.println("controller errorMessage is "+errorMessage);
+			
+			
 			if(errorMessage==null)
 			{
+				System.out.println("controller errorMessage is "+errorMessage);
 				//check objective status and return success or failure message
 				bean.setAssesseeAssessorStatus(SELFRATING_COMPLETED);
 			assessorAssessmentService.updateAssesseesAssessorStatus(bean, ASSESSEMENT_COMPLETED);

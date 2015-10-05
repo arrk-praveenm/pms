@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.arrkgroup.apps.form.CopyObjectivesBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
+import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
@@ -22,6 +23,6 @@ public interface AssignObjectivesService {
 	public boolean deleteAssesseeObjectivebySection(int sectionId)  throws SQLException ;
 	public AssesseeObjectives getAssesseeAssessorId(int assesseeObjectiveId);
 	public List<AssesseeObjectives> getALLAssesseObjectivesBySectionId(AssesseeObjectives assesseeObjectives);
-	
+	public AssesseesAssessor getAssesseeAssessorWithoutPeriod(CopyObjectivesBean copyObjectivesBean);
 	public boolean saveWeightage(int objectiveId, int weightageId);
 }

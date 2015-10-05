@@ -161,6 +161,13 @@ private Date convertStringToDate(String datestring)
 		// TODO Auto-generated method stub
 		return assignObjectivesDao.saveWeightage(objectiveId, weightageId);
 	}
+
+	@Override
+	public AssesseesAssessor getAssesseeAssessorWithoutPeriod(
+			CopyObjectivesBean copyObjectivesBean) {
+		// TODO Auto-generated method stub
+		return assignObjectivesDao.getAssesseeAssessorWithoutPeriod(copyObjectivesBean);
+	}
 	
 	
 

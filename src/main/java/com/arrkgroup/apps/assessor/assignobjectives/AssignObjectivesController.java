@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import com.arrkgroup.apps.form.CopyObjectivesBean;
 import com.arrkgroup.apps.form.CreateSectionBean;
 import com.arrkgroup.apps.form.validator.AddObjectiveValidator;
 import com.arrkgroup.apps.model.AssesseeObjectives;
+import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Cycle;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Project;
@@ -280,6 +282,7 @@ public class AssignObjectivesController {
 
 
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/assessor/ajax/sectionLoad", method = RequestMethod.GET)
 	public @ResponseBody
 	List<AssesseeObjectives> Load(@RequestParam("sectionLoad") String sectionId,
@@ -317,12 +320,25 @@ public class AssignObjectivesController {
 		}
 		System.out.println("sectionToLoad "+sectionToLoad);
 		List<AssesseeObjectives> allsectionObjectives = assignObjectivesService.getAssesseObjectives(copyObjectivesBean, sectionToLoad);
-		log.info(" request for objectives to load for section id is "
+		log.info(" request for objectives to load for section id and the size of Objectives is "
 				+ allsectionObjectives.size());
+		
+		List list=new ArrayList();
+		System.out.println("Test");
+		list.add(allsectionObjectives);
+		AssesseesAssessor asseess=null;
+		try{
+		//all objectives at index 0, objectives of selected combination object at index 1
+		 asseess=assignObjectivesService.getAssesseeAssessorWithoutPeriod(copyObjectivesBean);
+		 list.add(asseess);
+		System.out.println("Start Date"+asseess.getStart_date());
+		}catch(Exception ex){
+			list.add(asseess);
+		}
 		
 		
 
-		return allsectionObjectives;
+		return list;
 
 	}
 	

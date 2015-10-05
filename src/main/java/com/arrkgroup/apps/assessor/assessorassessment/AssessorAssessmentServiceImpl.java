@@ -339,10 +339,16 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 			}
 			
 		}
+		System.out.println("Size of errorAssesseeObjectives is "+errorAssesseeObjectives.size());
+		if(errorAssesseeObjectives.size()!=0)
+		{
 		errorMessage.put(section.getId(), errorAssesseeObjectives);
-		System.out.println(count+"  "+count1);
+		}
+		
 		
 		}
+		System.out.println(errorMessage.keySet());
+		System.out.println(errorMessage.values());
 		System.out.println("Size of Map "+errorMessage.size());
 		if(errorMessage.size()==0)
 		{

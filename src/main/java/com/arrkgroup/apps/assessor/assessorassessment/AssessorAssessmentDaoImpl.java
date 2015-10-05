@@ -310,7 +310,7 @@ float managerscore=manger_score;
 	public boolean  updateAssesseesAssessorStatus(AssessorAssessmentBean bean ,String status)
 
 	{
-
+		System.out.println(status+"   "+bean.getAssesseeAssessorStatus());
 
  int count=	entityManager
 	.createNamedQuery(AssesseesAssessor.UPDATE_STATUS
@@ -320,7 +320,7 @@ float managerscore=manger_score;
 						.setParameter("project_id", bean.getProjectId())
 						.setParameter("statusCondition", bean.getAssesseeAssessorStatus())
 			.executeUpdate();
-
+System.out.println(count);
 
 if(count>0)
 {

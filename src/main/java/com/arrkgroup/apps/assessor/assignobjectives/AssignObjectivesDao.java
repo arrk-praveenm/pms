@@ -25,4 +25,6 @@ public interface AssignObjectivesDao {
 	public AssesseeObjectives getAssesseeAssessorId(int assesseeObjectiveId);
 	public List<AssesseeObjectives> getALLAssesseObjectivesBySectionId(AssesseeObjectives assesseeObjectives);
 	public boolean saveWeightage(int objectiveId, int weightageId);
+	
+	public AssesseesAssessor getAssesseeAssessorWithoutPeriod(CopyObjectivesBean copyObjectivesBean);
 }
