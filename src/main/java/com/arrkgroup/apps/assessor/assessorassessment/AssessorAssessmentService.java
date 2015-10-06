@@ -44,5 +44,8 @@ public interface AssessorAssessmentService {
 	public Map<Integer, List<AssesseeObjectives>> checkAllObjectiveStatus(AssessorAssessmentBean bean);
 	
 	public boolean  updateAssesseesAssessorStatus(AssessorAssessmentBean bean,String status);
+	
+	public AssesseesAssessor  getAssesseesAssessor(int id);
+	public AssesseesAssessor  getAssesseesAssessor(AssessorAssessmentBean bean);
 
 }

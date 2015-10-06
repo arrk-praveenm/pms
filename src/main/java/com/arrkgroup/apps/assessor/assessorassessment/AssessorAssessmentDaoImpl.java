@@ -150,9 +150,10 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 				.setParameter("managerRating", bean.getManager_rating())
 				.setParameter("assessebjectiveId", bean.getObjectiveid())
 				.setParameter("weight", bean.getWeightage())
+				.setParameter("self_score", bean.getSelf_score())
 				/*.setParameter("assesseeComments",bean.getEmployee_comments())
 				.setParameter("assesseeRatingId", bean.getSelf_rating())
-				.setParameter("self_score", bean.getSelf_score())
+				
 				.setParameter("weight", bean.getWeightage())*/
 				.setParameter("manager_score", bean.getManager_score()).executeUpdate();
 
@@ -335,6 +336,19 @@ return false;
 
 
 	}
+	@Override
+	public AssesseesAssessor getAssesseesAssessor(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		return entityManager
+				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID_NOTCLOSED,
+						AssesseesAssessor.class)
+						.setParameter("id", bean.getEmployee_id())
+						.setParameter("role_id", bean.getRoleid())
+						.setParameter("projectId", bean.getProjectId())
+						.setParameter("closed", "closed")
+						.getSingleResult();
+	}
+
 
 
 

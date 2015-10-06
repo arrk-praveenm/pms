@@ -35,10 +35,12 @@ public class AssessorAssessmentController {
 
 	private final String ASSESSORASSESSMENT = "assessor/AssessorAssessment";
 	private final String LOGIN = "login/login";
-	private final String SELFRATING_COMPLETED="selfRatingCompleted";
-	private final String ASSESSEMENT_COMPLETED="AssessementCompleted";
+	private final String SELFRATING_COMPLETED = "selfRatingCompleted";
+	private final String ASSESSEMENT_COMPLETED = "AssessementCompleted";
 	private static final String STATUS = "assignedObjectives";
-	
+	private static final String NOTAGREE = "notAgree";
+	private static final String CLOSED = "closed";
+
 	private final Logger log = LoggerFactory
 			.getLogger(AssessorAssessmentController.class);
 
@@ -48,51 +50,42 @@ public class AssessorAssessmentController {
 	@Autowired
 	ModelObjectService modelObjectService;
 
-
 	InetOrgPerson userDetails = null;
-	boolean isAssessorOREmployee=false;
+	boolean isAssessorOREmployee = false;
 
-//For Manager or Assessor tab initial load
+	// For Manager or Assessor tab initial load
 	@RequestMapping(value = "/assessor/assessorAssessment", method = RequestMethod.GET)
-	public String loadCreateSectionPage(Principal principal,
-			Model model ) {
+	public String loadCreateSectionPage(Principal principal, Model model) {
 
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+		model.addAttribute("AssessorAssessmentBean",
+				new AssessorAssessmentBean());
 
-		userDetails=(InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		model.addAttribute("AssessorAssessmentBean", new AssessorAssessmentBean());
+		int sectionToLoad = 0;
 
-
-		int sectionToLoad=0;
-
-		isAssessorOREmployee=true;
+		isAssessorOREmployee = true;
 
 		setDefaultLoad(model, sectionToLoad, userDetails, isAssessorOREmployee);
 
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
-		}
+	}
 
-
-	//For Employee tab initial load
+	// For Employee tab initial load
 	@RequestMapping(value = "/assessor/assesseeRating", method = RequestMethod.GET)
-	public String loadAssesseeSelfRating(Principal principal,
-			Model model ) {
+	public String loadAssesseeSelfRating(Principal principal, Model model) {
 
-		 userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
 
+		isAssessorOREmployee = false;
 
+		model.addAttribute("AssessorAssessmentBean",
+				new AssessorAssessmentBean());
 
-		isAssessorOREmployee=false;
-
-
-		model.addAttribute("AssessorAssessmentBean", new AssessorAssessmentBean());
-
-
-
-
-		int sectionToLoad=0;
+		int sectionToLoad = 0;
 
 		setDefaultLoad(model, sectionToLoad, userDetails, isAssessorOREmployee);
-
 
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 	}
@@ -102,138 +95,136 @@ public class AssessorAssessmentController {
 	List<AssesseeObjectives> loadAssignedObjectivesAssessee(
 			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
 			@RequestParam("sectionToLoad") String sectionToLoad,
-	@RequestParam("projectId") String projectId,
-			@RequestParam("role_id") String role_id,Model model)
-	{
+			@RequestParam("projectId") String projectId,
+			@RequestParam("role_id") String role_id, Model model) {
 
-		log.info("data  is "+selectedAsseesseID  +"  "+sectionToLoad+"  "+role_id + " projectid "+ projectId);
-		int selectedAsseesseeID=0;
-		int sectionToLoadInt=0;
+		log.info("data  is " + selectedAsseesseID + "  " + sectionToLoad + "  "
+				+ role_id + " projectid " + projectId);
+		int selectedAsseesseeID = 0;
+		int sectionToLoadInt = 0;
 
-		userDetails=(InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		if(selectedAsseesseID.equalsIgnoreCase("0"))
-		{
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+		if (selectedAsseesseID.equalsIgnoreCase("0")) {
 
-			selectedAsseesseeID= modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId();
-			if(sectionToLoad.equalsIgnoreCase("0")){
-			sectionToLoadInt=assessorAssessmentService.getAllSections().get(0).getId();
-			}else{
-				 sectionToLoadInt=Integer.parseInt(sectionToLoad);
+			selectedAsseesseeID = modelObjectService.findEmployeeByEmail(
+					userDetails.getMail()).getId();
+			if (sectionToLoad.equalsIgnoreCase("0")) {
+				sectionToLoadInt = assessorAssessmentService.getAllSections()
+						.get(0).getId();
+			} else {
+				sectionToLoadInt = Integer.parseInt(sectionToLoad);
 			}
 
-
-		}else{
-			 selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
-			 sectionToLoadInt=Integer.parseInt(sectionToLoad);
+		} else {
+			selectedAsseesseeID = Integer.parseInt(selectedAsseesseID);
+			sectionToLoadInt = Integer.parseInt(sectionToLoad);
 		}
 
-
-
-
-		if(sectionToLoadInt==0)
-		{
-			sectionToLoadInt = ((Section) assessorAssessmentService.getAllSections().get(0)).getId();
+		if (sectionToLoadInt == 0) {
+			sectionToLoadInt = ((Section) assessorAssessmentService
+					.getAllSections().get(0)).getId();
 		}
-
-
-
 
 		log.info(" request for objectives to load for section id is "
 				+ sectionToLoad);
 
-		List<AssesseeObjectives> allassesseeObjectives=null;
-try{
-		 allassesseeObjectives =	assessorAssessmentService.getAssesseeObjectives(sectionToLoadInt, selectedAsseesseeID,Integer.parseInt(role_id), Integer.parseInt(projectId));
+		List<AssesseeObjectives> allassesseeObjectives = null;
+		try {
+			allassesseeObjectives = assessorAssessmentService
+					.getAssesseeObjectives(sectionToLoadInt,
+							selectedAsseesseeID, Integer.parseInt(role_id),
+							Integer.parseInt(projectId));
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
-
-}catch(Exception e)
-{
-	System.out.println(e.getMessage());
-	}
-
-log.info(allassesseeObjectives.size()+" "+allassesseeObjectives);
+		log.info(allassesseeObjectives.size() + " " + allassesseeObjectives);
 		return allassesseeObjectives;
 
-
-
-
-
 	}
 
-private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson userDetails,boolean isAssessorOREmployee)
-	{
+	private void setDefaultLoad(Model model, int sectionIDtoLoad,
+			InetOrgPerson userDetails, boolean isAssessorOREmployee) {
 
-		List<EmployeeBean> assessorAssessees=null;
-		List<AssesseRoleBean> allRolesofCurrentUser=new ArrayList<AssesseRoleBean>();
+		List<EmployeeBean> assessorAssessees = null;
+		List<AssesseRoleBean> allRolesofCurrentUser = new ArrayList<AssesseRoleBean>();
 
-		List<AssesseeObjectives> allObjectives =	null;
+		List<AssesseeObjectives> allObjectives = null;
 
 		List<Section> allSections = assessorAssessmentService.getAllSections();
-		if(sectionIDtoLoad==0)
-		{
-		sectionIDtoLoad = ((Section) allSections.get(0)).getId();
+		if (sectionIDtoLoad == 0) {
+			sectionIDtoLoad = ((Section) allSections.get(0)).getId();
 		}
 
-		if(isAssessorOREmployee)
-		{
-		List<AssesseesAssessor> employeeAssessees=assessorAssessmentService.getMyAssessees(userDetails.getMail().toString());
-		assessorAssessees=new ArrayList<EmployeeBean>();
-		for (AssesseesAssessor assessees : employeeAssessees) {
+		if (isAssessorOREmployee) {
+			List<AssesseesAssessor> employeeAssessees = assessorAssessmentService
+					.getMyAssessees(userDetails.getMail().toString());
+			assessorAssessees = new ArrayList<EmployeeBean>();
+			for (AssesseesAssessor assessees : employeeAssessees) {
 
-			EmployeeBean employee=new EmployeeBean();
-			Role role=new Role();
-			Project proj=new Project();
-			 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
-			 employee=assessorAssessmentService.getAssesseeBean(assessees.getAssesseeId().getId());
-			proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
+				EmployeeBean employee = new EmployeeBean();
+				Role role = new Role();
+				Project proj = new Project();
+				role = modelObjectService.findRoleById(assessees.getRoleId()
+						.getId());
+				employee = assessorAssessmentService.getAssesseeBean(assessees
+						.getAssesseeId().getId());
+				proj = modelObjectService.findProjectById(assessees
+						.getProjectId().getId());
 
-			 String Name=employee.getFullname();
-				employee.setFullname(proj.getProject_name()+" - "+role.getTitle()+" - "+Name+"  -  "+assessees.getStatus());
-			   employee.setRole_id(role.getId());
-			   employee.setProjectId(proj.getId());
+				String Name = employee.getFullname();
+				employee.setFullname(proj.getProject_name() + " - "
+						+ role.getTitle() + " - " + Name + "  -  "
+						+ assessees.getStatus().toLowerCase());
+				employee.setRole_id(role.getId());
+				employee.setProjectId(proj.getId());
+				employee.setStatus(assessees.getStatus());
 				assessorAssessees.add(employee);
 
-
-		}
-		}else{
+			}
+		} else {
 
 			// allRolesofCurrentUser
-			List<AssesseesAssessor> employeeAssessees=assessorAssessmentService.getRoleOfCurrentUser(userDetails.getMail());
-			 //List rolesofCure
-			 for (AssesseesAssessor assessees : employeeAssessees) {
+			List<AssesseesAssessor> employeeAssessees = assessorAssessmentService
+					.getRoleOfCurrentUser(userDetails.getMail());
+			// List rolesofCure
+			for (AssesseesAssessor assessees : employeeAssessees) {
 
-				 AssesseRoleBean assesseRoleBean=new AssesseRoleBean();
-					Role role=new Role();
-					Project proj=new Project();
-					 role=modelObjectService.findRoleById(assessees.getRoleId().getId());
+				AssesseRoleBean assesseRoleBean = new AssesseRoleBean();
+				Role role = new Role();
+				Project proj = new Project();
+				role = modelObjectService.findRoleById(assessees.getRoleId()
+						.getId());
 
-					proj= modelObjectService.findProjectById(assessees.getProjectId().getId());
+				proj = modelObjectService.findProjectById(assessees
+						.getProjectId().getId());
 
+				assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()
+						+ " - " + role.getTitle() + " - "
+						+ assessees.getStatus().toLowerCase());
+				assesseRoleBean.setRoleId(role.getId());
+				assesseRoleBean.setProjectId(proj.getId());
+				assesseRoleBean.setAssessmentStatus(assessees.getStatus());
+				allRolesofCurrentUser.add(assesseRoleBean);
 
-					assesseRoleBean.setAssesseeProjectRole(proj.getProject_name()+" - "+role.getTitle()+" - "+assessees.getStatus());
-					assesseRoleBean.setRoleId(role.getId());
-					assesseRoleBean.setProjectId(proj.getId());
-					assesseRoleBean.setAssessmentStatus(assessees.getStatus());
-					allRolesofCurrentUser.add(assesseRoleBean);
+			}
 
+			if (allRolesofCurrentUser.size() == 1) {
+				allObjectives = assessorAssessmentService
+						.getAssesseeObjectives(
+								sectionIDtoLoad,
+								modelObjectService.findEmployeeByEmail(
+										userDetails.getMail()).getId(),
+								allRolesofCurrentUser.get(0).getRoleId(),
+								allRolesofCurrentUser.get(0).getProjectId());
+			}
 
-				}
-
-
-			 if(allRolesofCurrentUser.size()==1)
-			 {
-			 allObjectives =assessorAssessmentService.getAssesseeObjectives(sectionIDtoLoad, modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId(), allRolesofCurrentUser.get(0).getRoleId(),allRolesofCurrentUser.get(0).getProjectId());
-			 }
-
-			System.out.println("User Roles Size"+allRolesofCurrentUser.size());
+			log.info("User Roles Size" + allRolesofCurrentUser.size());
 		}
 
-
-
-
 		model.addAttribute("selectedAsseses", 0);
-
 
 		model.addAttribute("sectionToLoad", sectionIDtoLoad);
 		log.info("section to load is " + sectionIDtoLoad);
@@ -243,174 +234,198 @@ private void setDefaultLoad(Model model,  int sectionIDtoLoad, InetOrgPerson use
 		model.addAttribute("allSectionsBeans",
 				assessorAssessmentService.getAllSectionsBean());
 
-
-
 		model.addAttribute("allObjectives", allObjectives);
 		model.addAttribute("allRolesofCurrentUser", allRolesofCurrentUser);
 		model.addAttribute("assessorAssessees", assessorAssessees);
 
 		model.addAttribute("ratingList", modelObjectService.getAllRatings());
 		model.addAttribute("selfratingList", modelObjectService.getAllRatings());
-		model.addAttribute("weightageList", modelObjectService.getAllWeightages());
-
-
-
-	}
-
-
-
-
-@RequestMapping(value = "/assessor/ajax/GetSummaryRating", method = RequestMethod.GET)
-public @ResponseBody
-List<SectionConsolidatedBean> getsummarydata(
-		@RequestParam("selectedAsseesseID") String selectedAsseesseID,
-		@RequestParam("role_id") String role_id, Model model,
-		@RequestParam("projectId") String projectId){
-
-	log.info("in GetSummaryRating method" + selectedAsseesseID + ""
-			+ role_id);
-
-	int selectedAsseesseeID=0;
-
-	userDetails=(InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-	if(selectedAsseesseID.equalsIgnoreCase("0"))
-	{
-
-		selectedAsseesseeID= modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId();
-
-
-
-	}else{
-		selectedAsseesseeID=Integer.parseInt(selectedAsseesseID);
+		model.addAttribute("weightageList",
+				modelObjectService.getAllWeightages());
 
 	}
 
+	@RequestMapping(value = "/assessor/ajax/GetSummaryRating", method = RequestMethod.GET)
+	public @ResponseBody
+	List<SectionConsolidatedBean> getsummarydata(
+			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
+			@RequestParam("role_id") String role_id, Model model,
+			@RequestParam("projectId") String projectId) {
 
+		log.info("in GetSummaryRating method" + selectedAsseesseID + ""
+				+ role_id);
 
-	List<SectionConsolidatedBean> list = assessorAssessmentService
-			.findById(String.valueOf( selectedAsseesseeID), role_id,Integer.parseInt(projectId));
+		int selectedAsseesseeID = 0;
 
-	log.info("in GetSummaryRating method  list size is " + list.size());
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+		if (selectedAsseesseID.equalsIgnoreCase("0")) {
 
-	return list;
-}
+			selectedAsseesseeID = modelObjectService.findEmployeeByEmail(
+					userDetails.getMail()).getId();
 
+		} else {
+			selectedAsseesseeID = Integer.parseInt(selectedAsseesseID);
 
+		}
 
+		List<SectionConsolidatedBean> list = assessorAssessmentService
+				.findById(String.valueOf(selectedAsseesseeID), role_id,
+						Integer.parseInt(projectId));
 
+		log.info("in GetSummaryRating method  list size is " + list.size());
 
+		return list;
+	}
 
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params = "save")
+	private String SaveSectionData(
+			@ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+			BindingResult error, Model model, Principal principal) {
 
-
-	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params="save")
-	private String SaveSectionData( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
-					BindingResult error,Model model,Principal principal)
-	{
-
-
-
-		System.out.println("SAVE");
-		log.info("manager rating is  "+bean.getManager_rating());
-		log.info("manager comments is  "+bean.getManager_comments());
-		log.info("Employee score is  "+bean.getSelf_score());
-		log.info("Employee rating is  "+bean.getSelf_rating());
-		log.info("weightage is  "+bean.getWeightage());
-
-
-
+		
+		log.info("manager rating is  " + bean.getManager_rating());
+		
 
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
 
-		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());
+		log.info("projectid " + bean.getProjectId() + " role id "
+				+ bean.getRoleid() + " assesseeid" + bean.getEmployee_id());
 
-		boolean flag=false;
+		boolean flag = false;
 
+		if (bean.getUserType().equalsIgnoreCase("assesse")) {
 
-		if(bean.getUserType().equalsIgnoreCase("assesse"))
-		{
+			// saving assessee data
+			flag = assessorAssessmentService.saveSelfAssessment(bean);
+			isAssessorOREmployee = false;
 
-			//saving assessee data
-			flag=assessorAssessmentService.saveSelfAssessment(bean);
-			isAssessorOREmployee=false;
+		} else if (bean.getUserType().equalsIgnoreCase("assessor")) {
 
+			flag = assessorAssessmentService.saveAssessorAssessment(bean);
+			isAssessorOREmployee = true;
 
+			
 
-
-		}else if(bean.getUserType().equalsIgnoreCase("assessor")){
-
-			flag= assessorAssessmentService.saveAssessorAssessment(bean);
-			isAssessorOREmployee=true;
-
-
-			System.out.println("manager saving");
-
-			System.out.println(" section"+bean.getSectionid()+"employee"+bean.getEmployee_id()+"  role"+ bean.getRoleid()+"  project"+bean.getProjectId());
-
-
+			log.info(" section" + bean.getSectionid() + "employee"
+					+ bean.getEmployee_id() + "  role" + bean.getRoleid()
+					+ "  project" + bean.getProjectId());
 
 			assessorAssessmentService.saveSectionSummary(bean.getSectionid(),
-					bean.getEmployee_id(), bean.getRoleid(),bean.getProjectId());
+					bean.getEmployee_id(), bean.getRoleid(),
+					bean.getProjectId());
 		}
 
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
 
+		setDefaultLoad(model, bean.getSectionid(), userDetails,
+				isAssessorOREmployee);
 
-		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
-		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
-
-      System.out.println();
-
-
+		
 
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 	}
-	
-	
-	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params="assesseeSubmit")
-	private String assesseeSubmit( @ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
-					BindingResult error,Model model,Principal principal)
-	{
-		userDetails = (InetOrgPerson)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		System.out.println("NEW");
-		log.info("projectid "+bean.getProjectId()+" role id "+bean.getRoleid()+" assesseeid"+bean.getEmployee_id());
+
+	//assesseesubmit or assessorsubmits then this action will be called to update status
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params = "assesseeSubmit")
+	private String assesseeSubmit(
+			@ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+			BindingResult error, Model model, Principal principal) {
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
 		
-		if(bean.getEmployee_id()==0)
-		{
-			
-			//ASSESSEMENT_COMPLETED
-			
-			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(userDetails.getMail()).getId());
+		log.info("projectid " + bean.getProjectId() + " role id "
+				+ bean.getRoleid() + " assesseeid" + bean.getEmployee_id());
+
+		if (bean.getEmployee_id() == 0) {
+
+			// ASSESSEMENT_COMPLETED
+
+			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(
+					userDetails.getMail()).getId());
 			bean.setAssesseeAssessorStatus(STATUS);
-			assessorAssessmentService.updateAssesseesAssessorStatus(bean, SELFRATING_COMPLETED);
-			isAssessorOREmployee=false;
-		}else if(bean.getEmployee_id()!=0)
-		{
-			log.info("Employee ID ");
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+					SELFRATING_COMPLETED);
+			isAssessorOREmployee = false;
+		} else if (bean.getEmployee_id() != 0) {
 			
-			Map<Integer, List<AssesseeObjectives>> errorMessage=	assessorAssessmentService.checkAllObjectiveStatus(bean);
-			
-			System.out.println("controller errorMessage is "+errorMessage);
-			
-			
-			if(errorMessage==null)
-			{
-				System.out.println("controller errorMessage is "+errorMessage);
-				//check objective status and return success or failure message
+
+			Map<Integer, List<AssesseeObjectives>> errorMessage = assessorAssessmentService
+					.checkAllObjectiveStatus(bean);
+
+			System.out.println("controller errorMessage is " + errorMessage);
+
+			if (errorMessage == null) {
+				log.info("controller errorMessage is " + errorMessage);
+				// check objective status and return success or failure message
 				bean.setAssesseeAssessorStatus(SELFRATING_COMPLETED);
-			assessorAssessmentService.updateAssesseesAssessorStatus(bean, ASSESSEMENT_COMPLETED);
-			}else{
-			model.addAttribute("errorMessage",errorMessage);
+				assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+						ASSESSEMENT_COMPLETED);
+			} else {
+				model.addAttribute("errorMessage", errorMessage);
 			}
-			isAssessorOREmployee=true;
+			isAssessorOREmployee = true;
 		}
-		
+
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
-		System.out.println("Section "+bean.getSectionid());
-		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
+		log.info("Section " + bean.getSectionid());
+		setDefaultLoad(model, bean.getSectionid(), userDetails,
+				isAssessorOREmployee);
+		return principal != null ? ASSESSORASSESSMENT : LOGIN;
+	}
+
+	//when close or dispute button clicked then this action will be called
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params = "close")
+	private String closeAssesseeAssessment(
+			@ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+			BindingResult error, Model model, Principal principal,
+			@RequestParam(value = "close", required = true) String close) {
+
+		System.out.println("close button value is " + bean.getId());
+		// NOTAGREE
+		if (bean.getEmployee_id() == 0) {
+			userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+					.getAuthentication().getPrincipal());
+			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(
+					userDetails.getMail()).getId());
+
+			log.info("current status of the assesee while assesse making disagree  "
+					+ bean.getAssesseeAssessorStatus());
+
+			bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+					NOTAGREE);
+			// ASSESSEMENT_COMPLETED
+
+			isAssessorOREmployee = false;
+		} else if (bean.getEmployee_id() != 0) {// CLOSED
+			log.info("Objective ID is "+bean.getObjectiveid());
+			//assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid());
+			AssesseesAssessor assesseesAssessor = assessorAssessmentService
+					.getAssesseesAssessor(bean);
+			if (assesseesAssessor.getStatus().equalsIgnoreCase(NOTAGREE)) {
+				bean.setAssesseeAssessorStatus(NOTAGREE);
+			} else {
+				bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
+			}
+			log.info("current status of the assesee while assessor submitting "
+					+ bean.getAssesseeAssessorStatus());
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+					CLOSED);
+
+			isAssessorOREmployee = true;
+		}
+		model.addAttribute("projectId", bean.getProjectId());
+		model.addAttribute("roleid", bean.getRoleid());
+		model.addAttribute("assesseeid", bean.getEmployee_id());
+		System.out.println("Section " + bean.getSectionid());
+		setDefaultLoad(model, bean.getSectionid(), userDetails,
+				isAssessorOREmployee);
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 	}
 
