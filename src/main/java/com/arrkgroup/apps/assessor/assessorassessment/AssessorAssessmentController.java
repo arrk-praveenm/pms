@@ -403,16 +403,9 @@ public class AssessorAssessmentController {
 			// ASSESSEMENT_COMPLETED
 
 			isAssessorOREmployee = false;
-		} else if (bean.getEmployee_id() != 0) {// CLOSED
+		} else if (bean.getEmployee_id() != 0) {
 			log.info("Objective ID is "+bean.getObjectiveid());
-			//assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid());
-			AssesseesAssessor assesseesAssessor = assessorAssessmentService
-					.getAssesseesAssessor(bean);
-			if (assesseesAssessor.getStatus().equalsIgnoreCase(NOTAGREE)) {
-				bean.setAssesseeAssessorStatus(NOTAGREE);
-			} else {
-				bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
-			}
+			
 			log.info("current status of the assesee while assessor submitting "
 					+ bean.getAssesseeAssessorStatus());
 			assessorAssessmentService.updateAssesseesAssessorStatus(bean,

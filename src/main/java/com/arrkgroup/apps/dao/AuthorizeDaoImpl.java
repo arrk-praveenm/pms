@@ -1,5 +1,7 @@
 package com.arrkgroup.apps.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -64,12 +66,13 @@ public class AuthorizeDaoImpl implements AuthorizeDao {
 		// TODO Auto-generated method stub
 
 		try {
-			AssesseesAssessor selfReporting = entityManager
+			
+					List<AssesseesAssessor> selfReporting=entityManager
 					.createNamedQuery(AssesseesAssessor.FIND_ROLE_BY_EMAIL,
 							AssesseesAssessor.class).setParameter("email", email)
-					.getSingleResult();
+					.getResultList();
 
-			System.out.println("SelfReporting "+selfReporting.getClass().getName());
+			System.out.println("List of selfReporting "+selfReporting.size());
 
 			return ASSESSOR_ROLE;
 		} catch (NoResultException e) {
