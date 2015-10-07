@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>  
+  <head>
   </head>
   <body>
       <!-- Sidebar menu starts -->
@@ -16,8 +16,8 @@
 				<img src="../../../pms/resources/images/logo-arrksmall.png"  th:src="@{/resources/images/logo-arrksmall.png}" alt="Arrk Logo" class="logo-small" />
 			</div>
           </div>
-          
-          
+
+
           <ul class="sidebar-menu">
 			<li class="treeview main-heading" id="menu_adminmodule" th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a href="#"><i class='fa fa-cogs icon-configuration'></i><span>Admin</span> <i class="fa fa-angle-left pull-right"></i></a>
 				<ul class="treeview-menu">
@@ -44,38 +44,40 @@
 							</em><span>Initiate Self Reporting</span>
 						</a>
 					</li>
-					
+
 					<li><a href="/hr/createSections" th:href="@{/hr/createSections}"><i class='fa fa-pencil-square-o icon-vesf'></i><span>CreateSections</span></a></li>
 					<li><a href="/hr/obj_to_role" th:href="@{/hr/obj_to_role}"><i class="fa fa-long-arrow-right"></i><span>Assign Objectives to role</span></a></li>
 					<li><a href="#"><i class='fa fa-history icon-veh'></i><span>View Employee History</span></a></li>
 					<li><a href="#"><i class='fa fa-hand-o-right icon-dr'></i><span>Dispute Resolution</span></a></li>
-					<li class="treeview">
+
+					<li><a href="/hr/showReport" th:href="@{/hr/showReport}"><i class="fa fa-file-text-o icon-reports"></i><span>Assessment report</span></a></li>
+					<!-- <li class="treeview">
 						<a href="#"><i class='fa fa-file-text-o icon-reports'></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
 						<ul class="treeview-menu">
 							<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>Reports</span></a></li>
 							<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>View Employee PMS</span></a></li>
 						</ul>
-					</li>
+					</li> -->
 				</ul>
 			</li>
 
 		  <!-- Sidebar Menu for hr module ends -->
-		  
+
 		  <!-- Sidebar Menu for manager module starts -->
 
 			<li class="treeview main-heading" id="menu_managermodule" th:if="${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}">
 				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Manager</span> <i class="fa fa-angle-left pull-right"></i></a>
-					
+
 							<ul class="treeview-menu">
 								<li th:if="${#authorization.expression('hasRole(''MANAGER'')')}"><a href="/assessor/assignobjectives" th:href="@{/assessor/assignobjectives}"><i class="fa fa-long-arrow-right"></i><span>Assign Objectives</span></a></li>
 								<li th:if="${#authorization.expression('hasAnyRole(''ASSESSOR'',''MANAGER'')')}"><a href="/assessor/assessorAssessment" th:href="@{/assessor/assessorAssessment}"><i class="fa fa-long-arrow-right"></i><span>Assess Employee</span></a></li>
 								<li><a href="#"><i class="fa fa-long-arrow-right"></i><span>View Employee History</span></a></li>
 							</ul>
-					
+
 			</li>
 
 		  <!-- Sidebar Menu for manager module ends -->
-		  
+
 		  <!-- Sidebar Menu for employee module starts -->
 
 			<li class="treeview main-heading" id="menu_employeemodule">
@@ -91,11 +93,11 @@
 					</li>
 				</ul>
 			</li>
-			
-			
-			
+
+
+
 		  </ul>
-          
+
         </section>
       </aside>
 	  <!-- Sidebar menu ends -->

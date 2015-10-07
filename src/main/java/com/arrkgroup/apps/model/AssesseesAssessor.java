@@ -37,11 +37,12 @@ import javax.persistence.Table;
 
 
 	@NamedQuery(name = AssesseesAssessor.UPDATE_STATUS, query = "update AssesseesAssessor set status=:status where projectId.id=:project_id "
-			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition ")
-
+			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition "),
+@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR_CYCLE, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id and  s.cycleId.id=:cycleId "),
 
 })
 public class AssesseesAssessor {
+	public static final String FIND_ASSESSEES_BY_ASSESSOR_CYCLE = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR_CYCLE";
 	public static final String FIND_ASSESSEES_BY_ASSESSOR = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR";
 	public static final String FIND_ASSESSOR_BY_CYCLE = "AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE";
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";
