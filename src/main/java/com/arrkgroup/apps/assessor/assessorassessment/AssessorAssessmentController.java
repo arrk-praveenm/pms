@@ -386,7 +386,7 @@ public class AssessorAssessmentController {
 			BindingResult error, Model model, Principal principal,
 			@RequestParam(value = "close", required = true) String close) {
 
-		System.out.println("close button value is " + bean.getId());
+		System.out.println("getAssesseeAssessorStatus  value is " + bean.getAssesseeAssessorStatus());
 		// NOTAGREE
 		if (bean.getEmployee_id() == 0) {
 			userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()

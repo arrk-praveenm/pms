@@ -16,8 +16,7 @@ $(document).ready(function(){
 	  var projectId=[[${projectid}]];
 	  var summarydata;
       var roleid=[[${roleid}]];
-
-
+ 
 
 	 if([[${assessorAssessees}]]==null)
 		 {
@@ -46,7 +45,7 @@ $(document).ready(function(){
 	      			projectId:[[${allRolesofCurrentUser}]][0].projectId
 	      			};
 
-
+$("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatus);
 	      	ajaxCall(data);
 
       	 
@@ -205,6 +204,7 @@ $(document).ready(function(){
 	         		  { 
 	     			  if(assesseesList[assessee].projectId==$(selectedRole).children(":selected").attr("name"))
 	         			  {
+	     				 $("#assesseeAssessorStatus").val(assesseesList[assessee].assessmentStatus);
 	         			  	if(assesseesList[assessee].assessmentStatus=="closed")
 	             			  {
 	         			  	   
@@ -242,6 +242,7 @@ function assesorButtonDivhandler()
         		  {
     			  if(assesseesList[assessee].projectId==$(selectAssessee).children(":selected").attr("id"))
         			  {
+    				  $("#assesseeAssessorStatus").val(assesseesList[assessee].status);
         			  	if(assesseesList[assessee].status=="AssessementCompleted")
             			  {
         			  	   $("#closeDispute").show();
@@ -630,10 +631,15 @@ function ajaxCall(data)
 											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
 												{
 												
-												if([[${allRolesofCurrentUser}]][itr].assessmentStatus!="AssessementCompleted")
+												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed")
 													{
-													$("#managerSection").hide();
-													}
+													
+													$("#managerSection").show();	
+													
+													}else{
+														
+														$("#managerSection").hide();		
+														}
 												}
 											}
 									
@@ -646,7 +652,7 @@ function ajaxCall(data)
 				 		$("#selfscore").attr("disabled",true);
 				 		$("#objective_modal").attr("disabled",true);
 
-
+				 		manageSectionsByStatus($("#assesseeAssessorStatus").val(), true);
 
 	    			  } else
 		 		 {
@@ -656,11 +662,13 @@ function ajaxCall(data)
 		 		$("#employeeSection").find("input,textarea,select").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
 		 		$("#objective_modal").prop("disabled",true);
-
+		 		
+		 		manageSectionsByStatus($("#assesseeAssessorStatus").val(), false);
 		 		 }
 
 
 
+		    	 
 		    	  });
 
 
@@ -679,7 +687,32 @@ function ajaxCall(data)
    		};
 
 
+function manageSectionsByStatus(currentStatus, isemployee)
+{
 
+	 if($("#assesseeAssessorStatus").val()=="AssessementCompleted" || $("#assesseeAssessorStatus").val()=="closed" || $("#assesseeAssessorStatus").val()=="notAgree")
+	  {
+		 disableSection();
+	  }else{
+
+   	   		  if(isemployee)
+   	   		  {
+   	   		$("#employeeSection").find("input,textarea,select").prop("disabled",false);
+   	   	 $("#submitbtn").show();
+   	   	   		  }else{
+   	   	   	 $("#managerSection").find("input,textarea,select").prop("disabled",false);
+   	   	$("#submitbtn").show();
+   	   	   	   		  }
+   	   		  }
+	}
+
+function disableSection()
+{
+	 $("#managerSection").find("input,textarea,select").prop("disabled",true);
+	 $("#employeeSection").find("input,textarea,select").prop("disabled",true);
+	 $("#submitbtn").hide();
+	 $("#weightagediv").find("select").prop("disabled",true);
+	 }
 
 		       $("#submitbtn_summary").on("click",function(){
 
@@ -916,6 +949,9 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="projectId"
 							th:value="${projectId}" th:field="*{projectId}" />
+							 <input type="hidden"
+							id="assesseeAssessorStatus"
+							th:value="${assesseeAssessorStatus}" th:field="*{assesseeAssessorStatus}" />
 
 <input type="hidden" id="userType" th:field="*{userType}" value="assesse"/>
 

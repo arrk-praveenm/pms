@@ -88,7 +88,8 @@ if(allObjectives!=null)
 
 		if($("#assessee").val()!="0") {
 		//if($("#assessmentFromDate").val()!="") {
-			if($("#projectName").val()!="") {
+		
+			if($("#projectName").val()!="0") {
 			if($("#assessmentCycle").val()!="0"){
 			//	if($("#assessor").val()!="0") {
 					if($("#assesseeRole").val()!="0") {
@@ -157,7 +158,7 @@ if(allObjectives!=null)
 			if($("#assessmentCycle").val()=="0"){
 				event.preventDefault();
 			}
-			if($("#projectName").val()=="") {
+			if($("#projectName").val()=="0") {
 				event.preventDefault();
 			}
 			if($("#assessmentFromDate").val()=="") {
@@ -760,9 +761,9 @@ if(allObjectives!=null)
 
 						<div class="row">
 							<div class="col-md-12 margintop30 text-center">
-								<button type="submit" class="btn btn-primary btn-lg">
+								<!-- <button type="submit"  class="btn btn-primary btn-lg">
 									<i class="fa fa-check"></i>Save
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</div>
