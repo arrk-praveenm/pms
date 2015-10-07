@@ -95,11 +95,9 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 
 	public AssesseesAssessor  getAssesseesAssessor(int id)
 	{
-		AssesseesAssessor assessor=new AssesseesAssessor();
+		
 
-		assessor= assessorAssessmentDao.getAssesseesAssessor(id);
-
-			return assessor;
+			return assessorAssessmentDao.getAssesseesAssessor(id);
 	}
 
 
@@ -147,9 +145,13 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 
 		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
+		
+		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
+		
+		
+		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 
-
-
+	
 
 		return  assessorAssessmentDao.saveAssessorAssessment(bean) ;
 	}
@@ -363,6 +365,13 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		// TODO Auto-generated method stub
 		return assessorAssessmentDao.updateAssesseesAssessorStatus(bean, status);
 	}
+	@Override
+	public AssesseesAssessor getAssesseesAssessor(AssessorAssessmentBean bean) {
+		// TODO Auto-generated method stub
+		return assessorAssessmentDao.getAssesseesAssessor(bean);
+	}
+	
+	
 	
 	
 	

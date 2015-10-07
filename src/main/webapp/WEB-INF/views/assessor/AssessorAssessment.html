@@ -16,8 +16,7 @@ $(document).ready(function(){
 	  var projectId=[[${projectid}]];
 	  var summarydata;
       var roleid=[[${roleid}]];
-
-
+ 
 
 	 if([[${assessorAssessees}]]==null)
 		 {
@@ -46,9 +45,27 @@ $(document).ready(function(){
 	      			projectId:[[${allRolesofCurrentUser}]][0].projectId
 	      			};
 
-
+$("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatus);
 	      	ajaxCall(data);
+
+      	 
+    
+	      	 
+        			  	if([[${allRolesofCurrentUser}]][0].assessmentStatus=="closed")
+            			  {
+        			  	   
+        			  		$("#dispute").hide();
+        			  		$("#assesseSubmit").hide();
+        			
+        				
+            			  }else if([[${allRolesofCurrentUser}]][0].assessmentStatus=="AssessementCompleted")
+            			  {
+            				 $("#dispute").show();
+            				 $("#assesseSubmit").hide();
+            			  }
+	      	
 			 }else{
+				 
 				 if([[${projectId}]]!=null){
 
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
@@ -71,11 +88,10 @@ $(document).ready(function(){
 				      	ajaxCall(data);
 						}
 
-						   /* if( jQuery(this).text() == 'Monday' )
-						   {
-						    jQuery(this).attr("selected","selected");
-						    } */
+						   
 						  });
+
+				  assesseeButtonDivhandler();
 				 }else{
 		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -87,20 +103,13 @@ $(document).ready(function(){
 	 else{
 	//	//for Assessor screen
 
-/* 	$('select option[value="' + selectedAsseesse + '"]').attr("selected","");
-
-	  $('option[name="' + roleid + '"]').attr("selected","selected");
-
-	  $('option[id="' + projectId + '"]').attr("selected","selected");
-
-
-	   */
 
 
 
 	   $("#closeDispute").hide();
 		 $("#dispute").hide();
 		 $("#assesseSubmit").hide();
+		 
 		 //closeDispute assesseSubmit assessorSubmit dispute
 
 
@@ -138,7 +147,8 @@ $(document).ready(function(){
 
       if (selectedAsseesse > 0) {
 
-
+    	  assesorButtonDivhandler();
+    	  
           $('.test').removeClass("active test").addClass("test");
 
           $('li[name="' + selectedSection + '"]').addClass("active test");
@@ -184,9 +194,75 @@ $(document).ready(function(){
 
 		 }
 
+	 function assesseeButtonDivhandler()
+	 {
+	 	  var assesseesList=[[${allRolesofCurrentUser}]];
+	 	  for(assessee in assesseesList)
+	     	  {
+	     	 
+	     		  if(assesseesList[assessee].roleId==$("#selectedRole").val())
+	         		  { 
+	     			  if(assesseesList[assessee].projectId==$(selectedRole).children(":selected").attr("name"))
+	         			  {
+	     				 $("#assesseeAssessorStatus").val(assesseesList[assessee].assessmentStatus);
+	         			  	if(assesseesList[assessee].assessmentStatus=="closed")
+	             			  {
+	         			  	   
+	         			  		$("#dispute").hide();
+	         			  		$("#assesseSubmit").hide();
+	         			
+	         				
+	             			  }else if(assesseesList[assessee].assessmentStatus=="AssessementCompleted")
+	             			  {
+	             				 $("#dispute").show();
+	             				 $("#assesseSubmit").hide();
+	              			  	
+	             			  }else if(assesseesList[assessee].assessmentStatus=="notAgree"){
+	             					$("#dispute").hide();
+		         			  		$("#assesseSubmit").hide();
+		             			  }else{
+		             					$("#dispute").hide();
+			         			  		$("#assesseSubmit").show();
+			             			  }
+	         			  }
+	         		  }
+	         	  
+	     	  }
+	 	}
 
-
-
+function assesorButtonDivhandler()
+{
+	  var assesseesList=[[${assessorAssessees}]];
+	  for(assessee in assesseesList)
+    	  {
+    	  
+    	  if(assesseesList[assessee].id==$("#selectAssessee").val())
+        	  {
+    		  if(assesseesList[assessee].role_id==$(selectAssessee).children(":selected").attr("name"))
+        		  {
+    			  if(assesseesList[assessee].projectId==$(selectAssessee).children(":selected").attr("id"))
+        			  {
+    				  $("#assesseeAssessorStatus").val(assesseesList[assessee].status);
+        			  	if(assesseesList[assessee].status=="AssessementCompleted")
+            			  {
+        			  	   $("#closeDispute").show();
+        			  	 $("#assessorSubmit").hide();
+            			  }else if(assesseesList[assessee].status=="closed")
+            			  {
+            				  $("#closeDispute").hide();
+             			  	 $("#assessorSubmit").hide();
+            			  }else if(assesseesList[assessee].status=="notAgree"){
+            				   	$("#closeDispute").show();
+              			  		 $("#assessorSubmit").hide();
+             			  }else{
+            				   $("#closeDispute").hide();
+              			  	 $("#assessorSubmit").show();
+                			  }
+        			  }
+        		  }
+        	  }
+    	  }
+	}
 $("#submitbtn").on("click",function(){
 
 	   var classValue="help-block";
@@ -261,6 +337,9 @@ $("#selectAssessee").on('change', function(){
 
 	   $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
 	   $("#projectId").val($(selectAssessee).children(":selected").attr("id"));
+
+	   assesorButtonDivhandler();
+	  
   	 }else{
   		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -336,6 +415,7 @@ $("#selectedRole").on('change', function(){
 	 $("#section0").trigger("click");
 
 	 $("#projectId").val($(selectedRole).children(":selected").attr("name"));
+	 assesseeButtonDivhandler();
 	// $(selectedRole).children(":selected").attr("name")
 	/* var data={selectedAsseesseID:0,
 			sectionToLoad:0,
@@ -551,10 +631,15 @@ function ajaxCall(data)
 											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
 												{
 												
-												if([[${allRolesofCurrentUser}]][itr].assessmentStatus!="AssessementCompleted")
+												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed")
 													{
-													$("#managerSection").hide();
-													}
+													
+													$("#managerSection").show();	
+													
+													}else{
+														
+														$("#managerSection").hide();		
+														}
 												}
 											}
 									
@@ -567,7 +652,7 @@ function ajaxCall(data)
 				 		$("#selfscore").attr("disabled",true);
 				 		$("#objective_modal").attr("disabled",true);
 
-
+				 		manageSectionsByStatus($("#assesseeAssessorStatus").val(), true);
 
 	    			  } else
 		 		 {
@@ -577,11 +662,13 @@ function ajaxCall(data)
 		 		$("#employeeSection").find("input,textarea,select").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
 		 		$("#objective_modal").prop("disabled",true);
-
+		 		
+		 		manageSectionsByStatus($("#assesseeAssessorStatus").val(), false);
 		 		 }
 
 
 
+		    	 
 		    	  });
 
 
@@ -600,7 +687,32 @@ function ajaxCall(data)
    		};
 
 
+function manageSectionsByStatus(currentStatus, isemployee)
+{
 
+	 if($("#assesseeAssessorStatus").val()=="AssessementCompleted" || $("#assesseeAssessorStatus").val()=="closed" || $("#assesseeAssessorStatus").val()=="notAgree")
+	  {
+		 disableSection();
+	  }else{
+
+   	   		  if(isemployee)
+   	   		  {
+   	   		$("#employeeSection").find("input,textarea,select").prop("disabled",false);
+   	   	 $("#submitbtn").show();
+   	   	   		  }else{
+   	   	   	 $("#managerSection").find("input,textarea,select").prop("disabled",false);
+   	   	$("#submitbtn").show();
+   	   	   	   		  }
+   	   		  }
+	}
+
+function disableSection()
+{
+	 $("#managerSection").find("input,textarea,select").prop("disabled",true);
+	 $("#employeeSection").find("input,textarea,select").prop("disabled",true);
+	 $("#submitbtn").hide();
+	 $("#weightagediv").find("select").prop("disabled",true);
+	 }
 
 		       $("#submitbtn_summary").on("click",function(){
 
@@ -837,6 +949,9 @@ function ajaxCall(data)
 							 <input type="hidden"
 							id="projectId"
 							th:value="${projectId}" th:field="*{projectId}" />
+							 <input type="hidden"
+							id="assesseeAssessorStatus"
+							th:value="${assesseeAssessorStatus}" th:field="*{assesseeAssessorStatus}" />
 
 <input type="hidden" id="userType" th:field="*{userType}" value="assesse"/>
 
@@ -909,10 +1024,10 @@ function ajaxCall(data)
 							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-user"></i> Assessee Submit</button>
 						
 						
-							<button class="btn btn-danger" id="dispute" type="button"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
+							<button class="btn btn-danger" id="dispute" name="close" value="dispute" type="submit"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
 					
 					
-							<button class="btn btn-warning" id="closeDispute" type="button"><i class="fa fa-user-times"></i> Close Accessement</button>
+							<button class="btn btn-warning" id="closeDispute" name="close" value="closed" type="submit"><i class="fa fa-user-times"></i> Close</button>
 						
 					</div>
  

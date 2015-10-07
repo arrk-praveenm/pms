@@ -19,6 +19,7 @@ import javax.persistence.Table;
 @NamedQueries({
 @NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ID, query = "SELECT s FROM AssesseesAssessor s where s.id= :id "),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id and s.projectId.id=:projectId"),
+	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID_NOTCLOSED, query = "SELECT s FROM AssesseesAssessor s where s.assesseeId.id= :id and s.roleId.id= :role_id and s.projectId.id=:projectId and s.status != :closed"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id"),
 	@NamedQuery(name = AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE, query = "SELECT DISTINCT s FROM AssesseesAssessor s where s.cycleId.id= :id"),
 		@NamedQuery(name = AssesseesAssessor.FIND_ROLE_BY_EMAIL, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id=(select id from Employee ee where ee.email= :email) "),
@@ -47,7 +48,7 @@ public class AssesseesAssessor {
 	public static final String FIND_ASSESSOR_BY_CYCLE = "AssesseesAssessor.FIND_ASSESSOR_BY_CYCLE";
 	public static final String FIND_ROLE_BY_EMAIL = "AssesseesAssessor.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_ASSESSEES_BY_EMAIL = "AssesseeAssessor.FIND_ASSESSEES_BY_EMAIL";
-
+	public static final String FIND_ASSESSEES_BY_EMPLOYEE_ID_NOTCLOSED = "AssesseeAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID_NOTCLOSED";
 	public static final String FIND_ASSESSEES_BY_EMPLOYEE_ID = "AssesseeAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID";
 
 	public static final String FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PERIOD_PROJECT_ASSESSORID_ASSESSEEID_ROLEID";
