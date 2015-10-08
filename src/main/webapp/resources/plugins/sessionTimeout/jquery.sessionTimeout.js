@@ -40,7 +40,7 @@
 //     Default: 'Logout'
 //
 //   closeModals
-//     Array of modla IDs to close prior to opening the time-out modal	
+//     Array of modla IDs to close prior to opening the time-out modal
 //     Default: 'array = []'
 //
 //   keepAliveUrl
@@ -75,9 +75,9 @@
             stayConnectedBtn : 'Stay connected',
             logoutBtn        : 'Logout',
             closeModals		 : otherModals,
-			keepAliveUrl     : '/authenticate',
-			redirUrl         : '/pms/login?logout',
-			logoutUrl        : '/pms/login?logout',
+			keepAliveUrl     : '/pms-1.0/authenticate',
+			redirUrl         : '/pms-1.0/login?logout',
+			logoutUrl        : '/pms-1.0/login?logout',
 			warnAfter        : 1620000, // 15 minutes
 			redirAfter       : 1800000 // 20 minutes
 		};
@@ -90,7 +90,7 @@
 		if ( options ) { o = $.extend( defaults, options ); }
 
 		// Create timeout warning dialog
-		
+
 		//.html($('body').html()+
 		$("#dailog").append('<div class="modal fade" id="sessionTimeout-dialog">'
 							+'<div class="modal-dialog">'
@@ -132,10 +132,10 @@
 						$.each( o.closeModals, function( i, val ) {
 							$('#' + val).modal('hide');
 						});
-						
+
 						// SET HEAD TITLE MESSAGE
 						document.title = o.titleMessage;
-						
+
 						$('#sessionTimeout-dialog').modal('show');
 						controlRedirTimer('start');
 					}, o.warnAfter);

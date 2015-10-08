@@ -4,6 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="home/homeSignedIn">
 <head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 <script th:inline="javascript">
 $(document).ready(function(){
 
@@ -631,7 +632,7 @@ function ajaxCall(data)
 											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
 												{
 
-												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed")
+												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "notAgree"  || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed" )
 													{
 
 													$("#managerSection").show();
@@ -698,13 +699,20 @@ function manageSectionsByStatus(currentStatus, isemployee)
    	   		  if(isemployee)
    	   		  {
    	   		$("#employeeSection").find("input,textarea,select").prop("disabled",false);
+   	   	$("#selfscore").attr("disabled",true);
    	   	 $("#submitbtn").show();
    	   	   		  }else{
    	   	   	 $("#managerSection").find("input,textarea,select").prop("disabled",false);
+   	   	$("#manager_score").attr("disabled",true);
    	   	$("#submitbtn").show();
    	   	   	   		  }
    	   		  }
 	}
+
+
+
+
+
 
 function disableSection()
 {
@@ -817,6 +825,8 @@ function disableSection()
 
   		   var pointvalue= parseFloat(value).toFixed(2);
 
+
+
   		$('input[name="' + point + '"]').val(0);
 
 
@@ -879,9 +889,15 @@ function disableSection()
 
     	 pointvalue = parseFloat(value).toFixed(2);
 
+    	  if(isNaN(pointvalue)) {
+   			pointvalue = "0.0";
+   			}
+
+
+
          }else
              {
-        	 pointvalue=0;
+        	 pointvalue="0.0";
              }
 
 
@@ -897,11 +913,19 @@ function disableSection()
 
        	finalweightage=finalweightage+section_value*pointvalue;
 
+       	finalweightage=parseFloat(finalweightage).toFixed(2);
+
+
+
 
    		            }
 
 
-   		         $('#weightage_score').val( parseFloat(finalweightage).toFixed(2));
+   		         if(isNaN(finalweightage)) {
+   		        	finalweightage = "0.0";
+   		   			}
+
+   		         $('#weightage_score').val(finalweightage );
 
 
    		        	   }
@@ -1364,7 +1388,7 @@ function disableSection()
 												readonly="true" th:value="${section.getSection()}" /> </em> <em
 												class="score"><input th:id="${section.getId()}"
 												th:name="'point'+${section.getId()}" type="text"
-												readonly="true" value="0"></input></em>
+												readonly="true" value="0.0"></input></em>
 
 											<!-- <em class="score"   th:id="${section.getSection_manager_score()}" th:name="${section.getSection_max_score()}"><input type="text" readonly="true" th:value="${section.getSection_manager_score()/section.getSection_max_score() * maxrating}"/> </em> -->
 										</p>
@@ -1388,7 +1412,7 @@ function disableSection()
 										<em style="word-wrap: break-word; white-space: normal;"
 											class="score-title"><input type="text" readonly="true"
 											value="Weighted score" /></em> <em class="score"><input
-											id="weightage_score" type="text" readonly="true" value="0" /></em>
+											id="weightage_score" type="text" readonly="true" value="0.0" /></em>
 
 									</p>
 

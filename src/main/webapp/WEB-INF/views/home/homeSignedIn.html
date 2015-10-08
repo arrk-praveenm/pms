@@ -69,7 +69,7 @@
 <script
 	src="../../../resources/plugins/daterangepicker/daterangepicker.js"
 	th:src="@{/resources/plugins/daterangepicker/daterangepicker.js}"></script>
-	
+
 <script
 	src="../../../resources/plugins/jQueryUI/jquery-ui.min.js"
 	th:src="@{/resources/plugins/jQueryUI/jquery-ui.min.js}"></script>
@@ -97,7 +97,7 @@
 	th:src="@{/resources/plugins/typeahead/typeahead.js}"></script>
 <script src="../../../resources/js/jquery.cookie.js"
 	th:src="@{/resources/js/jquery.cookie.js}"></script>
-	
+
 	<script src="js/bootstrap-accessibility.min.js" type="text/javascript"></script>
 
 <!-- Session Timeout -->
@@ -105,7 +105,7 @@
 	src="../../../resources/plugins/sessionTimeout/jquery.sessionTimeout.js"
 	th:src="@{/resources/plugins/sessionTimeout/jquery.sessionTimeout.js}"></script>
 
-<script> 
+<script>
 		(function( $ ){
 		jQuery.sessionTimeout = function( options ) {
 			// DEFINE AN ARRAY TO STORE OTEHR MODALS TO CLOSE
@@ -133,7 +133,7 @@
 			if ( options ) { o = $.extend( defaults, options ); }
 
 			// Create timeout warning dialog
-				
+
 			//.html($('body').html()+
 			$("#dailog").append('<div class="modal fade" id="sessionTimeout-dialog">'
 								+'<div class="modal-dialog modal-relogin" style="width:40%">'
@@ -157,16 +157,16 @@
 			controlRedirTimer('stop'); });
 
 			$("#sessionTimeout-dialog-keepalive").click(function(event) {
-			
+
 				formSubmission('relogin');
 				controlRedirTimer('stop');
 				controlDialogTimer('start');
-				
+
 			});
 
 			document.getElementById("timerDiv1").innerHTML=0;
 			document.getElementById("timerDiv2").innerHTML=3;
-		
+
 			/* t1=setInterval(function(){
 				callTimer()
 			},1000);
@@ -174,13 +174,13 @@
 
 
 			function callTimer(){
-				
+
 				document.getElementById("timerDiv1").innerHTML=eval(document.getElementById("timerDiv1").innerHTML)-1;
 				if(document.getElementById("timerDiv1").innerHTML==-1){
 				document.getElementById("timerDiv1").innerHTML=59;
 				document.getElementById("timerDiv2").innerHTML=eval(document.getElementById("timerDiv2").innerHTML)-1;
 				}
-			
+
 				if(document.getElementById("timerDiv1").innerHTML==0)
 				{
 					if(document.getElementById("timerDiv2").innerHTML==0)
@@ -190,18 +190,18 @@
 					window.location = o.redirUrl;
 						}
 					}
-			
-		}
-		
-			
 
-			
+		}
+
+
+
+
 			 $('#sessionTimeout-dialog').on('hide.bs.modal', function () {
-				
+
 				// Stop redirect timer and restart warning timer
 				controlRedirTimer('stop');
 				controlDialogTimer('start');
-			}); 
+			});
 
 			function controlDialogTimer(action){
 				switch(action) {
@@ -217,11 +217,11 @@
 							$.each( o.closeModals, function( i, val ) {
 								$('#' + val).modal('hide');
 							});
-							
+
 							callTimer();
-					
+
 							$('#sessionTimeout-dialog').modal('show');
-								
+
 							controlRedirTimer('start');
 						}, o.warnAfter);
 						break;
@@ -247,14 +247,14 @@
 				}
 			}
 
-			
+
 
 			function formSubmission(formname)
 			{
-				
+
 				$form=$(formname);
 				var valll=$form.serialize();
-				
+
 			 	formElements=document.forms[formname].elements;
 			 	var uname;
 			 	var pwd;
@@ -263,40 +263,40 @@
 						{uname=formElements[i].value}
 			 		if(formElements[i].name=="password")
 			 		{pwd=formElements[i].value}
-			 	}  
+			 	}
 
 				 var data = {username: uname,
-							password : pwd}; 
-		
-				 					
+							password : pwd};
+
+
 	            $.ajax({
 	                url: o.keepAliveUrl,
 	                type: 'POST',
 	                data: data,
 	                success: function(result) {
 	                    // ... Process the result ...
-	                    alert("success");
+	                    console.log("success");
 	                }
-				}); 
+				});
 			}
 
-			
+
 
 			// Begin warning period
 			setTimeout(function(){
  		 /// call your function here
 				controlDialogTimer('start');
 			}, 1000);
-		 
+
 	};
-		
+
 })(jQuery);
 
 
 
 
 
-	
+
 </script>
 <!-- Custom JS -->
 <script src="../../../resources/js/custom.js"
