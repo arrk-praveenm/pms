@@ -24,6 +24,9 @@
                 var id = '#' + 'section' + $(this).attr("id");
 
                 $("#section_id").val($(id).attr("name"));
+
+
+
                 $.ajax({
                     url: '../hr/showObjective_Section',
                     type: 'GET',
@@ -39,19 +42,9 @@
                         $('#multiselect').empty(); // clear the current elements in select box
                         for (row in data) {
                             $('#multiselect').append(
-                                $('<option></option>').attr({'value',
-                                    data[row].id).text(
-                                    data[row].objectiveDesc), 'title', 'test'
-
-
-                                });
-
-
-
-
-                            /* $('<option></option>').attr('title',
-                                    data[row].id).text(
-                                    data[row].objectiveDesc)); */
+                                    $('<option></option>')
+                                        .attr({value: SectionObjectives[row].id, 'title': SectionObjectives[row].objectiveDesc}).text(
+                                            SectionObjectives[row].objectiveDesc));
 
 
 
@@ -72,29 +65,22 @@
                                     // clear the current elements in select box
                                     $('#multiselect').empty();
                                     for (row in SectionObjectives) {
-                                        $('#multiselect')
-                                            .append(
-                                                $(
-                                                    '<option></option>')
-                                                .attr(
-                                                    'value',
-                                                    SectionObjectives[row].id)
-                                                .text(
-                                                    SectionObjectives[row].objectiveDesc));
+                                    	 $('#multiselect').append(
+                                                 $('<option></option>')
+                                                     .attr({value: SectionObjectives[row].id, 'title': SectionObjectives[row].objectiveDesc}).text(
+                                                         SectionObjectives[row].objectiveDesc));
 
                                     }
 
                                     $('#multiselect_to').empty(); // clear the current elements in select box
                                     for (row in data) {
-                                        $('#multiselect_to')
-                                            .append(
-                                                $(
-                                                    '<option></option>')
-                                                .attr(
-                                                    'value',
-                                                    data[row].id)
-                                                .text(
-                                                    data[row].objectiveDesc));
+                                        $('#multiselect_to').append(
+                                                $('<option></option>')
+                                                    .attr({value: data[row].id, 'title':data[row].objectiveDesc}).text(
+                                                    		data[row].objectiveDesc));
+
+
+
 
                                         $(
                                             '#multiselect option[value=' + data[row].id + ']').remove();

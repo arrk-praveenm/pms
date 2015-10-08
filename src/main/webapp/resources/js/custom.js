@@ -252,5 +252,9 @@ $(function () {
 
 					$('.uitip').tooltip();
 
+					$("#selectrole").change(function() {
+						$('.uitip').tooltip();
+					});
+
 
 });
