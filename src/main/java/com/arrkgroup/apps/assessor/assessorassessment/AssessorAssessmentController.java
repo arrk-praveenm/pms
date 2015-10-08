@@ -38,7 +38,8 @@ public class AssessorAssessmentController {
 	private final String SELFRATING_COMPLETED="selfRatingCompleted";
 	private final String ASSESSEMENT_COMPLETED="AssessementCompleted";
 	private static final String STATUS = "assignedObjectives";
-
+		private static final String NOTAGREE = "notAgree";
+		private static final String CLOSED = "closed";
 	private final Logger log = LoggerFactory
 			.getLogger(AssessorAssessmentController.class);
 
@@ -409,8 +410,54 @@ List<SectionConsolidatedBean> getsummarydata(
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
-		System.out.println("Section "+bean.getSectionid());
-		setDefaultLoad(model, bean.getSectionid(), userDetails, isAssessorOREmployee);
+
+		log.info("Section " + bean.getSectionid());
+		setDefaultLoad(model, bean.getSectionid(), userDetails,
+				isAssessorOREmployee);
+		return principal != null ? ASSESSORASSESSMENT : LOGIN;
+	}
+
+	//when close or dispute button clicked then this action will be called
+	@RequestMapping(value = "/assessor/SaveSectionData", method = RequestMethod.POST, params = "close")
+	private String closeAssesseeAssessment(
+			@ModelAttribute("AssessorAssessmentBean") AssessorAssessmentBean bean,
+			BindingResult error, Model model, Principal principal,
+			@RequestParam(value = "close", required = true) String close) {
+
+		System.out.println("getAssesseeAssessorStatus  value is " + bean.getAssesseeAssessorStatus());
+		// NOTAGREE
+		if (bean.getEmployee_id() == 0) {
+			userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+					.getAuthentication().getPrincipal());
+			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(
+					userDetails.getMail()).getId());
+
+			log.info("current status of the assesee while assesse making disagree  "
+					+ bean.getAssesseeAssessorStatus());
+
+			bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+					NOTAGREE);
+			// ASSESSEMENT_COMPLETED
+
+			isAssessorOREmployee = false;
+		} else if (bean.getEmployee_id() != 0) {
+			log.info("Objective ID is "+bean.getObjectiveid());
+
+			log.info("current status of the assesee while assessor submitting "
+					+ bean.getAssesseeAssessorStatus());
+			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+					CLOSED);
+
+			isAssessorOREmployee = true;
+		}
+		model.addAttribute("projectId", bean.getProjectId());
+		model.addAttribute("roleid", bean.getRoleid());
+		model.addAttribute("assesseeid", bean.getEmployee_id());
+		System.out.println("Section " + bean.getSectionid());
+		setDefaultLoad(model, bean.getSectionid(), userDetails,
+				isAssessorOREmployee);
+
 		return principal != null ? ASSESSORASSESSMENT : LOGIN;
 	}
 

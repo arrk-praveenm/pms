@@ -4,8 +4,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="home/homeSignedIn">
 
+
+
 <head>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
 <script>
@@ -77,12 +80,12 @@
                                                     data[row].id)
                                                 .text(
                                                     data[row].objectiveDesc));
-                                       
+
                                         $(
                                             '#multiselect option[value=' + data[row].id + ']').remove();
                                     }
 
-                                    
+
                                 },
                                 error: function(jqXHR, textStatus,
                                     errorThrown) {
@@ -230,12 +233,13 @@
 									<div class="box-body">
 										<div class="row">
 											<div class="col-xs-5">
-												<label for="selectrole">Organisation Objectives</label> <select
-													name="to" id="multiselect" class="form-control" size="8"
+												<label for="selectrole">Organisation Objectives</label>
+												<select
+													name="to" id="multiselect" class="form-control uitip" size="8"
 													multiple="multiple">
 													<option th:each="objectives : ${objectiveList}"
 														th:text="${objectives.objectiveDesc}"
-														th:value="${objectives.id}">Assistant General
+														th:value="${objectives.id}" th:title="${objectives.objectiveDesc}">Assistant General
 														Manager</option>
 
 												</select>
@@ -253,12 +257,13 @@
 											</div>
 											<div class="col-xs-5"
 												th:classappend="${#fields.hasErrors('multiselect_to')}? 'has-error'">
-												<label for="selectrole">Role Objectives</label> <select
-													name="from" id="multiselect_to" class="form-control"
+												<label for="selectrole">Role Objectives</label>
+												<select
+													name="from" id="multiselect_to" class="form-control uitip"
 													size="8" multiple="multiple" th:field="*{multiselect_to}">
 													<option th:each="Objectives : ${objectiveSelectedList}"
 														th:text="${Objectives.objectiveDesc}"
-														th:value="${Objectives.id}">Developer</option>
+														th:value="${Objectives.id}" th:title="${Objectives.objectiveDesc}">Developer</option>
 												</select> <span class="help-block"
 													th:if="${#fields.hasErrors('multiselect_to')}"
 													th:errors="*{multiselect_to}">Incorrect email</span>
@@ -290,9 +295,9 @@
 
 			<script th:inline="javascript">
                 $(document).ready(function() {
-                  
+
                     var selectedSection = $('#First_section_id').val();
-                    
+
                     if (selectedSection > 0) {
 
                         $('.test').removeClass("active test").addClass("test");

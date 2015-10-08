@@ -95,9 +95,11 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 
 	public AssesseesAssessor  getAssesseesAssessor(int id)
 	{
-		
+		AssesseesAssessor assessor=new AssesseesAssessor();
 
-			return assessorAssessmentDao.getAssesseesAssessor(id);
+		assessor= assessorAssessmentDao.getAssesseesAssessor(id);
+
+			return assessor;
 	}
 
 
@@ -145,13 +147,9 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 
 		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
-		
-		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
-		
-		
-		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 
-	
+
+
 
 		return  assessorAssessmentDao.saveAssessorAssessment(bean) ;
 	}
@@ -324,30 +322,30 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 					System.out.println(assesseeObjectives.getSection().getSection()+" Self Rating Zero "+assesseeObjectives.getDescription());
 					errorAssesseeObjectives.add(assesseeObjectives);
 					added=true;
-					
+
 				}
-				
+
 				if(!added && assesseeObjectives.getManager_rating().getId()==1)
 				{
 					System.out.println(assesseeObjectives.getSection().getSection()+" Manager Reating Zero  "+assesseeObjectives.getDescription());
 					errorAssesseeObjectives.add(assesseeObjectives);
 					added=true;
-					
+
 				}
 			}else{
 				System.out.println(assesseeObjectives.getSection().getSection()+" Weightage Zero "+assesseeObjectives.getDescription());
 				errorAssesseeObjectives.add(assesseeObjectives);
 				added=true;
 			}
-			
+
 		}
 		System.out.println("Size of errorAssesseeObjectives is "+errorAssesseeObjectives.size());
 		if(errorAssesseeObjectives.size()!=0)
 		{
 		errorMessage.put(section.getId(), errorAssesseeObjectives);
 		}
-		
-		
+
+
 		}
 		System.out.println(errorMessage.keySet());
 		System.out.println(errorMessage.values());
@@ -356,7 +354,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		{
 			errorMessage=null;
 		}
-		
+
 		return errorMessage;
 	}
 	@Override
@@ -365,16 +363,9 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		// TODO Auto-generated method stub
 		return assessorAssessmentDao.updateAssesseesAssessorStatus(bean, status);
 	}
-	@Override
-	public AssesseesAssessor getAssesseesAssessor(AssessorAssessmentBean bean) {
-		// TODO Auto-generated method stub
-		return assessorAssessmentDao.getAssesseesAssessor(bean);
-	}
-	
-	
-	
-	
-	
+
+
+
 
 
 }

@@ -250,7 +250,7 @@ $(function () {
 					$('#main-accordion').on('shown.bs.collapse', toggleChevron);
 
 
-
+					$('.uitip').tooltip();
 
 
 });
