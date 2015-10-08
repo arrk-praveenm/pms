@@ -16,7 +16,7 @@ $(document).ready(function(){
 	  var projectId=[[${projectid}]];
 	  var summarydata;
       var roleid=[[${roleid}]];
- 
+
 
 	 if([[${assessorAssessees}]]==null)
 		 {
@@ -48,24 +48,24 @@ $(document).ready(function(){
 $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatus);
 	      	ajaxCall(data);
 
-      	 
-    
-	      	 
+
+
+
         			  	if([[${allRolesofCurrentUser}]][0].assessmentStatus=="closed")
             			  {
-        			  	   
+
         			  		$("#dispute").hide();
         			  		$("#assesseSubmit").hide();
-        			
-        				
+
+
             			  }else if([[${allRolesofCurrentUser}]][0].assessmentStatus=="AssessementCompleted")
             			  {
             				 $("#dispute").show();
             				 $("#assesseSubmit").hide();
             			  }
-	      	
+
 			 }else{
-				 
+
 				 if([[${projectId}]]!=null){
 
 				  $("#selectedRole").find("option[name="+[[${projectId}]]+"]").each(function()
@@ -88,7 +88,7 @@ $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatu
 				      	ajaxCall(data);
 						}
 
-						   
+
 						  });
 
 				  assesseeButtonDivhandler();
@@ -109,7 +109,7 @@ $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatu
 	   $("#closeDispute").hide();
 		 $("#dispute").hide();
 		 $("#assesseSubmit").hide();
-		 
+
 		 //closeDispute assesseSubmit assessorSubmit dispute
 
 
@@ -148,7 +148,7 @@ $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatu
       if (selectedAsseesse > 0) {
 
     	  assesorButtonDivhandler();
-    	  
+
           $('.test').removeClass("active test").addClass("test");
 
           $('li[name="' + selectedSection + '"]').addClass("active test");
@@ -199,24 +199,24 @@ $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatu
 	 	  var assesseesList=[[${allRolesofCurrentUser}]];
 	 	  for(assessee in assesseesList)
 	     	  {
-	     	 
+
 	     		  if(assesseesList[assessee].roleId==$("#selectedRole").val())
-	         		  { 
+	         		  {
 	     			  if(assesseesList[assessee].projectId==$(selectedRole).children(":selected").attr("name"))
 	         			  {
 	     				 $("#assesseeAssessorStatus").val(assesseesList[assessee].assessmentStatus);
 	         			  	if(assesseesList[assessee].assessmentStatus=="closed")
 	             			  {
-	         			  	   
+
 	         			  		$("#dispute").hide();
 	         			  		$("#assesseSubmit").hide();
-	         			
-	         				
+
+
 	             			  }else if(assesseesList[assessee].assessmentStatus=="AssessementCompleted")
 	             			  {
 	             				 $("#dispute").show();
 	             				 $("#assesseSubmit").hide();
-	              			  	
+
 	             			  }else if(assesseesList[assessee].assessmentStatus=="notAgree"){
 	             					$("#dispute").hide();
 		         			  		$("#assesseSubmit").hide();
@@ -226,7 +226,7 @@ $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatu
 			             			  }
 	         			  }
 	         		  }
-	         	  
+
 	     	  }
 	 	}
 
@@ -235,7 +235,7 @@ function assesorButtonDivhandler()
 	  var assesseesList=[[${assessorAssessees}]];
 	  for(assessee in assesseesList)
     	  {
-    	  
+
     	  if(assesseesList[assessee].id==$("#selectAssessee").val())
         	  {
     		  if(assesseesList[assessee].role_id==$(selectAssessee).children(":selected").attr("name"))
@@ -339,7 +339,7 @@ $("#selectAssessee").on('change', function(){
 	   $("#projectId").val($(selectAssessee).children(":selected").attr("id"));
 
 	   assesorButtonDivhandler();
-	  
+
   	 }else{
   		 $("#selectedAssesseeSummary").hide();
 		 $("#selectedAssesseeBody").hide();
@@ -468,11 +468,11 @@ function ajaxCall(data)
 
            	 $("#tbody").empty();
 
-           
+
 
              for (row in response) {
 
-            	  
+
             	 var objective="objective"+response[row].id;
             	 var weightage="weightage"+response[row].id;
             	 var selfRating="selfRating"+response[row].id;
@@ -515,8 +515,8 @@ function ajaxCall(data)
     		     $("#"+managerComments).hide();
     		     $("#"+employeeComments).hide();
 
-    		
-    		     
+
+
              }
 
              if(data.selectedAsseesseID>0)
@@ -525,22 +525,22 @@ function ajaxCall(data)
         	  if([[${errorMessage}]]!=null)
             	  {
 			    	 $.map([[${errorMessage}]], function( value, key ) {
-	 					 
+
 		   	           	  	//errorMessage
 							if(data.sectionToLoad==key){
-						
+
 								for( itr in value)
 									{
 									//alert(value[itr].id);
 
 									$("#"+value[itr].id).addClass("incomplete-row");
 									}
-							
+
 				           	  	}
 	           	 		 });
             	  }
           }
-        
+
            //on clcik of edit button
 		     $(".btn-edit").on( "click", function(){
 		    	 $("#errorspanSelf").hide();
@@ -621,7 +621,7 @@ function ajaxCall(data)
 				 		$("#managerSection select").attr('readonly', true); */
 				 		var projectValue=$(selectedRole).children(":selected").attr("name");
 				 		var roleValue=$("#selectedRole").val()
-				 		
+
 				 		if([[${allRolesofCurrentUser}]]!=0)
 					 	{
 								for(itr in [[${allRolesofCurrentUser}]])
@@ -630,23 +630,23 @@ function ajaxCall(data)
 											{
 											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
 												{
-												
+
 												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed")
 													{
-													
-													$("#managerSection").show();	
-													
+
+													$("#managerSection").show();
+
 													}else{
-														
-														$("#managerSection").hide();		
+
+														$("#managerSection").hide();
 														}
 												}
 											}
-									
+
 									}
-						 	
+
 						 	}
-					 	
+
 				 		 $("#weightagediv").find("select").prop("disabled",true);
 						$("#managerSection").find("input,textarea,select").prop("disabled",true);
 				 		$("#selfscore").attr("disabled",true);
@@ -662,13 +662,13 @@ function ajaxCall(data)
 		 		$("#employeeSection").find("input,textarea,select").prop("disabled",true);
 		 		$("#manager_score").prop("disabled",true);
 		 		$("#objective_modal").prop("disabled",true);
-		 		
+
 		 		manageSectionsByStatus($("#assesseeAssessorStatus").val(), false);
 		 		 }
 
 
 
-		    	 
+
 		    	  });
 
 
@@ -813,7 +813,9 @@ function disableSection()
 	   		    var point="point"+summarydata[row].id;
 
   		      var value=summarydata[row].section_point;
-  		   var pointvalue=value.toFixed(2);
+
+
+  		   var pointvalue= parseFloat(value).toFixed(2);
 
   		$('input[name="' + point + '"]').val(0);
 
@@ -873,7 +875,9 @@ function disableSection()
    		   var pointvalue;
      if(value!=0)
          {
-    	 pointvalue = value.toFixed(2);
+
+
+    	 pointvalue = parseFloat(value).toFixed(2);
 
          }else
              {
@@ -897,7 +901,7 @@ function disableSection()
    		            }
 
 
-   		         $('#weightage_score').val(finalweightage.toFixed(2));
+   		         $('#weightage_score').val( parseFloat(finalweightage).toFixed(2));
 
 
    		        	   }
@@ -1014,32 +1018,32 @@ function disableSection()
 
 					<hr class="margintop10"  id="margin"/>
 						<div class="form-group" id="selectedAssesseeSummary">
-						
+
 
 				 	<div class="row col-sm-6 pull-left" id="buttonsDiv">
-			
-							<button class="btn btn-success" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-check"></i> Assessor Submit</button>
-						
-						
-							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-user"></i> Assessee Submit</button>
-						
-						
-							<button class="btn btn-danger" id="dispute" name="close" value="dispute" type="submit"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
-					
-					
-							<button class="btn btn-warning" id="closeDispute" name="close" value="closed" type="submit"><i class="fa fa-user-times"></i> Close</button>
-						
-					</div>
- 
 
-					
-				
+							<button class="btn btn-success" id="assessorSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-check"></i> Assessor Submit</button>
+
+
+							<button class="btn btn-info" id="assesseSubmit" name="assesseeSubmit" value="assesseeSubmit" type="submit"><i class="fa fa-user"></i> Assessee Submit</button>
+
+
+							<button class="btn btn-danger" id="dispute" name="close" value="dispute" type="submit"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
+
+
+							<button class="btn btn-warning" id="closeDispute" name="close" value="closed" type="submit"><i class="fa fa-user-times"></i> Close</button>
+
+					</div>
+
+
+
+
 
 						<button id="submitbtn_summary" class="btn btn-info btn-green pull-right"
 									type="button">
 									<i class="fa fa-file-text">&nbsp;</i> Summary Ratings
 						</button>
-						
+
 						<div class="clearfix"></div>
 
 						</div>
@@ -1122,8 +1126,8 @@ function disableSection()
 					</div>
 
 
-				<!--  	
-						
+				<!--
+
 
 				 	<div class="row col-sm-12" id="buttonsDiv">
 
