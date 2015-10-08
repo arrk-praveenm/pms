@@ -41,7 +41,7 @@ if(allObjectives!=null)
 
 
  $("#assessee").on('change',function(){
-	 triggerToObjectives();
+	 triggerToObjectives(this);
 		});
 	//set to count value to one which will restrict to call the multiple time of on change of assessmentFromDate
 	/* var count=1;
@@ -61,7 +61,7 @@ if(allObjectives!=null)
 		
 	$("#projectName").on('change', function(){
 	
-		triggerToObjectives();
+		triggerToObjectives(this);
 		});
 
 	/* $("#assessmentToDate").on('change', function(){
@@ -77,23 +77,17 @@ if(allObjectives!=null)
 				}); */
 
 	$("#assesseeRole").on('change', function(){
-		triggerToObjectives();
+		triggerToObjectives(this);
 				});
 	$("#assessmentCycle").on('change', function(){
-		triggerToObjectives();
+		triggerToObjectives(this);
 				});
 	
-	function triggerToObjectives() {
-		//$("#modal_alert_messages").modal('show');
-
-		if($("#assessee").val()!="0") {
-		//if($("#assessmentFromDate").val()!="") {
+	function triggerToObjectives(event) {
 		
-			if($("#projectName").val()!="0") {
-			if($("#assessmentCycle").val()!="0"){
-			//	if($("#assessor").val()!="0") {
-					if($("#assesseeRole").val()!="0") {
-						//if($("#assessmentToDate").val()!=""){
+
+		if($(event).val()!="0") {
+
 							    var	sectionLoad={
 						              sectionLoad:"0",
 						              assesseeid:$("#assessee").val(),
@@ -104,15 +98,13 @@ if(allObjectives!=null)
 						              assessor:  $("#assessor").val(),
 						              assesseeRole: $("#assesseeRole").val()
 						             } 
-							
-							    
 								  ajaxcall(sectionLoad, false); 
-							 //   }
-							}
-						//}
-					}
-				}
-			//}
+			
+		}else{
+	 	$("#sectionObjectives-prnt").hide();
+		$(".wrapper-tabs").hide();
+		$("#sectionsBody").hide();
+		$("#addObjectiveform").hide(); 
 		}
 	};
 //
@@ -358,7 +350,7 @@ if(allObjectives!=null)
 	                type: 'GET',
 	                data: sectionLoad,
 	                success: function(response) {
-		               
+		              
 					if(response[0]=="")
 	                {
 		                

@@ -46,7 +46,7 @@ public interface AssessorAssessmentService {
 	public boolean  updateAssesseesAssessorStatus(AssessorAssessmentBean bean,String status);
 	
 	public AssesseesAssessor  getAssesseesAssessor(int id);
-	//below method not used anywhere 
-	public AssesseesAssessor  getAssesseesAssessor(AssessorAssessmentBean bean);
+	 
+	
 
 }

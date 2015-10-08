@@ -145,7 +145,11 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 
 
-
+		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
+				
+				
+		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
+		 
 		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 
 
@@ -363,6 +367,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		// TODO Auto-generated method stub
 		return assessorAssessmentDao.updateAssesseesAssessorStatus(bean, status);
 	}
+	
 
 
 
