@@ -99,7 +99,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/admin/**").access("hasRole('ADMIN')")
             	.antMatchers("/ajax/**").access("hasRole('EMPLOYEE')")
             	.antMatchers("/hr/**").access("hasRole('HR')")
-            	.antMatchers("/assessor/**").access("hasAnyRole('ASSESSOR','MANAGER')")
+            	.antMatchers("/assessor/**").access("hasAnyRole('ASSESSOR','MANAGER','EMPLOYEE')")
                 .antMatchers( "/favicon.ico", "/resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

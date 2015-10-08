@@ -290,10 +290,15 @@ float managerscore=manger_score;
 	@Override
 	public List<AssesseesAssessor> getRoleOfCurrentUser(String email) {
 		// TODO Auto-generated method stub
+		try{
 	return entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ROLES_OF_ASSESSEE,
 						AssesseesAssessor.class).setParameter("email", email)
 				.getResultList();
+		}catch(Exception e)
+		{
+			return null;
+		}
 	}
 	@Override
 	public AssesseeObjectives getAssesseObjective(int assesseeObjectiveId) {

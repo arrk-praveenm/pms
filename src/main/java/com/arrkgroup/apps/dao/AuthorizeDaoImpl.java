@@ -73,6 +73,10 @@ public class AuthorizeDaoImpl implements AuthorizeDao {
 					.getResultList();
 
 			System.out.println("List of selfReporting "+selfReporting.size());
+			if(selfReporting.size()==0)
+			{
+				return null;
+			}
 
 			return ASSESSOR_ROLE;
 		} catch (NoResultException e) {

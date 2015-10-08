@@ -59,8 +59,9 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Override
 	@Transactional
 	public boolean copyRoleObjectives(AssesseesAssessor assesseesAssessor) {
+		List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
 		try{
-			List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
+			
 			AssesseesAssessor assesseesAssessorUpdate=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSORID_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", assesseesAssessor.getCycleId().getId())
 					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
@@ -87,6 +88,7 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 							.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 							.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 							.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+							.setParameter("statusList", statusList)
 							.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
 					
 					copyingRoleObjectives( assesseesAssessor1);
@@ -128,10 +130,10 @@ public class AssignObjectivesDaoImpl implements AssignObjectivesDao {
 	@Override
 	public boolean copyAssesseObjectives(AssesseesAssessor assesseesAssessor , AssesseesAssessor OtherAssesseesAssessor) 
 	{
-		
+		List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
 		try{
 			//if No records goes to catch block
-			List<String> statusList = Arrays.asList(ASSIGNEDOBJECTIVES, SELFRATINGCOMPLETED);
+			
 			List<AssesseesAssessor> OtherassesseesAssessor1=entityManager.createNamedQuery(AssesseesAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID, AssesseesAssessor.class)
 					.setParameter("cycleId", OtherAssesseesAssessor.getCycleId().getId())
 					//.setParameter("start_date", OtherAssesseesAssessor.getStart_date())
@@ -170,6 +172,7 @@ try{
 					.setParameter("project_name", assesseesAssessor.getProjectId().getId())
 					.setParameter("assesseeId", assesseesAssessor.getAssesseeId().getId())
 					.setParameter("assessorId", assesseesAssessor.getAssessorId().getId())
+					.setParameter("statusList", statusList)
 					.setParameter("roleId", assesseesAssessor.getRoleId().getId()).getSingleResult();
 			System.out.println("Test 22");
 			copyingAssesseeObjectives(assesseesAssessor1,OtherassesseesAssessor1);
