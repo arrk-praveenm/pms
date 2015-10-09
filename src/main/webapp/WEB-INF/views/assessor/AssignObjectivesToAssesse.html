@@ -43,38 +43,14 @@ if(allObjectives!=null)
  $("#assessee").on('change',function(){
 	 triggerToObjectives(this);
 		});
-	//set to count value to one which will restrict to call the multiple time of on change of assessmentFromDate
-	/* var count=1;
-	$("#assessmentFromDate").click(function(){
-		count =1;
-		});
-	$("#assessmentToDate").click(function(){
-		count =1;
-		});
-	$("#assessmentFromDate").change( function(){
-		if(count==1)
-			{
-			count=2;
-			triggerToObjectives();
-			}
-		}) ; */
+	
 		
 	$("#projectName").on('change', function(){
 	
 		triggerToObjectives(this);
 		});
 
-	/* $("#assessmentToDate").on('change', function(){
-		if(count==1)
-		{
-		count=2;
-		triggerToObjectives();
-		}
-				}); */
-	/* $("#assessor").on('change', function(){
 	
-		triggerToObjectives();
-				}); */
 
 	$("#assesseeRole").on('change', function(){
 		triggerToObjectives(this);
@@ -111,13 +87,13 @@ if(allObjectives!=null)
  $("#employeeObjectivesss").on('click',function(event){
 		
 		 $("#employeeObjective").on('click',function(event){
-			//	alert("Test 11");
+			
 				 submitForm(event,"employeeObjective");
 				}); 
 		
 		}); 
  $("#employeeObjective").on('click',function(event){
-		//alert("Test 11");
+		
 	 submitForm(event,"employeeObjective");
 		}); 
 	
@@ -245,6 +221,8 @@ if(allObjectives!=null)
     	 
     	
     	$(".btn-edit").on( "click", function(){
+    		 $("#errorspan").hide();
+    		 $("#textAreas").css({"border-color": "#d2d6de"});
     		var id='#'+'objectiveDesc'+$(this).attr("id");
     		var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
     		$("#textAreas").val($(id).text());
@@ -279,9 +257,33 @@ if(allObjectives!=null)
 
 
 	
+		$("#saveSubmit").on( "click", function(){
+
+ var val=$("#textAreas").val();
+ 
+			   if( $.trim(val)=="")
+				   {
+
+				  $("#textAreas").css({"border-color": "#a94442"});
+				  
+				  $("#errorspan").show();
+
+				  return false;
+
+				   }else
+					   {
+
+					 
+
+					   return true;
+
+					   }
+
+			});
 	
 		$(".btn-edit").on( "click", function(){
-		
+			$("#errorspan").hide();
+			$("#textAreas").css({"border-color": "#d2d6de"});
 			var id='#'+'objectiveDesc'+$(this).attr("id");
 			var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
 			$("#textAreas").val($(id).text());
@@ -791,8 +793,10 @@ if(allObjectives!=null)
 										<label class="sr-only">Edit Objective</label>
 										<textarea id="textAreas" name="textAreas" th:row="2"
 											class="form-control"></textarea>
+											
 										<input type="hidden" id="updateSectionid"
 											name="updateSectionid" value="text" />
+										<span id="errorspan" style="color: #a94442"> Objective should not be empty </span>
 									</div>
 								<!-- 	<div class="form-group">
 										<label for="accessmentperiodmanager" class="sr-only">Weightage</label>
@@ -809,7 +813,7 @@ if(allObjectives!=null)
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary saveEdit">Save</button>
+							<button type="submit" id="saveSubmit" class="btn btn-primary saveEdit">Save</button>
 						</div>
 					</form>
 				</div>

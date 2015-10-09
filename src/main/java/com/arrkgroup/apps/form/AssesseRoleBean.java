@@ -6,6 +6,7 @@ public class AssesseRoleBean {
 	int projectId;
 	String assesseeProjectRole;
 	String assessmentStatus;
+	int assesseeAssessorId;
 	
 	public int getRoleId() {
 		return roleId;
@@ -30,6 +31,12 @@ public class AssesseRoleBean {
 	}
 	public void setAssessmentStatus(String assessmentStatus) {
 		this.assessmentStatus = assessmentStatus;
+	}
+	public int getAssesseeAssessorId() {
+		return assesseeAssessorId;
+	}
+	public void setAssesseeAssessorId(int assesseeAssessorId) {
+		this.assesseeAssessorId = assesseeAssessorId;
 	}
 	
 	

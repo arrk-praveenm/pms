@@ -96,10 +96,11 @@ public class AssessorAssessmentController {
 			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
 			@RequestParam("sectionToLoad") String sectionToLoad,
 			@RequestParam("projectId") String projectId,
-			@RequestParam("role_id") String role_id, Model model) {
+			@RequestParam("role_id") String role_id,
+			@RequestParam("assesseeAssessorId") String assesseeAssessorId, Model model) {
 
 		log.info("data  is " + selectedAsseesseID + "  " + sectionToLoad + "  "
-				+ role_id + " projectid " + projectId);
+				+ role_id + " projectid " + projectId+" assesseeAssessorId "+assesseeAssessorId);
 		int selectedAsseesseeID = 0;
 		int sectionToLoadInt = 0;
 
@@ -134,7 +135,7 @@ public class AssessorAssessmentController {
 			allassesseeObjectives = assessorAssessmentService
 					.getAssesseeObjectives(sectionToLoadInt,
 							selectedAsseesseeID, Integer.parseInt(role_id),
-							Integer.parseInt(projectId));
+							Integer.parseInt(projectId), Integer.parseInt(assesseeAssessorId));
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -181,6 +182,7 @@ public class AssessorAssessmentController {
 				employee.setRole_id(role.getId());
 				employee.setProjectId(proj.getId());
 				employee.setStatus(assessees.getStatus());
+				employee.setAssesseeAssessorId(assessees.getId());
 				assessorAssessees.add(employee);
 
 			}
@@ -207,6 +209,7 @@ public class AssessorAssessmentController {
 				assesseRoleBean.setRoleId(role.getId());
 				assesseRoleBean.setProjectId(proj.getId());
 				assesseRoleBean.setAssessmentStatus(assessees.getStatus());
+				assesseRoleBean.setAssesseeAssessorId(assessees.getId());
 				allRolesofCurrentUser.add(assesseRoleBean);
 
 			}
@@ -218,7 +221,7 @@ public class AssessorAssessmentController {
 								modelObjectService.findEmployeeByEmail(
 										userDetails.getMail()).getId(),
 								allRolesofCurrentUser.get(0).getRoleId(),
-								allRolesofCurrentUser.get(0).getProjectId());
+								allRolesofCurrentUser.get(0).getProjectId(),allRolesofCurrentUser.get(0).getAssesseeAssessorId());
 			}
 
 			log.info("User Roles Size" + allRolesofCurrentUser.size());
@@ -250,10 +253,11 @@ public class AssessorAssessmentController {
 	List<SectionConsolidatedBean> getsummarydata(
 			@RequestParam("selectedAsseesseID") String selectedAsseesseID,
 			@RequestParam("role_id") String role_id, Model model,
-			@RequestParam("projectId") String projectId) {
+			@RequestParam("projectId") String projectId,
+			@RequestParam("assesseeAssessorId") String assesseeAssessorId) {
 
 		log.info("in GetSummaryRating method" + selectedAsseesseID + ""
-				+ role_id);
+				+ role_id+" assesseeAssessorId "+assesseeAssessorId);
 
 		int selectedAsseesseeID = 0;
 
@@ -271,7 +275,7 @@ public class AssessorAssessmentController {
 
 		List<SectionConsolidatedBean> list = assessorAssessmentService
 				.findById(String.valueOf(selectedAsseesseeID), role_id,
-						Integer.parseInt(projectId));
+						Integer.parseInt(projectId), Integer.parseInt(assesseeAssessorId));
 
 		log.info("in GetSummaryRating method  list size is " + list.size());
 
@@ -284,12 +288,13 @@ public class AssessorAssessmentController {
 			BindingResult error, Model model, Principal principal) {
 
 		
-		log.info("manager rating is  " + bean.getManager_rating());
+		log.info("manager rating is  " + bean.getManager_rating()+" getAssesseeAssessorId "+bean.getAssesseeAssessorId());
 		
 
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
+		model.addAttribute("assesseeAssessorId", bean.getAssesseeAssessorId());
 
 		log.info("projectid " + bean.getProjectId() + " role id "
 				+ bean.getRoleid() + " assesseeid" + bean.getEmployee_id());
@@ -315,7 +320,7 @@ public class AssessorAssessmentController {
 
 			assessorAssessmentService.saveSectionSummary(bean.getSectionid(),
 					bean.getEmployee_id(), bean.getRoleid(),
-					bean.getProjectId());
+					bean.getProjectId(), bean.getAssesseeAssessorId());
 		}
 
 		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
@@ -338,7 +343,7 @@ public class AssessorAssessmentController {
 				.getAuthentication().getPrincipal());
 		
 		log.info("projectid " + bean.getProjectId() + " role id "
-				+ bean.getRoleid() + " assesseeid" + bean.getEmployee_id());
+				+ bean.getRoleid() + " assesseeid" + bean.getEmployee_id()+" getAssesseeAssessorId "+bean.getAssesseeAssessorId());
 
 		if (bean.getEmployee_id() == 0) {
 
@@ -373,6 +378,7 @@ public class AssessorAssessmentController {
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
+		model.addAttribute("assesseeAssessorId", bean.getAssesseeAssessorId());
 		log.info("Section " + bean.getSectionid());
 		setDefaultLoad(model, bean.getSectionid(), userDetails,
 				isAssessorOREmployee);
@@ -386,7 +392,7 @@ public class AssessorAssessmentController {
 			BindingResult error, Model model, Principal principal,
 			@RequestParam(value = "close", required = true) String close) {
 
-		System.out.println("getAssesseeAssessorStatus  value is " + bean.getAssesseeAssessorStatus());
+		System.out.println("getAssesseeAssessorStatus  value is " + bean.getAssesseeAssessorStatus()+" getAssesseeAssessorId "+bean.getAssesseeAssessorId());
 		// NOTAGREE
 		if (bean.getEmployee_id() == 0) {
 			userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
@@ -416,6 +422,7 @@ public class AssessorAssessmentController {
 		model.addAttribute("projectId", bean.getProjectId());
 		model.addAttribute("roleid", bean.getRoleid());
 		model.addAttribute("assesseeid", bean.getEmployee_id());
+		model.addAttribute("assesseeAssessorId", bean.getAssesseeAssessorId());
 		System.out.println("Section " + bean.getSectionid());
 		setDefaultLoad(model, bean.getSectionid(), userDetails,
 				isAssessorOREmployee);

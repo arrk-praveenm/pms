@@ -324,6 +324,7 @@ float managerscore=manger_score;
 						.setParameter("status", status)
 						.setParameter("roleId", bean.getRoleid())
 						.setParameter("project_id", bean.getProjectId())
+						.setParameter("id", bean.getAssesseeAssessorId())
 						.setParameter("statusCondition", bean.getAssesseeAssessorStatus())
 			.executeUpdate();
 System.out.println(count);
@@ -341,18 +342,7 @@ return false;
 
 
 	}
-	@Override
-	public AssesseesAssessor getAssesseesAssessor(AssessorAssessmentBean bean) {
-		// TODO Auto-generated method stub
-		return entityManager
-				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_EMPLOYEE_ID_NOTCLOSED,
-						AssesseesAssessor.class)
-						.setParameter("id", bean.getEmployee_id())
-						.setParameter("role_id", bean.getRoleid())
-						.setParameter("projectId", bean.getProjectId())
-						.setParameter("closed", "closed")
-						.getSingleResult();
-	}
+	
 
 
 

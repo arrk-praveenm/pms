@@ -22,16 +22,16 @@ public interface AssessorAssessmentService {
 
 	
 	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int objectiveID);
-	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID,int role_id, int projectId );
+	public List<AssesseeObjectives>  getAssesseeObjectives(int sectionID,int assesseID,int role_id, int projectId ,int assesseeAssessorId);
 	
 
 	//public boolean saveSectionData(AssessorAssessmentBean bean);
 	
-	public void  saveSectionSummary(int sectionID,int employeeid,int roleid,int projectid);
+	public void  saveSectionSummary(int sectionID,int employeeid,int roleid,int projectid, int assesseeAssessorId);
 	
 	
 	
-	public List<SectionConsolidatedBean> findById(String assessorId,String role,int projectid);
+	public List<SectionConsolidatedBean> findById(String assessorId,String role,int projectid,int assesseeAssessorId);
 	public List<SectionConsolidatedBean> getAllSectionsBean();
 	
 

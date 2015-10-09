@@ -38,7 +38,7 @@ import javax.persistence.Table;
 
 
 	@NamedQuery(name = AssesseesAssessor.UPDATE_STATUS, query = "update AssesseesAssessor set status=:status where projectId.id=:project_id "
-			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition "),
+			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition and id=:id "),
 @NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR_CYCLE, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id and  s.cycleId.id=:cycleId "),
 
 })

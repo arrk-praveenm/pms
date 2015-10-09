@@ -248,6 +248,8 @@
     	var valId='#'+'objectiveDesc'+iterStat;
     	$(valId).text(objectiveDesc.objectiveDesc);
     	$(".btn-edit").on( "click", function(){
+    		 $("#errorspan").hide();
+    		 $("#textAreas").css({"border-color": "#d2d6de"});
     		var id='#'+'objectiveDesc'+$(this).attr("id");
     		var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
     		$("#textAreas").val($(id).text());
@@ -258,8 +260,33 @@
 	}; 
 
 
+	$("#saveSubmit").on( "click", function(){
+
+		 var val=$("#textAreas").val();
+		 
+					   if( $.trim(val)=="")
+						   {
+
+						  $("#textAreas").css({"border-color": "#a94442"});
+						  
+						  $("#errorspan").show();
+
+						  return false;
+
+						   }else
+							   {
+
+							 
+
+							   return true;
+
+							   }
+
+					});
+	
 		$(".btn-edit").on( "click", function(){
-		
+			 $("#errorspan").hide();
+    		 $("#textAreas").css({"border-color": "#d2d6de"});
 			var id='#'+'objectiveDesc'+$(this).attr("id");
 			var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
 			$("#textAreas").val($(id).text());
@@ -366,6 +393,7 @@
 											name="updateSectionid" value="text" />
 											 <input type="hidden"
 											id="updateobjectiveId" name="updateobjectiveId" value="text" />
+											<span id="errorspan" style="color: #a94442"> Objective should not be  empty </span>
 									</div>
 								</div>
 							</div>
@@ -373,7 +401,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary saveEdit">Save</button>
+							<button type="submit" id="saveSubmit" class="btn btn-primary saveEdit">Save</button>
 						</div>
 					</form>
 				</div>

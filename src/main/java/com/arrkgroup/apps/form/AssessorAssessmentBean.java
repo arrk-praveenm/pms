@@ -32,6 +32,7 @@ public class AssessorAssessmentBean {
 	String userType;
  	int weightage;
     String assesseeAssessorStatus; 
+    int assesseeAssessorId;
  	
 	private int self_rating;
 
@@ -304,6 +305,20 @@ public class AssessorAssessmentBean {
 
 
 
+
+		public int getAssesseeAssessorId() {
+			return assesseeAssessorId;
+		}
+
+
+
+
+		public void setAssesseeAssessorId(int assesseeAssessorId) {
+			this.assesseeAssessorId = assesseeAssessorId;
+		}
+
+
+     
 
 
 

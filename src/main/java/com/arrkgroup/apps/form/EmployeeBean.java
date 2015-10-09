@@ -7,6 +7,10 @@ public class EmployeeBean {
 	String fullname;
 	int projectId;
 	String status;
+int assesseeAssessorId;
+
+
+	
 
 	public int getId() {
 		return id;
@@ -40,11 +44,13 @@ public class EmployeeBean {
 		this.status = status;
 	}
 
-	/*
-	 * public String getFname() { return fname; } public void setFname(String
-	 * fname) { this.fname = fname; } public String getLname() { return lname; }
-	 * public void setLname(String lname) { this.lname = lname; }
-	 */
+	public int getAssesseeAssessorId() {
+		return assesseeAssessorId;
+	}
+
+	public void setAssesseeAssessorId(int assesseeAssessorId) {
+		this.assesseeAssessorId = assesseeAssessorId;
+	}
 	public String getFullname() {
 		return fullname;
 	}

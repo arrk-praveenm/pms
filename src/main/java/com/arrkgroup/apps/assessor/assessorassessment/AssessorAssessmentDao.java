@@ -48,7 +48,7 @@ public interface AssessorAssessmentDao {
 
 	public boolean  updateAssesseesAssessorStatus(AssessorAssessmentBean bean,String status);
 	
-	public AssesseesAssessor  getAssesseesAssessor(AssessorAssessmentBean bean);
+	
 
 
 }
