@@ -47,6 +47,13 @@ $(document).ready(function(){
 	      			};
 
 $("#assesseeAssessorStatus").val([[${allRolesofCurrentUser}]][0].assessmentStatus);
+
+
+$("#projectId").val([[${allRolesofCurrentUser}]][0].projectId);
+$("#roleid").val([[${allRolesofCurrentUser}]][0].roleId);
+
+
+
 	      	ajaxCall(data);
 
 
@@ -490,6 +497,37 @@ function ajaxCall(data)
             	 var hidden="visibility:hidden";
             	 var comments=response[row].manager_comments;
             	 var asscomments= response[row].assessee_comments;
+            	 var manager_score_value;
+            	 var manager_score_id;
+            	 var manager_score_score;
+
+            	 //$("#assesseeAssessorStatus").val();
+
+
+
+		           if(data.selectedAsseesseID==0)
+			           {
+						if($("#assesseeAssessorStatus").val()=="assignedObjectives" || $("#assesseeAssessorStatus").val()=="selfRatingCompleted" )
+							{
+							manager_score_value=0;
+							manager_score_id=1;
+							manager_score_score=0
+							}else
+							{
+								manager_score_value=response[row].manager_score;
+								manager_score_id=response[row].manager_rating.id;
+
+								manager_score_score=response[row].manager_rating.score;
+
+								}
+			           }else
+						{
+							manager_score_value=response[row].manager_score;
+							manager_score_id=response[row].manager_rating.id;
+
+							manager_score_score=response[row].manager_rating.score;
+
+							}
 
             	 if(comments == null)
             		 {
@@ -507,8 +545,8 @@ function ajaxCall(data)
       		    rowdata.append($("<td id="+selfRating+" class="+classValue+" name="+response[row].self_rating.id+">" + response[row].self_rating.score + "</td>"));
       		    rowdata.append($("<td id="+selfScore+" class="+classValue+">" + response[row].self_score + "</td>"));
 
-    		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+response[row].manager_rating.id+">" + response[row].manager_rating.score + "</td>"));
-    		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + response[row].manager_score + "</td>"));
+    		    rowdata.append($("<td id="+managerRating+" class="+classValue+" name="+manager_score_id+">" +manager_score_score + "</td>"));
+    		    rowdata.append($("<td id="+managerScore+" class="+classValue+">" + manager_score_value + "</td>"));
     		    rowdata.append($("<td id="+managerComments+"  style="+hidden+"   class="+classValue+">" + comments + "</td>"));
     		    rowdata.append($("<td id="+employeeComments+"  style="+hidden+"   class="+classValue+">" + asscomments + "</td>"));
     		     rowdata.append($("<td>" + '<button id="'+btn+'" name="'+response[row].id+'"  class="btn btn-info btn-edit" data-toggle="modal" data-target="#managermodal" type="button"><i class="fa fa-pencil"></i></button>' + "</td>"));
@@ -539,10 +577,10 @@ function ajaxCall(data)
 
 				           	  	}
 
-			           	  	
+
 			           	  	  $('li[name="' +key+ '"]').addClass("incomplete");
 				           	  	//active test
-				           	  	
+
 	           	 		 });
             	  }
           }
@@ -908,6 +946,13 @@ function disableSection()
 
    		 // var pointvalue=value;
 
+
+
+
+
+
+
+
    		$('input[name="' + point + '"]').val(pointvalue);
 
    		section="section_value"+response[row].id;
@@ -919,6 +964,25 @@ function disableSection()
        	finalweightage=finalweightage+section_value*pointvalue;
 
        	finalweightage=parseFloat(finalweightage).toFixed(2);
+
+
+        if(data.selectedAsseesseID==0)
+        {
+			if($("#assesseeAssessorStatus").val()=="assignedObjectives" || $("#assesseeAssessorStatus").val()=="selfRatingCompleted" )
+				{
+				$('input[name="' + point + '"]').val("0.0");
+
+
+				}else
+				{
+					$('input[name="' + point + '"]').val(pointvalue);
+
+					}
+        }else
+			{
+     	   $('input[name="' + point + '"]').val(pointvalue);
+
+				}
 
 
 
@@ -934,6 +998,29 @@ function disableSection()
 
 
    		        	   }
+
+
+
+
+   				  if(data.selectedAsseesseID==0)
+		           {
+					if($("#assesseeAssessorStatus").val()=="assignedObjectives" || $("#assesseeAssessorStatus").val()=="selfRatingCompleted" )
+						{
+
+						 $('#weightage_score').val("0.0");
+
+						}else
+						{
+
+							 $('#weightage_score').val(finalweightage );
+							}
+		           }else
+					{
+
+		        	   $('#weightage_score').val(finalweightage );
+						}
+
+
 
 
 
@@ -1362,7 +1449,7 @@ function disableSection()
 										<p id="'section'+${section.getId()}"
 											class="label label-info score-container">
 											<em class="score-title"><input type="text"
-												readonly="true" th:value="${section.getSection()}" /> </em> <em
+												readonly="true" th:value="${section.getSection()}"  th:title="${section.getSection()}" /> </em> <em
 												class="score"><input
 												th:id="'section_value'+${section.getId()}" type="text"
 												th:value="${section.getSection_weightage()}" readonly="true" />
@@ -1390,7 +1477,7 @@ function disableSection()
 											<em style="word-wrap: break-word; white-space: normal;"
 												class="score-title"><input th:id="${section.getId()}"
 												th:name="'title'+${section.getId()}" type="text"
-												readonly="true" th:value="${section.getSection()}" /> </em> <em
+												readonly="true" th:value="${section.getSection()}"  th:title="${section.getSection()}" /> </em> <em
 												class="score"><input th:id="${section.getId()}"
 												th:name="'point'+${section.getId()}" type="text"
 												readonly="true" value="0.0"></input></em>
