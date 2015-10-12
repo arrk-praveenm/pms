@@ -559,13 +559,16 @@ div.jqi .jqibuttons button:focus {
 	font-style: normal;
 	margin-bottom: 0px;
 	white-space: normal;
-	/*width: 150px;*/
+	min-height: 30px;
+	padding: 0;
 }
 .score-container .score-title input {
 	width: 100%;
     background-color: transparent;
     border: 0;
     text-align: center;
+    padding: 0;
+    height: 30px;
 }
 .score-container .score {
 	font-style: normal; font-size: 30px;
