@@ -19,15 +19,32 @@ import org.hibernate.validator.constraints.Email;
 @NamedQuery(name = Employee.FIND_ROLE_BY_EMAIL, query = "from Employee e where e.reporting_manager = (select ee.id from Employee ee where ee.email= :email)"),
 @NamedQuery(name = Employee.FIND_BY_ID, query = "from Employee e where e.id = :id"),
 @NamedQuery(name = Employee.FIND_BY_EMAIl, query = "from Employee e where e.email = :email"),
-@NamedQuery(name = Employee.FIND_ASSESSEE_BY_ID, query = "select ee from Employee ee where ee.id= :id ")
+@NamedQuery(name = Employee.FIND_ASSESSEE_BY_ID, query = "select ee from Employee ee where ee.id= :id "),
+@NamedQuery(name = Employee.FIND_ASSESSOR_BY_MANAGER_CYCLE, query = "from Employee e where e.reporting_manager= :manager and e.id in (select ee.assessorId.id from AssesseesAssessor ee where ee.cycleId.id= :cycle)  "),
+@NamedQuery(name = Employee.FIND_ALL_MANAGER, query = "from Employee e where e.id in (select ee.reporting_manager from Employee ee) ")
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
 public class Employee {
 	public static final String FIND_ALL = "Employee.FIND_ALL";
 	public static final String FIND_ROLE_BY_EMAIL = "Employee.FIND_ROLE_BY_EMAIL";
 	public static final String FIND_BY_ID = "Employee.FIND_BY_ID";
 	public static final String FIND_BY_EMAIl = "Employee.FIND_BY_EMAIl";
 	public static final String FIND_ASSESSEE_BY_ID = "Employee.FIND_ASSESSEE_BY_ID";
+	public static final String FIND_ALL_MANAGER = "Employee.FIND_ALL_MANAGER";
+
+	public static final String FIND_ASSESSOR_BY_MANAGER_CYCLE = "Employee.FIND_ASSESSOR_BY_MANAGER_CYCLE";
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,12 +59,12 @@ public class Employee {
 	Date date_of_joining;
 	Date date_of_leaving;
 	Date date_of_resignation;
-	String reporting_manager;
+	int reporting_manager;
 	String active;
 	int cycle;
 	Date last_modified_date;
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -108,10 +125,14 @@ public class Employee {
 	public void setDate_of_resignation(Date date_of_resignation) {
 		this.date_of_resignation = date_of_resignation;
 	}
-	public String getReporting_manager() {
+
+
+
+
+	public int getReporting_manager() {
 		return reporting_manager;
 	}
-	public void setReporting_manager(String reporting_manager) {
+	public void setReporting_manager(int reporting_manager) {
 		this.reporting_manager = reporting_manager;
 	}
 	public String getActive() {
@@ -133,12 +154,12 @@ public class Employee {
 		this.last_modified_date = last_modified_date;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 }
