@@ -28,6 +28,7 @@ $(document).ready(function(){
 		 $("#margin").hide();
 		 $("#closeDispute").hide();
 		 $("#dispute").hide();
+		 $("#agree").hide();
 		 $("#assessorSubmit").hide();
 		 //closeDispute assesseSubmit assessorSubmit dispute
 		 //selectRoleRow
@@ -58,19 +59,21 @@ $("#assesseeAssessorId").val([[${allRolesofCurrentUser}]][0].assesseeAssessorId)
 
 	      	ajaxCall(data);
 
+//Agree
 
 
-
-        			  	if([[${allRolesofCurrentUser}]][0].assessmentStatus=="closed")
+        			  	if([[${allRolesofCurrentUser}]][0].assessmentStatus=="closed" || [[${allRolesofCurrentUser}]][0].assessmentStatus=="Agree")
             			  {
 
         			  		$("#dispute").hide();
         			  		$("#assesseSubmit").hide();
+        			  		$("#agree").hide();
 
 
             			  }else if([[${allRolesofCurrentUser}]][0].assessmentStatus=="AssessementCompleted")
             			  {
             				 $("#dispute").show();
+            				 $("#agree").show();
             				 $("#assesseSubmit").hide();
             			  }
 
@@ -123,6 +126,7 @@ $("#assesseeAssessorId").val([[${allRolesofCurrentUser}]][0].assesseeAssessorId)
 	   $("#closeDispute").hide();
 		 $("#dispute").hide();
 		 $("#assesseSubmit").hide();
+		 $("#agree").hide();
 
 		 //closeDispute assesseSubmit assessorSubmit dispute
 
@@ -222,23 +226,27 @@ $("#assesseeAssessorId").val([[${allRolesofCurrentUser}]][0].assesseeAssessorId)
 	     			  if(assesseesList[assessee].assesseeAssessorId==$(selectedRole).children(":selected").attr("accessKey"))
 	         			  {
 	     				 $("#assesseeAssessorStatus").val(assesseesList[assessee].assessmentStatus);
-	         			  	if(assesseesList[assessee].assessmentStatus=="closed")
+	         			  	if(assesseesList[assessee].assessmentStatus=="closed" || assesseesList[assessee].assessmentStatus=="Agree")
 	             			  {
 
 	         			  		$("#dispute").hide();
+	         			  	 $("#agree").hide();
 	         			  		$("#assesseSubmit").hide();
 
 
 	             			  }else if(assesseesList[assessee].assessmentStatus=="AssessementCompleted")
 	             			  {
 	             				 $("#dispute").show();
+	             				 $("#agree").show();
 	             				 $("#assesseSubmit").hide();
 
 	             			  }else if(assesseesList[assessee].assessmentStatus=="notAgree"){
 	             					$("#dispute").hide();
+	             					$("#agree").hide();
 		         			  		$("#assesseSubmit").hide();
 		             			  }else{
 		             					$("#dispute").hide();
+		             					$("#agree").hide();
 			         			  		$("#assesseSubmit").show();
 			             			  }
 	         			  }
@@ -262,15 +270,16 @@ function assesorButtonDivhandler()
     				  $("#assesseeAssessorStatus").val(assesseesList[assessee].status);
         			  	if(assesseesList[assessee].status=="AssessementCompleted")
             			  {
-        			  	   $("#closeDispute").show();
+        			  	   $("#closeDispute").hide();
         			  	 $("#assessorSubmit").hide();
-            			  }else if(assesseesList[assessee].status=="closed")
+            			  }else if(assesseesList[assessee].status=="closed" || assesseesList[assessee].status=="Agree")
             			  {
             				  $("#closeDispute").hide();
              			  	 $("#assessorSubmit").hide();
             			  }else if(assesseesList[assessee].status=="notAgree"){
-            				   	$("#closeDispute").show();
-              			  		 $("#assessorSubmit").hide();
+            				   //	$("#closeDispute").show();
+            				    $("#assessorSubmit").show()
+              			  		// $("#assessorSubmit").hide();
              			  }else{
             				   $("#closeDispute").hide();
               			  	 $("#assessorSubmit").show();
@@ -370,6 +379,7 @@ $("#selectAssessee").on('change', function(){
 //on section click
 $(".test").on("click",function(){
 
+	
 	$("#current_section_id").val($(this).attr("name"));
 
 	var id = $(selectAssessee).children(":selected").attr("name");
@@ -397,12 +407,12 @@ $(".test").on("click",function(){
 		   	 }else{
 
 		   		var list=[[${allRolesofCurrentUser}]];
-
+		   		
 		   		var data={selectedAsseesseID:0,
 						sectionToLoad:$(this).attr("name"),
 						role_id:list[0].roleId,
-						projectId:list[0].projectId
-
+						projectId:list[0].projectId,
+						assesseeAssessorId:list[0].assesseeAssessorId
 						};
 				 ajaxCall(data);
 			   	 }
@@ -514,7 +524,6 @@ function ajaxCall(data)
             	 var manager_score_score;
 
             	 //$("#assesseeAssessorStatus").val();
-
 
 
 		           if(data.selectedAsseesseID==0)
@@ -701,7 +710,7 @@ function ajaxCall(data)
 											if([[${allRolesofCurrentUser}]][itr].roleId==roleValue)
 												{
 
-												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "notAgree"  || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed" )
+												if([[${allRolesofCurrentUser}]][itr].assessmentStatus =="AssessementCompleted" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "notAgree" || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "Agree"  || [[${allRolesofCurrentUser}]][itr].assessmentStatus == "closed" )
 													{
 
 													$("#managerSection").show();
@@ -760,7 +769,7 @@ function ajaxCall(data)
 function manageSectionsByStatus(currentStatus, isemployee)
 {
 
-	 if($("#assesseeAssessorStatus").val()=="AssessementCompleted" || $("#assesseeAssessorStatus").val()=="closed" || $("#assesseeAssessorStatus").val()=="notAgree")
+	 if($("#assesseeAssessorStatus").val()=="AssessementCompleted" || $("#assesseeAssessorStatus").val()=="closed" || $("#assesseeAssessorStatus").val()=="Agree" )
 	  {
 		 disableSection();
 	  }else{
@@ -775,6 +784,15 @@ function manageSectionsByStatus(currentStatus, isemployee)
    	   	$("#manager_score").attr("disabled",true);
    	   	$("#submitbtn").show();
    	   	   	   		  }
+
+	   	   		  if($("#assesseeAssessorStatus").val()=="notAgree")
+	   	   		  {
+		   	   		  if(isemployee)
+			   	   		  {
+		   	   		$("#submitbtn").hide();
+			   	   		  }
+	$("#employeeSection").find("input,textarea,select").prop("disabled",true);
+		  }
    	   		  }
 	}
 
@@ -1093,7 +1111,7 @@ function disableSection()
 
 
 
-
+  
 
 
 
@@ -1198,9 +1216,10 @@ function disableSection()
 
 
 							<button class="btn btn-danger" id="dispute" name="close" value="dispute" type="submit"><i class="fa fa-hand-o-right icon-dr"></i> Dispute</button>
+							<button class="btn btn-success" id="agree" name="close" value="agree" type="submit"><i class="fa fa-hand-o-right icon-dr"></i> Agree</button>
 
 
-							<button class="btn btn-warning" id="closeDispute" name="close" value="closed" type="submit"><i class="fa fa-user-times"></i> Close</button>
+							<button class="btn btn-warning" id="closeDispute"  name="close" value="closed" type="submit"><i class="fa fa-user-times"></i> Close</button>
 
 					</div>
 

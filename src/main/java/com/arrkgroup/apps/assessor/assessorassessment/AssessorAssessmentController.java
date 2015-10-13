@@ -39,6 +39,7 @@ public class AssessorAssessmentController {
 	private final String ASSESSEMENT_COMPLETED = "AssessementCompleted";
 	private static final String STATUS = "assignedObjectives";
 	private static final String NOTAGREE = "notAgree";
+	private static final String AGREE = "Agree";
 	private static final String CLOSED = "closed";
 
 	private final Logger log = LoggerFactory
@@ -351,7 +352,7 @@ public class AssessorAssessmentController {
 
 			bean.setEmployee_id(modelObjectService.findEmployeeByEmail(
 					userDetails.getMail()).getId());
-			bean.setAssesseeAssessorStatus(STATUS);
+			//bean.setAssesseeAssessorStatus(STATUS);
 			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
 					SELFRATING_COMPLETED);
 			isAssessorOREmployee = false;
@@ -366,7 +367,7 @@ public class AssessorAssessmentController {
 			if (errorMessage == null) {
 				log.info("controller errorMessage is " + errorMessage);
 				// check objective status and return success or failure message
-				bean.setAssesseeAssessorStatus(SELFRATING_COMPLETED);
+			//	bean.setAssesseeAssessorStatus(SELFRATING_COMPLETED);
 				assessorAssessmentService.updateAssesseesAssessorStatus(bean,
 						ASSESSEMENT_COMPLETED);
 			} else {
@@ -393,6 +394,7 @@ public class AssessorAssessmentController {
 			@RequestParam(value = "close", required = true) String close) {
 
 		System.out.println("getAssesseeAssessorStatus  value is " + bean.getAssesseeAssessorStatus()+" getAssesseeAssessorId "+bean.getAssesseeAssessorId());
+		System.out.println("close is "+close);
 		// NOTAGREE
 		if (bean.getEmployee_id() == 0) {
 			userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
@@ -403,9 +405,16 @@ public class AssessorAssessmentController {
 			log.info("current status of the assesee while assesse making disagree  "
 					+ bean.getAssesseeAssessorStatus());
 
-			bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
+		//	bean.setAssesseeAssessorStatus(ASSESSEMENT_COMPLETED);
+			
+			if(close.equalsIgnoreCase("dispute"))
+			{
 			assessorAssessmentService.updateAssesseesAssessorStatus(bean,
 					NOTAGREE);
+			}else{
+				assessorAssessmentService.updateAssesseesAssessorStatus(bean,
+						AGREE);
+			}
 			// ASSESSEMENT_COMPLETED
 
 			isAssessorOREmployee = false;
