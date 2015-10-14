@@ -93,6 +93,38 @@ System.out.println("1");
 	}
 
 
+	@RequestMapping(value = "/hr/downloadpdfDetail", method = RequestMethod.GET)
+	public @ResponseBody
+	ShowReportBean downloadpdf(
+			@RequestParam(value = "AsseesseID") String assessor_id,
+						Model model) {
+
+		System.out.println(" /hr/downloadpdfDetail  action  - assessor  id is   "+ assessor_id);
+ShowReportBean bean =new ShowReportBean();
+
+
+		return bean;
+	}
+
+
+
+	@RequestMapping(value = "/hr/downloadpdfRating", method = RequestMethod.GET)
+	public @ResponseBody
+	ShowReportBean downloadpdfrating(
+			@RequestParam(value = "AsseesseID") String assessor_id,
+						Model model) {
+
+		System.out.println(" /hr/downloadpdfRating  action  - assessor  id is   "+ assessor_id);
+ShowReportBean bean =new ShowReportBean();
+
+
+		return bean;
+	}
+
+
+
+
+
 
 
 	}
