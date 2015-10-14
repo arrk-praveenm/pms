@@ -24,11 +24,9 @@ import com.arrkgroup.apps.service.ModelObjectService;
 @Controller
 public class ShowReportController {
 
-
 	private final Logger log = LoggerFactory
 			.getLogger(CreateSectionController.class);
 	private static final String SHOW_REPORT__VIEW = "hr/showReport/showAssessmentReport";
-
 
 	@Autowired
 	ModelObjectService modelObjectService;
@@ -36,19 +34,18 @@ public class ShowReportController {
 	@Autowired
 	ShowReportService showReportService;
 
-
 	@RequestMapping(value = "/hr/showReport", method = RequestMethod.GET)
 	public String assign_Objectives_to_Role(Model model) {
 
-		System.out.println(" show report");
+		log.info(" show report");
 
-		model.addAttribute("ShowReportBean",new ShowReportBean() );
-		System.out.println(" reports size is  "+modelObjectService.getAllCycles().size());
+		model.addAttribute("ShowReportBean", new ShowReportBean());
+		log.info(" reports size is  "
+				+ modelObjectService.getAllCycles().size());
 		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
-System.out.println("1");
+		log.info("1");
 		model.addAttribute("managerlist", showReportService.showAllManager());
-		System.out.println("2");
-
+		log.info("2");
 
 		return SHOW_REPORT__VIEW;
 	}
@@ -57,82 +54,61 @@ System.out.println("1");
 	public String assign_Objectives_to_Role_POST(
 			@ModelAttribute("ShowReportBean") ShowReportBean bean,
 			BindingResult result, Model model) {
-		System.out.println(" cycle id is   "+ bean.getCycle_id());
-		System.out.println(" manager  id is   "+ bean.getManager_id());
-
+		log.info(" cycle id is   " + bean.getCycle_id());
+		log.info(" manager  id is   " + bean.getManager_id());
 
 		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
 		model.addAttribute("managerlist", showReportService.showAllManager());
 
-/*		model.addAttribute("allassessor", showReportService.showEmployeeByCycle(bean.getCycle_id()));*/
 
-		model.addAttribute("allassessor", showReportService.showAssessorByCycleManager(bean.getCycle_id(),bean.getManager_id()));
+		model.addAttribute("allassessor", showReportService
+				.showAssessorByCycleManager(bean.getCycle_id(),
+						bean.getManager_id()));
 
-		/*model.addAttribute("allassesses", showReportService.showAssessesByAssessor(bean.getAssessor_id()));*/
 
 
 		return SHOW_REPORT__VIEW;
 	}
 
-
 	@RequestMapping(value = "/hr/showAssesses", method = RequestMethod.GET)
 	public @ResponseBody
 	java.util.List<ShowReportBean> getObjective_Section(
 			@RequestParam(value = "assessor_id") String assessor_id,
-			@RequestParam(value = "cycle_id") String cycle_id,
-			Model model) {
+			@RequestParam(value = "cycle_id") String cycle_id, Model model) {
 
-		System.out.println(" assessor  id is   "+ assessor_id);
+		log.info(" assessor  id is   " + assessor_id);
 
-		List<ShowReportBean> beans=showReportService.showAssessesByAssessor(Integer.parseInt(assessor_id),Integer.parseInt(cycle_id));
+		List<ShowReportBean> beans = showReportService.showAssessesByAssessor(
+				Integer.parseInt(assessor_id), Integer.parseInt(cycle_id));
 
-		/*model.addAttribute("allassesses",beans);*/
 
 
 		return beans;
 	}
 
-
 	@RequestMapping(value = "/hr/downloadpdfDetail", method = RequestMethod.GET)
 	public @ResponseBody
 	ShowReportBean downloadpdf(
-			@RequestParam(value = "AsseesseID") String assessor_id,
-						Model model) {
+			@RequestParam(value = "AsseesseID") String assessor_id, Model model) {
 
-		System.out.println(" /hr/downloadpdfDetail  action  - assessor  id is   "+ assessor_id);
-ShowReportBean bean =new ShowReportBean();
+		System.out
+				.println(" /hr/downloadpdfDetail  action  - assessor  id is   "
+						+ assessor_id);
 
 
-		return bean;
+		return null;
 	}
-
-
 
 	@RequestMapping(value = "/hr/downloadpdfRating", method = RequestMethod.GET)
 	public @ResponseBody
 	ShowReportBean downloadpdfrating(
-			@RequestParam(value = "AsseesseID") String assessor_id,
-						Model model) {
+			@RequestParam(value = "AsseesseID") String assessor_id, Model model) {
 
-		System.out.println(" /hr/downloadpdfRating  action  - assessor  id is   "+ assessor_id);
-ShowReportBean bean =new ShowReportBean();
+		System.out
+				.println(" /hr/downloadpdfRating  action  - assessor  id is   "
+						+ assessor_id);
 
-
-		return bean;
+		return null;
 	}
 
-
-
-
-
-
-
-	}
-
-
-
-
-
-
-
-
+}
