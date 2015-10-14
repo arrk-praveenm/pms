@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+
+<head>
+<script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script>
+
+
+
+
+
+
+
+	function viewDetail(a) {
+
+		alert("id is "+a);
+
+
+
+
+			$.ajax({
+		           url: '../hr/downloadpdfDetail',
+		           type: 'GET',
+		           data:{ AsseesseID : a },
+		           success: function(response) {
+
+
+		        	   alert("response from server");
+
+		    	},
+				error : function(jqXHR, textStatus,
+						errorThrown) {
+					alert(errorThrown);
+				}
+			});
+
+
+		//ajaxViewDetail(data);
+
+
+
+
+
+	}
+
+
+	function viewRating(b) {
+
+		alert("id is "+b);
+
+
+
+		$.ajax({
+	           url: "../downloadpdfRating",
+	           type: 'GET',
+	           data: {AsseesseID:b},
+	           success: function(response) {
+
+	        	   alert("response from server");
+
+	    	},
+			error : function(jqXHR, textStatus,
+					errorThrown) {
+				alert(errorThrown);
+			}
+		});
+
+
+
+
+
+
+		//ajaxViewRating(data);
+
+	}
+
+
+	$(function() {
+
+
+
+
+
+		function viewDetail(id) {
+			alert("assessee id is " + $(id).attr('name'));
+
+		}
+
+		function viewRating(id) {
+
+			alert("assessee id is " + $(id).attr('name'));
+		}
+
+
+
+
+
+
+
+
+		$('#selectcycle').change(function() {
+
+			$("#errorspanCycle").css('display', 'none');
+
+		});
+
+		$('#selectPM').change(function() {
+
+			$("#errorspanPM").css('display', 'none');
+
+		});
+
+		$("#save").on("click", function() {
+
+			if ($("#selectcycle").val() == 0) {
+
+				$("#selectcycle").css({
+					"border-color" : "#a94442"
+				});
+
+				$("#errorspanCycle").css('display', 'block');
+
+				return false;
+
+			} else {
+
+				if ($("#selectPM").val() == 0) {
+
+					$("#selectPM").css({
+						"border-color" : "#a94442"
+					});
+
+					$("#errorspanPM").css('display', 'block');
+
+					return false;
+				} else {
+
+					return true;
+
+				}
+
+			}
+
+		});
+
+		$(".accordion-toggle")
+				.click(
+						function() {
+
+							var value = $(this).attr("id");
+							var cycle = $("#selectcycle").val();
+
+							$
+									.ajax({
+										url : '../hr/showAssesses',
+										type : 'GET',
+										data : {
+											assessor_id : value,
+											cycle_id : cycle
+
+										},
+										success : function(data) {
+
+											var panel = "#" + "panel_assessor"
+													+ value;
+
+											$(panel).empty();
+
+											for (row in data) {
+
+												var id = data[row].assessee_id;
+												var name = data[row].assessee_name;
+
+												/*      $(panel).append('<a id="anchorClick" class="btn btn-default btn-block marginbottom10 text-left">'
+
+												 +'<h4 id="assesseeID" class="panel-title"  name="'+id +'"> '+name+' </h4>  </a> '
+
+												 ); */
+											$(panel)
+														.append(
+																'<h4 id="assesseeID" class="panel-title"  name="'+id+'"><span class="accessrolename pull-left"> '
+																		+ name
+																		+ ' </span><span class="pull-right"><a  href="javascript:viewDetail('+id+')" name="'
+																		+ id
+																		+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a  href="javascript:viewRating('+id+')" name="'
+																		+ id
+																		+ '" id="ratings" class="btn btn-success btn-xs">View Rating</a></span><div class="clearfix"></div></h4> ');
+
+
+
+
+											}
+
+										},
+										error : function(jqXHR, textStatus,
+												errorThrown) {
+											alert(errorThrown);
+										}
+									});
+
+							var id = '#' + 'assessor' + value;
+
+							$(id).css({
+
+								'display' : 'block'
+							});
+
+						});
+
+
+
+
+
+/*
+	function ajaxViewDetail(data)
+   		{
+   			   $.ajax({
+   		           url: "../hr/downloadpdfDetail",
+   		           type: 'GET',
+   		           data: data,
+   		           success: function(response) {
+
+
+
+   		    	},
+				error : function(jqXHR, textStatus,
+						errorThrown) {
+					alert(errorThrown);
+				}
+			});
+
+   		});
+
+
+	function ajaxViewRating(data)
+   		{
+   			   $.ajax({
+   		           url: "../hr/downloadpdfRating",
+   		           type: 'GET',
+   		           data: data,
+   		           success: function(response) {
+
+
+
+   		    	},
+				error : function(jqXHR, textStatus,
+						errorThrown) {
+					alert(errorThrown);
+				}
+			});
+
+   		});
+ */
+
+
+
+
+   		});
+
+
+</script>
+
+
+
+</head>
+
+<body>
+	<!-- Create super admin block starts -->
+	<div layout:fragment="content">
+
+
+        <section class="content-header">
+          <h1>Human Resource - Assigned Objectives<!--<small>Optional description</small>--></h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>
+		<!-- Content Header ends -->
+
+        <!-- Main content starts -->
+        <section class="content">
+
+
+			<!-- Create super admin block starts -->
+			<div class="box">
+				<div class="box-body">
+
+				<form  action="#" method="post" th:action="@{/hr/showReport}" th:object="${ShowReportBean}">
+
+						<input type="hidden" id="assessor_id" name="assessor_id"
+							th:field="*{assessor_id}" />
+
+
+
+					<div class="row">
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label class="sr-only" for="selectrole">Role</label>
+								<select 	id="selectcycle" class="form-control" th:field="*{cycle_id}">
+									<option selected="selected" value="0">Select PMS Cycle</option>
+								<option th:each="cycle : ${cyclelist}" th:text="${cycle.description}"
+											th:value="${cycle.id}">Developer</option>
+								</select>
+							</div>
+						</div>
+
+
+						<div class="col-sm-5">
+							<div class="form-group">
+								<label class="sr-only" for="selectrole">Role</label>
+								<select 	id="selectPM" class="form-control" th:field="*{manager_id}">
+									<option selected="selected" value="0">Select Project Manager</option>
+								<option th:each="manager : ${managerlist}" th:text="${manager.fullname}"
+											th:value="${manager.id}">Developer</option>
+								</select>
+							</div>
+						</div>
+
+		<div class="col-md-6">
+							<div class="form-group" >
+							<span id="errorspanCycle" style="color: #a94442;display:none " > Please select Cycle !  </span>
+
+							</div>
+
+
+							</div>
+
+		<div class="col-md-4">
+							<div class="form-group" >
+							<span id="errorspanPM" style="color: #a94442;display:none" > Please select Project Manager !  </span>
+
+							</div>
+
+
+							</div>
+
+
+						<div class="col-sm-7">
+							<button type="submit" id="save" class="btn btn-primary">Show</button>
+						</div>
+					</div>
+
+
+					<hr class="margintop10 marginbottom20"></hr>
+
+  <div   id="main-accordion"    class="panel-group">
+
+  <!-- <div   th:id="'main-accordion'+${assessor.getId()}"    class="panel-group"> -->
+                   <th:block th:each="assessor : ${allassessor}" th:field="*{assessor_id}">
+
+				    	<div class="panel panel-default">
+				    		<div class="panel-heading grey-accordion">
+				    			<a th:id="${assessor.getId()}" tabindex="0" aria-selected="false" aria-expanded="false" th:href="'#main_collapseOne'+${assessor.getId()}"  data-parent="#main-accordion" data-toggle="collapse" class="accordion-toggle">
+									<i id="plus_button" class="indicator glyphicon glyphicon-plus pull-right"></i>
+									<h4 id="asssessorID" class="panel-title"  th:text="${assessor.getFullname()}" th:name="${assessor.getId()}"  th:value="${assessor.getId()}">Project Manager One</h4>
+								</a>
+				    		</div>
+
+
+
+
+				    		<div aria-selected="false" tabindex="0" aria-hidden="true" aria-expanded="false" class="panel-collapse collapse" th:id="'main_collapseOne'+${assessor.getId()}" style="height: 0px;">
+								<div class="panel-body padding10" th:id="'panel_assessor'+${assessor.getId()}">
+
+<!-- 									<a href="#" class="btn btn-default btn-block marginbottom10 text-left">
+
+									<h4 id="assesseeID" class="panel-title"  th:text="${assessor.getFullname()}" th:name="${assessor.getId()}"  th:value="${assessor.getId()}">Project Manager One</h4>
+
+									</a>
+ -->
+
+
+
+									<!--<div th:id="'main_collapseOne'+${assessor.getId()}" class="panel-group">
+										<div class="panel panel-default">
+											<div  class="panel-heading">
+												<a tabindex="0" aria-selected="false" aria-expanded="false" href="#collapseOne" th:data-parent="'#main_collapseOne'+${assessor.getId()}" data-toggle="collapse" class="accordion-toggle collapsed">
+													<i class="indicator glyphicon glyphicon-plus pull-right"></i>
+
+
+													<h4 class="panel-title">Accessee One</h4>
+												</a>
+
+
+											</div>
+											<div aria-selected="false" tabindex="0" aria-hidden="true" aria-expanded="false" class="panel-collapse collapse" id="collapseOne" style="height: 0px;">
+												<div class="panel-body padding10">
+
+													<a href="#" class="btn btn-default btn-block marginbottom10 text-left">Assessee One</a>
+
+													<a href="#" class="btn btn-default btn-block marginbottom10 text-left">Assessee One</a>
+
+													 <div class="table-responsive">
+														<table class="table">
+															<thead>
+																<tr>
+																	<th>Project Name</th>
+																	<th class="col-xs-3">Duration</th>
+																	<th class="col-xs-1">Status</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>Project one</td>
+																	<td class="col-xs-3">01-04-2014 to 30-10-2014</td>
+																	<td class="col-xs-1"><span class="label label-success status">Completed</span></td>
+																</tr>
+																<tr>
+																	<td>Project two</td>
+																	<td class="col-xs-3">01-04-2014 to 30-10-2014</td>
+																	<td class="col-xs-1"><span class="label label-info status">Assigned</span></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<a tabindex="0" aria-selected="false" aria-expanded="true" href="#collapseTwo" data-parent="#accordion-assessee-mainone" data-toggle="collapse" class="accordion-toggle">
+												   <i class="indicator glyphicon glyphicon-plus pull-right"></i>
+												   <h4 class="panel-title">Assessee Two</h4>
+
+												</a>
+											</div>
+											<div aria-selected="false" tabindex="0" aria-hidden="true" aria-expanded="true" class="panel-collapse collapse" id="collapseTwo" style="">
+												<div class="panel-body padding10">
+
+													<a href="#" class="btn btn-default btn-block marginbottom10 text-left">Assessee One</a>
+
+													<a href="#" class="btn btn-default btn-block marginbottom10 text-left">Assessee One</a>
+
+													<div class="table-responsive">
+														<table class="table">
+															<thead>
+																<tr>
+																	<th>Project Name</th>
+																	<th class="col-xs-3">Duration</th>
+																	<th class="col-xs-1">Status</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>Project one</td>
+																	<td class="col-xs-3">01-04-2014 to 30-10-2014</td>
+																	<td class="col-xs-1"><span class="label label-success status">Completed</span></td>
+																</tr>
+																<tr>
+																	<td>Project two</td>
+																	<td class="col-xs-3">01-04-2014 to 30-10-2014</td>
+																	<td class="col-xs-1"><span class="label label-info status">Assigned</span></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div> -->
+								</div>
+							</div>
+				    	</div>
+
+
+
+
+							</th:block>
+
+
+				    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					</form>
+				</div>
+
+
+			</div>
+			<!-- Create super admin block ends -->
+
+
+        </section>
+
+
+
+		<script>
+            $(document).ready(
+                function() {
+                    $("#menu_adminmodule").addClass("active");
+                    $("#menu_adminmodule").next().next("ul").css("display",
+                        "block");
+                });
+        </script>
+	</div>
+</body>
+
+</html>
