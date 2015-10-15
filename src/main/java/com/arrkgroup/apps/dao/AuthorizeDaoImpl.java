@@ -27,14 +27,14 @@ public class AuthorizeDaoImpl implements AuthorizeDao {
 		// TODO Auto-generated method stub
 
 		try {
-			AccessRole userRole = entityManager
+			List<AccessRole> userRole = entityManager
 					.createNamedQuery(AccessRole.FIND_BY_EMAIL,
 							AccessRole.class).setParameter("email", email)
-					.getSingleResult();
-		//	entityManager.
-			System.out.println(userRole.getRole());
+					.getResultList();
+		
+			System.out.println(userRole.get(0).getRole());
 
-			return userRole.getRole();
+			return userRole.get(0).getRole();
 		} catch (Exception e) {
 			return null;
 		}
@@ -46,12 +46,12 @@ public class AuthorizeDaoImpl implements AuthorizeDao {
 		// TODO Auto-generated method stub
 
 		try {
-			Employee employee = entityManager
+			List<Employee> employee = entityManager
 					.createNamedQuery(Employee.FIND_ROLE_BY_EMAIL,
 							Employee.class).setParameter("email", email)
-					.getSingleResult();
+					.getResultList();
 
-			System.out.println("Employee "+employee.getClass().getName() );
+			//System.out.println("Employee "+employee.getClass().getName() );
 			
 
 			return MANAGER_ROLE;

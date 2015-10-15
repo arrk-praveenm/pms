@@ -4,6 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="home/homeSignedIn">
 <head>
+
 <script th:inline="javascript">
 	$(document).ready(function(){
 $("#copyObjectiveBlock").hide();
@@ -206,7 +207,11 @@ if(allObjectives!=null)
 	                data: data,
 	                success: function(response) {
 	                	
-		              
+	                	 showNotification({
+	                            message: "Weightage assigned to  objective successfully",
+	                            autoClose: true,
+	                            duration: 2
+	                        });
 					console.log(response);
 
 	                 
