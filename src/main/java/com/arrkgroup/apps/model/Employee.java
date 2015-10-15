@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.Email;
 @NamedQuery(name = Employee.FIND_BY_ID, query = "from Employee e where e.id = :id"),
 @NamedQuery(name = Employee.FIND_BY_EMAIl, query = "from Employee e where e.email = :email"),
 @NamedQuery(name = Employee.FIND_ASSESSEE_BY_ID, query = "select ee from Employee ee where ee.id= :id "),
-@NamedQuery(name = Employee.FIND_ASSESSOR_BY_MANAGER_CYCLE, query = "from Employee e where e.reporting_manager= :manager and e.id in (select ee.assessorId.id from AssesseesAssessor ee where ee.cycleId.id= :cycle)  "),
+@NamedQuery(name = Employee.FIND_ASSESSOR_BY_MANAGER_CYCLE, query = "from Employee e where e.id in (select ee.assessorId.id from AssesseesAssessor ee where ee.cycleId.id= :cycle) and e.reporting_manager=:manager "),
 @NamedQuery(name = Employee.FIND_ALL_MANAGER, query = "from Employee e where e.id in (select ee.reporting_manager from Employee ee) ")
 
 })
