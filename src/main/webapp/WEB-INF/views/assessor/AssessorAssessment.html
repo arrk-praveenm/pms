@@ -421,7 +421,8 @@ $(".test").on("click",function(){
    		{
 
 	$("#tbody").empty();
-	 $('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
+	$('a[name="section'+$(this).attr("name")+'"]').removeAttr("data-notifications");	
+	// $('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
 			sectionToLoad:$(this).attr("name"),
 			role_id:$(selectAssessee).children(":selected").attr("name"),
@@ -596,49 +597,59 @@ function ajaxCall(data)
 
              if(data.selectedAsseesseID>0)
         	  {
-        	  //sectionToLoad
-        	  if([[${errorMessage}]]!=null)
-            	  {
-			    	 $.map([[${errorMessage}]], function( value, key ) {
-
-		   	           	  	//errorMessage
-							if(data.sectionToLoad==key){
-								
-								var count=0;
-								for( itr in value)
-									{
-									count++;
-
-									$("#"+value[itr].id).addClass("incomplete-row");
-									//section
-									
-									
-									}
-							//	$('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
-								$('a[name="section'+key+'"]').removeAttr("data-notifications");	
-
-				           	  	}else{
-				           	  	
-				           	 	var sectionKey='section'+key;
-								//alert(sectionKey);
-								var count=0;
-								for( itr in value)
-									{
-									count++;
-
-									}
-								
-								$('a[name="section'+key+'"]').attr("data-notifications", count);
-								
-								
-								 $('li[name="' +key+ '"]').addClass("notification");
-				           	 
-							
-									}
+           	  if([[${assesseeAssessorId}]]==data.assesseeAssessorId)
+               	  {
+					//	alert("TEst");
+						//sectionToLoad
+						if([[${errorMessage}]]!=null)
+							  {
+						  	 $.map([[${errorMessage}]], function( value, key ) {
 						
+							           	  	//errorMessage
+										if(data.sectionToLoad==key){
+											
+											var count=0;
+											for( itr in value)
+												{
+												count++;
+						
+												$("#"+value[itr].id).addClass("incomplete-row");
+												//section
+												
+												
+												}
+										//	$('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
+											$('a[name="section'+key+'"]').removeAttr("data-notifications");	
+						
+							           	  	}else{
+							           	  	
+							           	 
+											var count=0;
+											for( itr in value)
+												{
+												count++;
+						
+												}
+											
+											$('a[name="section'+key+'"]').attr("data-notifications", count);
+											
+											
+											 $('li[name="' +key+ '"]').addClass("notification");
+							           	 
+										
+												}
+									
+						
+						 	 		 });
+							  }
+  			   }else{
 
-	           	 		 });
-            	  }
+  				 $.map([[${errorMessage}]], function( value, key ) {
+  					$('a[name="section'+key+'"]').removeAttr("data-notifications");	
+  	  				 });
+  	  			   }
+           	  
+
           }
 
            //on clcik of edit button
