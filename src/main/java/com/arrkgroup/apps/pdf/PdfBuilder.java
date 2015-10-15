@@ -10,6 +10,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -31,7 +32,12 @@ public class PdfBuilder extends AbstractITextPdfView {
         // get data model which is passed by the Spring container
         List<Book> listBooks = (List<Book>) model.get("listBooks");
          
-        doc.add(new Paragraph("Recommended books for Spring framework"));
+        //doc.add(new Paragraph("Recommended books for Spring framework"));
+        String relativeWebPath = "/resources/images/arrklogo.png";
+        String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
+        Image arrkLogo = Image.getInstance(absoluteDiskPath);
+        arrkLogo.scaleAbsolute(150f, 60f);
+        doc.add(arrkLogo);
          
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100.0f);
