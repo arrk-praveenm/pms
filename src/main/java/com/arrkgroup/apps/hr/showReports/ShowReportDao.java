@@ -16,7 +16,7 @@ import com.arrkgroup.apps.model.Section;
 public interface ShowReportDao {
 
 
-	/////////////////////////////////////////////
+
 
 	public List<AssesseesAssessor> showAssessorById(int id);
 	public List<AssesseesAssessor> showAssessesByAssessor(int id);

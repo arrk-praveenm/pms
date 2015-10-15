@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,8 +36,13 @@ public class ShowReportController {
 	@Autowired
 	ShowReportService showReportService;
 
+	InetOrgPerson userDetails = null;
+
+
 	@RequestMapping(value = "/hr/showReport", method = RequestMethod.GET)
-	public String assign_Objectives_to_Role(Model model) {
+	public String hrShowReport(Model model) {
+
+
 
 		log.info(" show report");
 
@@ -43,12 +50,55 @@ public class ShowReportController {
 		log.info(" reports size is  "
 				+ modelObjectService.getAllCycles().size());
 		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
-		log.info("1");
+
 		model.addAttribute("managerlist", showReportService.showAllManager());
-		log.info("2");
+
 
 		return SHOW_REPORT__VIEW;
 	}
+
+	@RequestMapping(value = "/assessor/showReport", method = RequestMethod.GET)
+	public String assessorShowReport(Model model) {
+
+
+		log.info("assessor show report method");
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+
+		log.info(" show report");
+
+		model.addAttribute("ShowReportBean", new ShowReportBean());
+		log.info(" reports size is  "
+				+ modelObjectService.getAllCycles().size());
+
+		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
+
+
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+
+
+
+		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
+
+
+log.info("manager id is "+manager.getId());
+   model.addAttribute("isManager", true);
+   model.addAttribute("managerid", manager.getId());
+
+
+
+
+		return SHOW_REPORT__VIEW;
+	}
+
+
+
+
+
+
+
+
 
 	@RequestMapping(value = "/hr/showReport", method = RequestMethod.POST)
 	public String assign_Objectives_to_Role_POST(
@@ -69,6 +119,40 @@ public class ShowReportController {
 
 		return SHOW_REPORT__VIEW;
 	}
+
+
+	@RequestMapping(value = "/assessor/showReport", method = RequestMethod.POST)
+	public String assesssorshowreport(
+			@ModelAttribute("ShowReportBean") ShowReportBean bean,
+			BindingResult result, Model model) {
+		log.info(" cycle id is   " + bean.getCycle_id());
+		log.info(" manager  id is   " + bean.getManager_id_assessor());
+
+		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
+
+
+
+		model.addAttribute("allassessor", showReportService
+				.showAssessorByCycleManager(bean.getCycle_id(),
+						bean.getManager_id_assessor()));
+
+		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
+
+
+		log.info("manager id is "+manager.getId());
+		   model.addAttribute("isManager", true);
+		   model.addAttribute("managerid", manager.getId());
+
+		return SHOW_REPORT__VIEW;
+	}
+
+
+
+
+
+
+
+
 
 	@RequestMapping(value = "/hr/showAssesses", method = RequestMethod.GET)
 	public @ResponseBody

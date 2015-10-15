@@ -7,6 +7,9 @@ public class ShowReportBean {
 int cycle_id;
 
 int manager_id;
+
+int manager_id_assessor;
+
 String manager_name;
 
 int assessor_id;
@@ -72,6 +75,15 @@ public String getAssessee_name() {
 public void setAssessee_name(String assessee_name) {
 	this.assessee_name = assessee_name;
 }
+
+public int getManager_id_assessor() {
+	return manager_id_assessor;
+}
+
+public void setManager_id_assessor(int manager_id_assessor) {
+	this.manager_id_assessor = manager_id_assessor;
+}
+
 
 
 

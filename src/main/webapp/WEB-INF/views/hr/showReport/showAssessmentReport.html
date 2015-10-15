@@ -6,58 +6,23 @@
 
 <head>
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
-<script>
+<script th:inline="javascript">
 
 
+function viewDetail(a) {
 
+	alert("id is "+a);
 
-
-
-
-	function viewDetail(a) {
-
-		alert("id is "+a);
-
-
-
-
-			$.ajax({
-		           url: '../hr/downloadpdfDetail',
-		           type: 'GET',
-		           data:{ AsseesseID : a },
-		           success: function(response) {
-
-
-
-
-		    	},
-				error : function(jqXHR, textStatus,
-						errorThrown) {
-					alert(errorThrown);
-				}
-			});
-
-
-		//ajaxViewDetail(data);
-
-
-
-
-
-	}
-
-
-	function viewRating(b) {
-
-		alert("id is "+b);
 
 
 
 		$.ajax({
-	           url: "../hr/downloadpdfRating",
+	           url: '../hr/downloadpdfDetail',
 	           type: 'GET',
-	           data: {AsseesseID:b},
+	           data:{ AsseesseID : a },
 	           success: function(response) {
+
+
 
 
 	    	},
@@ -68,17 +33,98 @@
 		});
 
 
+	//ajaxViewDetail(data);
 
 
 
 
-		//ajaxViewRating(data);
 
-	}
+}
 
 
-	$(function() {
+function viewRating(b) {
 
+	alert("id is "+b);
+
+
+
+	$.ajax({
+           url: "../hr/downloadpdfRating",
+           type: 'GET',
+           data: {AsseesseID:b},
+           success: function(response) {
+
+
+    	},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(errorThrown);
+		}
+	});
+
+
+
+
+
+
+	//ajaxViewRating(data);
+
+}
+
+
+
+	$(document).ready(function() {
+
+
+
+
+
+		 isManager=[[${isManager}]];
+		 managerid=[[${managerid}]];
+
+
+
+		  if(isManager==true)
+			  {
+
+
+
+
+			  $("#manager_id_assessor").val(managerid);
+
+			  $("#reportform").attr('action', '/pms-1.0/assessor/showReport');
+
+			  }else{
+				  $("#selectPM").css('display', 'block');
+
+
+			  }
+
+
+
+			assessorList=[[${allassessor}]];
+
+
+
+			if(assessorList==null)
+				{
+
+
+				}else
+					{
+
+
+
+			if(assessorList.length==0)
+				{
+
+
+
+
+				 $("#main-accordion").text('No Records Found');
+
+				}
+					}
 
 
 
@@ -102,15 +148,21 @@
 
 		$('#selectcycle').change(function() {
 
+
 			$("#errorspanCycle").css('display', 'none');
 
 		});
 
 		$('#selectPM').change(function() {
 
+			 $("#manager_id").val(managerid);
 			$("#errorspanPM").css('display', 'none');
 
 		});
+
+
+		if(isManager==true)
+			{
 
 		$("#save").on("click", function() {
 
@@ -126,24 +178,74 @@
 
 			} else {
 
-				if ($("#selectPM").val() == 0) {
 
-					$("#selectPM").css({
-						"border-color" : "#a94442"
-					});
-
-					$("#errorspanPM").css('display', 'block');
-
-					return false;
-				} else {
 
 					return true;
 
-				}
+
 
 			}
 
 		});
+
+			}else
+				{
+
+
+				$("#save").on("click", function() {
+
+					if ($("#selectcycle").val() == 0) {
+
+						$("#selectcycle").css({
+							"border-color" : "#a94442"
+						});
+
+						$("#errorspanCycle").css('display', 'block');
+
+						return false;
+
+					} else {
+
+						if ($("#selectPM").val() == 0) {
+
+							$("#selectPM").css({
+								"border-color" : "#a94442"
+							});
+
+							$("#errorspanPM").css('display', 'block');
+
+							return false;
+						} else {
+
+							return true;
+
+						}
+
+					}
+
+				});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				}
+
+
+
+
+
+
 
 		$(".accordion-toggle")
 				.click(
@@ -162,6 +264,9 @@
 
 										},
 										success : function(data) {
+
+
+
 
 											var panel = "#" + "panel_assessor"
 													+ value;
@@ -257,6 +362,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    		});
 
 
@@ -288,10 +409,14 @@
 			<div class="box">
 				<div class="box-body">
 
-				<form  action="#" method="post" th:action="@{/hr/showReport}" th:object="${ShowReportBean}">
+
+
+				<form id="reportform"  action="#" method="post" th:action="@{/hr/showReport}" th:object="${ShowReportBean}">
 
 						<input type="hidden" id="assessor_id" name="assessor_id"
 							th:field="*{assessor_id}" />
+							<input type="hidden" id="manager_id_assessor" name="manager_id_assessor"
+							th:field="*{manager_id_assessor}" />
 
 
 
@@ -311,13 +436,14 @@
 						<div class="col-sm-5">
 							<div class="form-group">
 								<label class="sr-only" for="selectrole">Role</label>
-								<select 	id="selectPM" class="form-control" th:field="*{manager_id}">
+								<select  style="display:none "	id="selectPM" class="form-control" th:field="*{manager_id}">
 									<option selected="selected" value="0">Select Project Manager</option>
 								<option th:each="manager : ${managerlist}" th:text="${manager.fullname}"
 											th:value="${manager.id}">Developer</option>
 								</select>
 							</div>
 						</div>
+						<div class="clearfix"></div>
 
 		<div class="col-md-6">
 							<div class="form-group" >
