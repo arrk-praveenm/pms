@@ -1,5 +1,7 @@
 package com.arrkgroup.apps.config;
 
+import java.util.LinkedHashSet;
+
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 import org.springframework.context.MessageSource;
@@ -12,14 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
@@ -62,6 +67,14 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setCacheable(false);
         return templateResolver;
+    }
+    
+    @Bean
+    public ResourceBundleViewResolver resourceviewResolver(){
+    	ResourceBundleViewResolver resourceViewResolver = new ResourceBundleViewResolver();
+    	resourceViewResolver.setOrder(1);
+    	resourceViewResolver.setBasename("views");
+    	return resourceViewResolver;
     }
 
     @Bean
