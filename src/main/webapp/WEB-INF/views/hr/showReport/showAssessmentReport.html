@@ -8,32 +8,44 @@
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script th:inline="javascript">
 
-
-function viewDetail(a) {
-
-	alert("id is "+a);
+var	employeeid;
+var cycleid;
 
 
-
-
-		$.ajax({
-	           url: '../hr/downloadpdfDetail',
-	           type: 'GET',
-	           data:{ AsseesseID : a },
-	           success: function(response) {
+function viewDetail(id) {
 
 
 
+if(id==1)
+	{
 
-	    	},
-			error : function(jqXHR, textStatus,
-					errorThrown) {
-				alert(errorThrown);
-			}
-		});
+	id=employeeid;
+	}
 
 
-	//ajaxViewDetail(data);
+var e = document.getElementById("selectcycle");
+var cycleid = e.options[e.selectedIndex].value;
+
+
+alert("assessee id is "+id+" -  cycleid is "+cycleid);
+
+$.ajax({
+    url: "../hr/downloadpdfDetail",
+    type: 'GET',
+    data: {AsseesseID:id,
+ 	   cycleID:cycleid
+    },
+    success: function(response) {
+
+
+	},
+	error : function(jqXHR, textStatus,
+			errorThrown) {
+		alert(errorThrown);
+	}
+});
+
+
 
 
 
@@ -42,16 +54,29 @@ function viewDetail(a) {
 }
 
 
-function viewRating(b) {
+function viewRating(id) {
 
-	alert("id is "+b);
 
+
+	if(id==1)
+	{
+
+	id=employeeid;
+	}
+
+
+	var e = document.getElementById("selectcycle");
+	var cycleid = e.options[e.selectedIndex].value;
+
+	alert("assessee id is "+id+" -  cycleid is "+cycleid);
 
 
 	$.ajax({
            url: "../hr/downloadpdfRating",
            type: 'GET',
-           data: {AsseesseID:b},
+           data: {AsseesseID:id,
+        	   cycleID:cycleid
+           },
            success: function(response) {
 
 
@@ -79,8 +104,14 @@ function viewRating(b) {
 
 
 
+
+
 		 isManager=[[${isManager}]];
 		 managerid=[[${managerid}]];
+        employee=[[${isEmployee}]];
+
+
+
 
 
 
@@ -89,16 +120,44 @@ function viewRating(b) {
 
 
 
+			  $("#header").text('Manager - Assessment Report');
 
 			  $("#manager_id_assessor").val(managerid);
 
 			  $("#reportform").attr('action', '/pms-1.0/assessor/showReport');
+
+			  if(employee==true)
+			  {
+
+
+				  employeeid=managerid;
+			   $("#header").text('employee - Assessment Report');
+			   $("#selectPM").hide();
+			   $("#employeeButtonSpan").show();
+
+			  /*   $("#save").text('view assessment');
+			  */
+			  $("#save").hide();
+
+
+			  }
+
+
+
+
 
 			  }else{
 				  $("#selectPM").css('display', 'block');
 
 
 			  }
+
+
+
+
+
+
+
 
 
 
@@ -148,6 +207,7 @@ function viewRating(b) {
 
 		$('#selectcycle').change(function() {
 
+			cycleid=$('#selectcycle').val();
 
 			$("#errorspanCycle").css('display', 'none');
 
@@ -393,7 +453,7 @@ function viewRating(b) {
 
 
         <section class="content-header">
-          <h1>Human Resource - Assigned Objectives<!--<small>Optional description</small>--></h1>
+          <h1 id="header">Human Resource - Assessment Report<!--<small>Optional description</small>--></h1>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li class="active">Here</li>
@@ -604,7 +664,16 @@ function viewRating(b) {
 
 
 
+						<span id="employeeButtonSpan"  style="display:none " class="pull-right">
+						<a
+							href="javascript:viewDetail(1)" id="summarybtn"
+							class="btn btn-success btn-xs">View Details</a>
+							<a
+							href="javascript:viewRating(1)"  id="ratings"
+							class="btn btn-success btn-xs">View Rating</a>
 
+
+							</span>
 
 
 

@@ -173,11 +173,11 @@ log.info("manager id is "+manager.getId());
 	@RequestMapping(value = "/hr/downloadpdfDetail", method = RequestMethod.GET)
 	public @ResponseBody
 	ShowReportBean downloadpdf(
-			@RequestParam(value = "AsseesseID") String assessor_id, Model model) {
+			@RequestParam(value = "AsseesseID") String assessor_id,@RequestParam(value = "cycleID") String cycleID, Model model) {
 
 		System.out
 				.println(" /hr/downloadpdfDetail  action  - assessor  id is   "
-						+ assessor_id);
+						+ assessor_id +" cycle id is "+cycleID );
 
 
 		return null;
@@ -186,13 +186,90 @@ log.info("manager id is "+manager.getId());
 	@RequestMapping(value = "/hr/downloadpdfRating", method = RequestMethod.GET)
 	public @ResponseBody
 	ShowReportBean downloadpdfrating(
-			@RequestParam(value = "AsseesseID") String assessor_id, Model model) {
+			@RequestParam(value = "AsseesseID") String assessor_id,@RequestParam(value = "cycleID") String cycleID, Model model) {
 
 		System.out
 				.println(" /hr/downloadpdfRating  action  - assessor  id is   "
-						+ assessor_id);
+						+ assessor_id+" cycle id is "+cycleID );
 
 		return null;
 	}
+
+
+
+
+
+
+
+
+
+
+	@RequestMapping(value = "/assessor/assesseeshowReport", method = RequestMethod.GET)
+	public String assesseeShowReport(Model model) {
+
+
+		log.info("assessee show report method");
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+
+
+
+		model.addAttribute("ShowReportBean", new ShowReportBean());
+
+
+		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
+
+
+		userDetails = (InetOrgPerson) (SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal());
+
+
+
+		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
+
+
+ log.info("manager id is "+manager.getId());
+   model.addAttribute("isManager", true);
+   model.addAttribute("isEmployee", true);
+   model.addAttribute("managerid", manager.getId());
+
+
+
+
+		return SHOW_REPORT__VIEW;
+	}
+
+
+
+
+
+/*
+	@RequestMapping(value = "/assessor/showReport", method = RequestMethod.POST)
+	public String assesseeShowReport(
+			@ModelAttribute("ShowReportBean") ShowReportBean bean,
+			BindingResult result, Model model) {
+		log.info(" cycle id is   " + bean.getCycle_id());
+		log.info(" manager  id is   " + bean.getManager_id_assessor());
+
+		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
+
+
+
+		model.addAttribute("allassessor", showReportService
+				.showAssessorByCycleManager(bean.getCycle_id(),
+						bean.getManager_id_assessor()));
+
+		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
+
+
+		log.info("manager id is "+manager.getId());
+		   model.addAttribute("isManager", true);
+		   model.addAttribute("managerid", manager.getId());
+
+		return SHOW_REPORT__VIEW;
+	}
+*/
+
+
 
 }
