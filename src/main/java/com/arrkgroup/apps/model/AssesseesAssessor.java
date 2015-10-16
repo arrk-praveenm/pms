@@ -40,6 +40,7 @@ import javax.persistence.Table;
 	@NamedQuery(name = AssesseesAssessor.UPDATE_STATUS, query = "update AssesseesAssessor set status=:status where projectId.id=:project_id "
 			   + "and assesseeId.id=:assesseeId and roleId.id=:roleId and status=:statusCondition and id=:id "),
 @NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR_CYCLE, query = "SELECT s FROM AssesseesAssessor s where s.assessorId.id= :id and  s.cycleId.id=:cycleId "),
+@NamedQuery(name = AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID_CYCLEID, query = "from AssesseesAssessor aa where aa.assesseeId.id=:assesseeId and aa.cycleId.id=:cycleId "),
 
 })
 public class AssesseesAssessor {
@@ -57,6 +58,7 @@ public class AssesseesAssessor {
 	public static final String FIND_ROLES_OF_ASSESSEE = "AssesseesAssessor.FIND_ROLES_OF_ASSESSEE";
 	public static final String FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID = "AssesseeAssessor.FIND_BY_CYCLEID_PROJECT_ASSESSEEID_ROLEID";
 	public static final String FIND_ASSESSEES_BY_ID = "AssesseesAssessor.FIND_ASSESSEES_BY_ID";
+	public static final String FIND_ASSESSEES_BY_ASSESSEESSID_CYCLEID = "AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID_CYCLEID";
 
 
 
