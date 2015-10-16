@@ -86,7 +86,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public LdapAuthenticator ldapAuthenticator() {
         BindAuthenticator authenticator = new BindAuthenticator(contextSource());
         
-        //authenticator.setUserDnPatterns(new String[] {"uid={0}" });
         authenticator.setUserSearch(userSearch());
         return authenticator;
     }
@@ -99,6 +98,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/admin/**").access("hasRole('ADMIN')")
             	.antMatchers("/ajax/**").access("hasRole('EMPLOYEE')")
             	.antMatchers("/hr/**").access("hasRole('HR')")
+            	.antMatchers("/report/**").access("hasRole('HR')")
             	.antMatchers("/assessor/**").access("hasAnyRole('ASSESSOR','MANAGER','EMPLOYEE')")
                 .antMatchers( "/favicon.ico", "/resources/**").permitAll()
                 .anyRequest().authenticated()
