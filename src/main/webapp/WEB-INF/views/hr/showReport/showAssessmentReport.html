@@ -13,6 +13,21 @@ var cycleid;
 
 
 function viewDetail(id) {
+	var e = document.getElementById("selectcycle");
+	var cycleid = e.options[e.selectedIndex].value;
+
+if(cycleid==0)
+	{
+	$("#selectcycle").css({
+		"border-color" : "#a94442"
+	});
+
+	$("#errorspanCycle").css('display', 'block');
+
+
+	}else
+
+{
 
 
 
@@ -20,14 +35,17 @@ if(id==1)
 	{
 
 	id=employeeid;
+
+
+
+
 	}
 
 
-var e = document.getElementById("selectcycle");
-var cycleid = e.options[e.selectedIndex].value;
 
 
-alert("assessee id is "+id+" -  cycleid is "+cycleid);
+
+
 
 $.ajax({
     url: "../hr/downloadpdfDetail",
@@ -49,12 +67,29 @@ $.ajax({
 
 
 
-
+}
 
 }
 
 
 function viewRating(id) {
+
+	var e = document.getElementById("selectcycle");
+	var cycleid = e.options[e.selectedIndex].value;
+
+if(cycleid==0)
+	{
+	$("#selectcycle").css({
+		"border-color" : "#a94442"
+	});
+
+	$("#errorspanCycle").css('display', 'block');
+
+
+	}else
+
+{
+
 
 
 
@@ -65,10 +100,8 @@ function viewRating(id) {
 	}
 
 
-	var e = document.getElementById("selectcycle");
-	var cycleid = e.options[e.selectedIndex].value;
 
-	alert("assessee id is "+id+" -  cycleid is "+cycleid);
+
 
 
 	$.ajax({
@@ -91,7 +124,7 @@ function viewRating(id) {
 
 
 
-
+}
 	//ajaxViewRating(data);
 
 }
@@ -211,12 +244,15 @@ function viewRating(id) {
 
 			$("#errorspanCycle").css('display', 'none');
 
+			 $("#main-accordion").empty();
+
 		});
 
 		$('#selectPM').change(function() {
 
 			 $("#manager_id").val(managerid);
 			$("#errorspanPM").css('display', 'none');
+			 $("#main-accordion").empty();
 
 		});
 
@@ -664,16 +700,17 @@ function viewRating(id) {
 
 
 
-						<span id="employeeButtonSpan"  style="display:none " class="pull-right">
+						<span id="employeeButtonSpan"  style="display:none " class="pull-left">
 						<a
 							href="javascript:viewDetail(1)" id="summarybtn"
-							class="btn btn-success btn-xs">View Details</a>
+							class="btn btn-success">View Details</a>
 							<a
 							href="javascript:viewRating(1)"  id="ratings"
-							class="btn btn-success btn-xs">View Rating</a>
+							class="btn btn-success">View Rating</a>
 
 
 							</span>
+					<div class="clearfix"></div>
 
 
 
