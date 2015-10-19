@@ -16,7 +16,10 @@ public class PdfServiceImpl implements PdfService {
 	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,
 			int cycleId) {
 		// TODO Auto-generated method stub
-		return pdfDaoImpl.getAssesseesAssessorByCycle(employeeId, cycleId);
+		List<AssesseesAssessor> list=pdfDaoImpl.getAssesseesAssessorByCycle(employeeId, cycleId);
+
+		System.out.println(" getAssesseesAssessorByCycle size is "+list.size());
+		return list;
 	}
 
 }

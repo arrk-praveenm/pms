@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.arrkgroup.apps.assessor.assessorassessment.AssessorAssessmentService;
@@ -28,10 +29,10 @@ public class PdfController {
 
 	@Autowired
 	ModelObjectService modelObjectService;
-	
+
 	@Autowired
 	PdfService pdfService;
-	
+
 	@Autowired
 	AssessorAssessmentService assessorAssessmentService;
     /**
@@ -39,30 +40,25 @@ public class PdfController {
      */
     @RequestMapping(value = "report/downloadPDF", method = RequestMethod.GET)
     public ModelAndView downloadPdf(Model model) {
-    	
+
     	List<Section> allSections=modelObjectService.getAllSections();
     	List allSectionAssessmentScore=new ArrayList();
-    	for(AssesseesAssessor assesseesAssessor :(List<AssesseesAssessor>)pdfService.getAssesseesAssessorByCycle(595, 1))
+    	for(AssesseesAssessor assesseesAssessor :(List<AssesseesAssessor>)pdfService.getAssesseesAssessorByCycle(597, 1))
     	{
     		List<SectionConsolidatedBean> list=assessorAssessmentService.findById(String.valueOf(assesseesAssessor.getAssessorId().getId()), String.valueOf(assesseesAssessor.getRoleId().getId()), assesseesAssessor.getProjectId().getId(), assesseesAssessor.getId());
     		allSectionAssessmentScore.add(list);
-    		
+
     	}
     	model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
-    	
-    	
-        // create some sample data
-        List<Book> listBooks = new ArrayList<Book>();
-        listBooks.add(new Book("Spring in Action", "Craig Walls", "1935182358",
-                "June 29th 2011", 31.98F));
-        listBooks.add(new Book("Spring in Practice", "Willie Wheeler, Joshua White",
-                "1935182056", "May 16th 2013", 31.95F));
-        listBooks.add(new Book("Pro Spring 3",
-                "Clarence Ho, Rob Harrop", "1430241071", "April 18th 2012", 31.85F));
-        listBooks.add(new Book("Spring Integration in Action", "Mark Fisher", "1935182439",
-                "September 26th 2012", 28.73F));
- 
-        // return a view which will be resolved by a pdf view resolver
+
+
+       // return a view which will be resolved by a pdf view resolver
         return new ModelAndView("pdfView", "allSections", allSections);
     }
+
+
+
+
+
+
 }

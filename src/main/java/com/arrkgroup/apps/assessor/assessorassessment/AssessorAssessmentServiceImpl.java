@@ -127,7 +127,7 @@ public class AssessorAssessmentServiceImpl implements AssessorAssessmentService 
 	public List<AssesseeObjectives> getAssesseeObjectives(int sectionID,
 			int assesseID, int role_id, int projectId, int assesseeAssessorId ) {
 
-		
+
 
 List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
  //commented while refactoring the with assesseeAssessorId
@@ -148,10 +148,10 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 
 		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
-				
-				
+
+
 		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
-		 
+
 		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 
 
@@ -272,6 +272,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		list=assessorAssessmentDao.findById(assessor.getId());*/
 		list=assessorAssessmentDao.findById(assesseeAssessorId);
 
+		log.info( "assesssee id is "+assesseeAssessorId);
 		log.info( "section consolidated  size is "+list.size());
 
 		int MAX_RATING=assessorAssessmentDao.getMaxRating();
@@ -371,7 +372,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		// TODO Auto-generated method stub
 		return assessorAssessmentDao.updateAssesseesAssessorStatus(bean, status);
 	}
-	
+
 
 
 

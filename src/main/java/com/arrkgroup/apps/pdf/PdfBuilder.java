@@ -25,9 +25,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 /**
  * This view class generates a PDF document 'on the fly' based on the data
  * contained in the model.
- * 
+ *
  * @author www.codejava.net
- * 
+ *
  */
 public class PdfBuilder extends AbstractITextPdfView {
 
@@ -56,18 +56,18 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 		}
 
-	
-		//setting summary Ratings  
-		doc.add(setSummaryDetail(allSectionAssessmentScore));
-		
-	
 
-		
-		
+		//setting summary Ratings
+		doc.add(setSummaryDetail(allSectionAssessmentScore));
+
+
+
+
+
 
 	}
-	
-	
+
+
 	protected PdfPTable setSummaryDetail(List allSectionAssessmentScore) throws DocumentException
 	{
 		PdfPTable table = new PdfPTable(2);
@@ -98,7 +98,7 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 			List<SectionConsolidatedBean> listSectionConsolidatedBean = (List) allSectionAssessmentScoreIterator
 					.next();
-			System.out.println(listSectionConsolidatedBean.size());
+			System.out.println("test"+ listSectionConsolidatedBean.size());
 
 			ListIterator list = listSectionConsolidatedBean.listIterator();
 			for (int j = 1; list.hasNext(); j++) {
@@ -108,8 +108,11 @@ public class PdfBuilder extends AbstractITextPdfView {
 				table.addCell(String.valueOf((sectionConsolidatedBean)
 						.getSection_point()
 						/ listSectionConsolidatedBean.size()));
+
+				System.out.println("table row created");
 			}
 		}
+
 
 		return table;
 	}
