@@ -2,6 +2,7 @@ package com.arrkgroup.apps.pdf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,12 +50,16 @@ public class PdfController {
     		allSectionAssessmentScore.add(list);
 
     	}
-    	model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
 
+    	model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
+    	model.addAttribute("empid", 597);
+    	model.addAttribute("empname", modelObjectService.findEmployeeById(597).getFullname());
+    	model.addAttribute("cycle", modelObjectService.findCycleById(1).getDescription());
 
        // return a view which will be resolved by a pdf view resolver
         return new ModelAndView("pdfView", "allSections", allSections);
     }
+
 
 
 
