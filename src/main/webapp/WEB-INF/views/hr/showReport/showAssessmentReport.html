@@ -8,150 +8,14 @@
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script th:inline="javascript">
 
-var	employeeid;
-var cycleid;
-
-
-function viewDetail(id) {
-	var e = document.getElementById("selectcycle");
-	var cycleid = e.options[e.selectedIndex].value;
-
-if(cycleid==0)
-	{
-	$("#selectcycle").css({
-		"border-color" : "#a94442"
-	});
-
-	$("#errorspanCycle").css('display', 'block');
-
-
-	}else
-
-{
-
-
-
-if(id==1)
-	{
-
-	id=employeeid;
-
-
-
-
-	}
-
-
-
-
-
-
-
-$.ajax({
-    url: "../hr/downloadpdfDetail",
-    type: 'GET',
-    data: {AsseesseID:id,
- 	   cycleID:cycleid
-    },
-    success: function(response) {
-
-
-	},
-	error : function(jqXHR, textStatus,
-			errorThrown) {
-		alert(errorThrown);
-	}
-});
-
-
-
-
-
-}
-
-}
-
-
-function viewRating(id) {
-
-	var e = document.getElementById("selectcycle");
-	var cycleid = e.options[e.selectedIndex].value;
-
-if(cycleid==0)
-	{
-	$("#selectcycle").css({
-		"border-color" : "#a94442"
-	});
-
-	$("#errorspanCycle").css('display', 'block');
-
-
-	}else
-
-{
-
-
-
-
-	if(id==1)
-	{
-
-	id=employeeid;
-	}
-
-
-
-
-
-
-	$.ajax({
-           url: "../hr/downloadpdfRating",
-           type: 'GET',
-           data: {AsseesseID:id,
-        	   cycleID:cycleid
-           },
-           success: function(response) {
-
-
-    	},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
-			alert(errorThrown);
-		}
-	});
-
-
-
-
-
-}
-	//ajaxViewRating(data);
-
-}
-
-
-
 	$(document).ready(function() {
-
-
-
-
-
-
 
 		 isManager=[[${isManager}]];
 		 managerid=[[${managerid}]];
         employee=[[${isEmployee}]];
 
-
-
-
-
-
 		  if(isManager==true)
 			  {
-
-
 
 			  $("#header").text('Manager - Assessment Report');
 
@@ -161,82 +25,36 @@ if(cycleid==0)
 
 			  if(employee==true)
 			  {
-
-
-				  employeeid=managerid;
-			   $("#header").text('employee - Assessment Report');
-			   $("#selectPM").hide();
-			   $("#employeeButtonSpan").show();
+				employeeid=managerid;
+			   	$("#header").text('employee - Assessment Report');
+			   	$("#selectPM").hide();
+			   	$("#employeeButtonSpan").show();
 
 			  /*   $("#save").text('view assessment');
 			  */
-			  $("#save").hide();
-
-
+			  	$("#save").hide();
 			  }
-
-
-
-
 
 			  }else{
 				  $("#selectPM").css('display', 'block');
-
-
 			  }
-
-
-
-
-
-
-
-
 
 
 			assessorList=[[${allassessor}]];
 
-
-
 			if(assessorList==null)
 				{
-
 
 				}else
 					{
 
-
-
 			if(assessorList.length==0)
 				{
-
-
-
 
 				 $("#main-accordion").text('No Records Found');
 
 				}
 					}
-
-
-
-
-		function viewDetail(id) {
-			alert("assessee id is " + $(id).attr('name'));
-
-		}
-
-		function viewRating(id) {
-
-			alert("assessee id is " + $(id).attr('name'));
-		}
-
-
-
-
-
-
-
 
 		$('#selectcycle').change(function() {
 
@@ -383,9 +201,9 @@ if(cycleid==0)
 														.append(
 																'<h4 id="assesseeID" class="panel-title"  name="'+id+'"><span class="accessrolename pull-left"> '
 																		+ name
-																		+ ' </span><span class="pull-right"><a  href="javascript:viewDetail('+id+')" name="'
+																		+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+id+'&amp;cycleID='+cycle+'" name="'
 																		+ id
-																		+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a  href="javascript:viewRating('+id+')" name="'
+																		+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+id+'&amp;cycleID='+cycle+'" name="'
 																		+ id
 																		+ '" id="ratings" class="btn btn-success btn-xs">View Rating</a></span><div class="clearfix"></div></h4> ');
 
@@ -398,7 +216,7 @@ if(cycleid==0)
 										error : function(jqXHR, textStatus,
 												errorThrown) {
 											alert(errorThrown);
-										}
+										} 
 									});
 
 							var id = '#' + 'assessor' + value;
