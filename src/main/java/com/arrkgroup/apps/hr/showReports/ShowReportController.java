@@ -185,61 +185,64 @@ log.info("manager id is "+manager.getId());
 	}
 
 	@RequestMapping(value = "/hr/downloadpdfDetail", method = RequestMethod.GET)
-	  public ModelAndView downloadpdf(
-			@RequestParam(value = "AsseesseID") String assessor_id,@RequestParam(value = "cycleID") String cycleID, Model model) {
+	public ModelAndView downloadpdf(
+			@RequestParam(value = "AsseesseID") String assessor_id,
+			@RequestParam(value = "cycleID") String cycleID, Model model) {
 
 		System.out
 				.println(" /hr/downloadpdfDetail  action  - assessor  id is   "
-						+ assessor_id +" cycle id is "+cycleID );
+						+ assessor_id + " cycle id is " + cycleID);
 
+		List<Section> allSections = modelObjectService.getAllSections();
+		List allSectionAssessmentScore = new ArrayList();
+		for (AssesseesAssessor assesseesAssessor : (List<AssesseesAssessor>) pdfService
+				.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
+						Integer.parseInt(cycleID))) {
+			List<SectionConsolidatedBean> list = assessorAssessmentService
+					.findById(String.valueOf(assesseesAssessor.getAssessorId()
+							.getId()), String.valueOf(assesseesAssessor
+							.getRoleId().getId()), assesseesAssessor
+							.getProjectId().getId(), assesseesAssessor.getId());
+			allSectionAssessmentScore.add(list);
+		}
+		System.out
+				.println("downloadpdfDetail  allSectionAssessmentScore size is "
+						+ allSectionAssessmentScore.size());
+		model.addAttribute("allSectionAssessmentScore",
+				allSectionAssessmentScore);
 
-
-
-
-		List<Section> allSections=modelObjectService.getAllSections();
-    	List allSectionAssessmentScore=new ArrayList();
-    	for(AssesseesAssessor assesseesAssessor :(List<AssesseesAssessor>)pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id), Integer.parseInt(cycleID)))
-    	{
-    		List<SectionConsolidatedBean> list=assessorAssessmentService.findById(String.valueOf(assesseesAssessor.getAssessorId().getId()), String.valueOf(assesseesAssessor.getRoleId().getId()), assesseesAssessor.getProjectId().getId(), assesseesAssessor.getId());
-    		allSectionAssessmentScore.add(list);
-
-    	}
-    	System.out.println("downloadpdfDetail  allSectionAssessmentScore size is "+allSectionAssessmentScore.size());
-    	model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
-
-
-
-
-        // return a view which will be resolved by a pdf view resolver
-        return new ModelAndView("pdfView", "allSections", allSections);
-
-
+		// return a view which will be resolved by a pdf view resolver
+		return new ModelAndView("pdfView", "allSections", allSections);
 	}
 
 	@RequestMapping(value = "/hr/downloadpdfRating", method = RequestMethod.GET)
-	 public ModelAndView downloadpdfrating(
-			@RequestParam(value = "AsseesseID") String assessor_id,@RequestParam(value = "cycleID") String cycleID, Model model) {
+	public ModelAndView downloadpdfrating(
+			@RequestParam(value = "AsseesseID") String assessor_id,
+			@RequestParam(value = "cycleID") String cycleID, Model model) {
 
 		System.out
 				.println(" /hr/downloadpdfRating  action  - assessor  id is   "
-						+ assessor_id+" cycle id is "+cycleID );
+						+ assessor_id + " cycle id is " + cycleID);
 
-		List<Section> allSections=modelObjectService.getAllSections();
-    	List allSectionAssessmentScore=new ArrayList();
-    	for(AssesseesAssessor assesseesAssessor :(List<AssesseesAssessor>)pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id), Integer.parseInt(cycleID)))
-    	{
-    		List<SectionConsolidatedBean> list=assessorAssessmentService.findById(String.valueOf(assesseesAssessor.getAssessorId().getId()), String.valueOf(assesseesAssessor.getRoleId().getId()), assesseesAssessor.getProjectId().getId(), assesseesAssessor.getId());
-    		allSectionAssessmentScore.add(list);
+		List<Section> allSections = modelObjectService.getAllSections();
+		List allSectionAssessmentScore = new ArrayList();
+		for (AssesseesAssessor assesseesAssessor : (List<AssesseesAssessor>) pdfService
+				.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
+						Integer.parseInt(cycleID))) {
+			List<SectionConsolidatedBean> list = assessorAssessmentService
+					.findById(String.valueOf(assesseesAssessor.getAssessorId()
+							.getId()), String.valueOf(assesseesAssessor
+							.getRoleId().getId()), assesseesAssessor
+							.getProjectId().getId(), assesseesAssessor.getId());
+			allSectionAssessmentScore.add(list);
 
-    	}
+		}
 
+		model.addAttribute("allSectionAssessmentScore",
+				allSectionAssessmentScore);
 
-    	model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
-
-
-
-        // return a view which will be resolved by a pdf view resolver
-        return new ModelAndView("pdfView", "allSections", allSections);
+		// return a view which will be resolved by a pdf view resolver
+		return new ModelAndView("pdfView", "allSections", allSections);
 	}
 
 
