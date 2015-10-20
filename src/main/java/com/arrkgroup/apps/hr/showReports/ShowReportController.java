@@ -211,6 +211,13 @@ log.info("manager id is "+manager.getId());
 		model.addAttribute("allSectionAssessmentScore",
 				allSectionAssessmentScore);
 
+		model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
+		 model.addAttribute("type", "detail");
+    	model.addAttribute("empid", Integer.parseInt(assessor_id));
+    	model.addAttribute("empname", modelObjectService.findEmployeeById(Integer.parseInt(assessor_id)).getFullname());
+    	model.addAttribute("cycle", modelObjectService.findCycleById(Integer.parseInt(cycleID)).getDescription());
+
+
 		// return a view which will be resolved by a pdf view resolver
 		return new ModelAndView("pdfView", "allSections", allSections);
 	}
@@ -240,6 +247,11 @@ log.info("manager id is "+manager.getId());
 
 		model.addAttribute("allSectionAssessmentScore",
 				allSectionAssessmentScore);
+		  model.addAttribute("type", "rating");
+		model.addAttribute("empid", Integer.parseInt(assessor_id));
+    	model.addAttribute("empname", modelObjectService.findEmployeeById(Integer.parseInt(assessor_id)).getFullname());
+    	model.addAttribute("cycle", modelObjectService.findCycleById(Integer.parseInt(cycleID)).getDescription());
+
 
 		// return a view which will be resolved by a pdf view resolver
 		return new ModelAndView("pdfView", "allSections", allSections);

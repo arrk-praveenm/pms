@@ -45,6 +45,9 @@ public class PdfBuilder extends AbstractITextPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+
+		System.out.println("after controller  in pdfbuilder");
+
 		// get data model which is passed by the Spring container
 		 allSections = (List<Section>) model.get("allSections");
 		List allSectionAssessmentScore = (List) model
@@ -74,6 +77,13 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 		doc.add(new Paragraph("Cycle :"+(String) model.get("cycle")));
 		doc.add(new Paragraph(" "));
+
+
+		String report_type=(String) model.get("type");
+		if(report_type.equals("rating"))
+
+		{
+
 
 		doc.add(new Paragraph("Organisation weightage of different parameters"));
 
@@ -161,7 +171,7 @@ consolidatedBean.setSection_point(consolidatedBean.getSection_point()+sectionCon
 			}
 		}
 
-		 HashMap hm = new HashMap();
+
 
 		 Map<String, Float> averageSection=new HashMap<String, Float>();
 
@@ -255,161 +265,19 @@ System.out.println( "weightage is "+final_weightage);
 
 
 
+	}else
+	{
+
+
+		doc.add(new Paragraph("SECTIONS"));
+
+
+
 	}
 
-/*
-	protected PdfPTable setSummaryDetail(List allSectionAssessmentScore) throws DocumentException
-	{
-		PdfPTable table = new PdfPTable(2);
 
-		PdfPTable table1 = new PdfPTable(2);
 
-		table.setWidthPercentage(100.0f);
-		table.setWidths(new float[] { 6.0f, 5.0f, });
-		table.setSpacingBefore(10);
+}
 
-		table1.setWidthPercentage(100.0f);
-		table1.setWidths(new float[] { 6.0f, 5.0f, });
-		table1.setSpacingBefore(10);
-
-
-		// define font for table header row
-				Font font = FontFactory.getFont(FontFactory.HELVETICA);
-				font.setColor(BaseColor.WHITE);
-
-		// define table header cell
-		PdfPCell cell = new PdfPCell();
-		cell.setBackgroundColor(BaseColor.BLUE);
-		cell.setPadding(5);
-
-		// write table header
-		cell.setPhrase(new Phrase("Section Title", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Section Score", font));
-		table.addCell(cell);
-
-
-
-		ListIterator allSectionAssessmentScoreIterator = allSectionAssessmentScore
-				.listIterator();
-		System.out.println(allSectionAssessmentScore.size());
-
-		List<SectionConsolidatedBean> conList=new ArrayList<SectionConsolidatedBean>();
-		for (int i = 1; allSectionAssessmentScoreIterator.hasNext(); i++) {
-
-			List<SectionConsolidatedBean> listSectionConsolidatedBean = (List) allSectionAssessmentScoreIterator
-					.next();
-			System.out.println("test"+ listSectionConsolidatedBean.size());
-
-
-			ListIterator list = listSectionConsolidatedBean.listIterator();
-
-
-
-
-
-			for (int j = 1; list.hasNext(); j++) {
-				SectionConsolidatedBean sectionConsolidatedBean = (SectionConsolidatedBean) list
-						.next();
-				SectionConsolidatedBean consolidatedBean=new SectionConsolidatedBean();
-
-consolidatedBean.setId(sectionConsolidatedBean.getId());
-consolidatedBean.setSection(sectionConsolidatedBean.getSection());
-consolidatedBean.setSection_point(consolidatedBean.getSection_point()+sectionConsolidatedBean.getSection_point());
-
-
-
-				table.addCell(sectionConsolidatedBean.getSection());
-				table.addCell(String.valueOf((sectionConsolidatedBean)
-						.getSection_point()));
-
-				System.out.println("table row created");
-				conList.add(consolidatedBean);
-			}
-		}
-
-		 HashMap hm = new HashMap();
-
-		 Map<String, Float> averageSection=new HashMap<String, Float>();
-
-		for (SectionConsolidatedBean sectionConsolidatedBean : conList) {
-
-
-			if( averageSection.get(sectionConsolidatedBean.getSection()) != null)
-			{
-				float temp=0;
-
-				temp=averageSection.get(sectionConsolidatedBean.getSection());
-				temp=temp+sectionConsolidatedBean.getSection_point();
-
-				temp=temp/2;
-temp=(float) Math.round(temp * 100) / 100;
-
-
-
-				averageSection.put(sectionConsolidatedBean.getSection(),temp);
-
-
-			}else
-			{
-				averageSection.put(sectionConsolidatedBean.getSection(),sectionConsolidatedBean.getSection_point());
-
-			}
-
-
-
-
-
-
-		}
-
-
-
-
-
-
-		float final_weightage=0;
-
-		Iterator<Section> sectionIterator = allSections.iterator();
-		for (Entry<String, Float> entry : averageSection.entrySet())
-		{
-			float temp;
-            float sectionWeightage;
-		    System.out.println("after addtion"+entry.getKey() + "/" + entry.getValue());
-
-		    table.addCell(entry.getKey());
-
-			table.addCell(String.valueOf(entry.getValue()));
-			sectionWeightage=sectionIterator.next().getSection_weightage();
-
-			System.out.println("og sectoin points "+sectionWeightage);
-
-
- temp = (sectionWeightage * entry.getValue());
-
- final_weightage=temp+final_weightage;
-
-
-System.out.println( "weightage is "+final_weightage);
-
-
-		}
-		doc.add(new Paragraph("Final weightage is"  + " - "
-				+ final_weightage));
-
-		 table1.addCell("Final weightage is");
-
-			table1.addCell(String.valueOf(final_weightage));
-
-
-
-
-
-
-
-
-		return table;
-	}*/
 
 }
