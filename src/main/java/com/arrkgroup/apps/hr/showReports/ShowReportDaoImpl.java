@@ -15,6 +15,7 @@ import com.arrkgroup.apps.hr.managesections.CreateSectionController;
 
 import com.arrkgroup.apps.model.Objective;
 
+import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
@@ -82,5 +83,24 @@ public class ShowReportDaoImpl implements ShowReportDao {
 
 		return emp;
 	}
+
+
+	@Override
+	public List<AssesseesAssessor> showAssesseByEmplyee(int id) {
+
+		return entityManager
+				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID,
+						AssesseesAssessor.class).setParameter("assesseeId", id)
+				.getResultList();
+	}
+
+	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id) {
+
+		return entityManager
+				.createNamedQuery(AssesseeObjectives.FIND_SECTION_BY_ASSESSOR,
+						AssesseeObjectives.class).setParameter("assesseeAssessorId", id)
+				.getResultList();
+	}
+
 
 }

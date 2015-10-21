@@ -65,8 +65,8 @@ public class ShowReportController {
 				+ modelObjectService.getAllCycles().size());
 		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
 
-		model.addAttribute("managerlist", showReportService.showAllManager());
-
+		//model.addAttribute("managerlist", showReportService.showAllManager());
+		 model.addAttribute("isHr", true);
 
 		return SHOW_REPORT__VIEW;
 	}
@@ -122,12 +122,14 @@ log.info("manager id is "+manager.getId());
 		log.info(" manager  id is   " + bean.getManager_id());
 
 		model.addAttribute("cyclelist", modelObjectService.getAllCycles());
-		model.addAttribute("managerlist", showReportService.showAllManager());
 
 
-		model.addAttribute("allassessor", showReportService
+
+	/*	model.addAttribute("allassessor", showReportService
 				.showAssessorByCycleManager(bean.getCycle_id(),
-						bean.getManager_id()));
+						bean.getManager_id()));*/
+
+model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.getCycle_id()));
 
 
 
@@ -218,6 +220,11 @@ log.info("manager id is "+manager.getId());
     	model.addAttribute("cycle", modelObjectService.findCycleById(Integer.parseInt(cycleID)).getDescription());
 
 
+    	 model.addAttribute("assesseinfo", showReportService.showAssesseByEmplyee(Integer.parseInt(assessor_id)));
+    	 model.addAttribute("assessedetail", showReportService.showAssesseObjectiveByAssessid(Integer.parseInt(assessor_id)));
+
+
+
 		// return a view which will be resolved by a pdf view resolver
 		return new ModelAndView("pdfView", "allSections", allSections);
 	}
@@ -251,6 +258,9 @@ log.info("manager id is "+manager.getId());
 		model.addAttribute("empid", Integer.parseInt(assessor_id));
     	model.addAttribute("empname", modelObjectService.findEmployeeById(Integer.parseInt(assessor_id)).getFullname());
     	model.addAttribute("cycle", modelObjectService.findCycleById(Integer.parseInt(cycleID)).getDescription());
+
+
+
 
 
 		// return a view which will be resolved by a pdf view resolver

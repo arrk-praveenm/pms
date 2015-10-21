@@ -10,9 +10,60 @@
 
 	$(document).ready(function() {
 
+
+
+
+
+
+
+
+
+		 isHr=[[${isHr}]];
 		 isManager=[[${isManager}]];
 		 managerid=[[${managerid}]];
         employee=[[${isEmployee}]];
+        allEmployee=[[${allEmployee}]];
+
+
+    if(allEmployee!=null)
+    	{
+
+
+    	var panel = "#" + "employeeRow";
+    	  for(assessee in allEmployee)
+     	  {
+
+
+		$(panel)
+		.append(
+				'<h4 id="assesseeID" class="panel-title"  name="'+allEmployee[assessee].id+'"><span class="accessrolename pull-left"> '
+						+ allEmployee[assessee].fullname
+						+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+ allEmployee[assessee].id
+						+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+allEmployee[assessee].id
+						+ '" id="ratings" class="btn btn-success btn-xs">View Rating</a></span><div class="clearfix"></div></h4> ');
+
+
+     	  }
+    	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		  if(isManager==true)
 			  {
@@ -347,16 +398,6 @@
 						</div>
 
 
-						<div class="col-sm-5">
-							<div class="form-group">
-								<label class="sr-only" for="selectrole">Role</label>
-								<select  style="display:none "	id="selectPM" class="form-control" th:field="*{manager_id}">
-									<option selected="selected" value="0">Select Project Manager</option>
-								<option th:each="manager : ${managerlist}" th:text="${manager.fullname}"
-											th:value="${manager.id}">Developer</option>
-								</select>
-							</div>
-						</div>
 						<div class="clearfix"></div>
 
 		<div class="col-md-6">
@@ -415,13 +456,24 @@
 							</th:block>
 
 
+
+
+
+
 				    </div>
 
+ <div       class="panel-group">
 
 
+	<div  class="panel panel-default">
+
+<div id="employeeRow" class="panel-body padding10"  >
+
+</div>
+</div>
 
 
-
+</div>
 						<span id="employeeButtonSpan"  style="display:none " class="pull-left">
 						<a
 							href="javascript:viewDetail(1)" id="summarybtn"

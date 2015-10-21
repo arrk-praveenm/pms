@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.arrkgroup.apps.form.SectionConsolidatedBean;
+import com.arrkgroup.apps.model.AssesseeObjectives;
+import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Section;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -267,9 +269,61 @@ System.out.println( "weightage is "+final_weightage);
 
 	}else
 	{
+		List assesseinfo = (List) model
+				.get("assesseinfo");
+		List assesseobjectives = (List) model
+				.get("assessedetail");
 
 
-		doc.add(new Paragraph("SECTIONS"));
+		ListIterator assesseinfoiterator = assesseinfo
+				.listIterator();
+
+		ListIterator assessedetailiterator = assesseobjectives
+				.listIterator();
+
+
+
+
+
+		while(assesseinfoiterator.hasNext())
+		{
+
+			AssesseesAssessor assesseesAssessor=(AssesseesAssessor) assesseinfoiterator.next();
+
+			doc.add(new Paragraph(""));
+
+			doc.add(new Paragraph("project = "+assesseesAssessor.getProjectId().getProject_name()));
+			doc.add(new Paragraph("role = "+assesseesAssessor.getRoleId().getTitle()));
+			doc.add(new Paragraph(""));
+
+
+			for (int i = 1; assessedetailiterator.hasNext(); i++)
+			{
+
+
+				AssesseeObjectives objectives=(AssesseeObjectives) assessedetailiterator.next();
+
+
+				doc.add(new Paragraph("section = "+objectives.getSection().getSection()));
+
+                 if(objectives.getAssesseeAssessor().getId()==assesseesAssessor.getId())
+                 {
+                		doc.add(new Paragraph("objective = "+objectives.getDescription()));
+
+
+
+                 }
+
+
+			}
+
+
+
+
+		}
+
+
+
 
 
 

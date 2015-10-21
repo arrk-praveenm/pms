@@ -16,6 +16,7 @@ import com.arrkgroup.apps.form.ShowReportBean;
 import com.arrkgroup.apps.hr.managesections.CreateSectionController;
 import com.arrkgroup.apps.model.Objective;
 
+import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
@@ -50,12 +51,12 @@ public class ShowReportServiceImpl implements ShowReportService {
 					+ assessor.getAssessorId().getId());
 
 			employees.add(modelObjectService.findEmployeeById(assessor
-					.getAssessorId().getId()));
+					.getAssesseeId().getId()));
 
 		}
 
 		List<Employee> list = new ArrayList<Employee>(employees);
-
+		log.info(" noof assessor in service 1 " + list.size());
 		return list;
 	}
 
@@ -114,5 +115,47 @@ public class ShowReportServiceImpl implements ShowReportService {
 
 		return showReportDao.showAllManager();
 	}
+
+	public List<AssesseesAssessor> showAssesseByEmplyee(int id)
+	{
+
+
+		return showReportDao.showAssesseByEmplyee(id);
+
+	}
+
+
+
+	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id)
+	{
+
+System.out.println("employee id is "+id);
+
+		List<AssesseeObjectives> assesseeObjectives=new ArrayList<AssesseeObjectives>();
+
+		List<AssesseesAssessor> assessors=showAssesseByEmplyee(id);
+
+System.out.println("size of assesseeis  "+assessors.size());
+
+
+		for (AssesseesAssessor assesseesAssessor : assessors) {
+
+
+			assesseeObjectives.addAll(showReportDao.showAssesseObjectiveByAssessid(assesseesAssessor.getId()));
+
+
+		}
+
+
+
+System.out.println("size of assesseeObjectives is  "+assesseeObjectives.size());
+
+
+		return assesseeObjectives;
+
+	}
+
+
+
 
 }

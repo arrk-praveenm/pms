@@ -27,4 +27,7 @@ public interface ShowReportService {
 	public List<ShowReportBean> showAssessesByAssessor(int id,int cycle);
 	//public List<ShowReportBean> showAssessesByAssessor(int id,int cycle,int manager_id);
 
+	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
+	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
+
 }

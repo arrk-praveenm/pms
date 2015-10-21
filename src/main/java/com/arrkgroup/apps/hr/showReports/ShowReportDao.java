@@ -5,6 +5,7 @@ import java.util.List;
 import com.arrkgroup.apps.form.RoleObjectivesBean;
 import com.arrkgroup.apps.model.Objective;
 
+import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
@@ -26,5 +27,6 @@ public interface ShowReportDao {
 	public List<Employee> showAssessorByCycleManager(int id,int manager);
 
     public List<Employee> showAllManager();
-
+	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
+	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
 }
