@@ -144,7 +144,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 	@Override
 	public boolean saveAssessorAssessment(AssessorAssessmentBean bean) {
-
+		
 
 
 		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
@@ -153,6 +153,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 		bean.setSelf_score(modelObjectDao.findRatingById(bean.getSelf_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
 
 		bean.setManager_score(modelObjectDao.findRatingById(bean.getManager_rating()).getScore()* modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage());
+		bean.setMax_score(modelObjectDao.findWeightageById(bean.getWeightage()).getWeightage()*assessorAssessmentDao.getMaxWightage());
 
 
 

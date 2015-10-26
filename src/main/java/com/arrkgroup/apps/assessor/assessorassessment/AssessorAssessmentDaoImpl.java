@@ -151,6 +151,8 @@ public class AssessorAssessmentDaoImpl implements AssessorAssessmentDao {
 				.setParameter("assessebjectiveId", bean.getObjectiveid())
 				.setParameter("weight", bean.getWeightage())
 				.setParameter("self_score", bean.getSelf_score())
+				.setParameter("max_score", bean.getMax_score())
+				//max_score
 				/*.setParameter("assesseeComments",bean.getEmployee_comments())
 				.setParameter("assesseeRatingId", bean.getSelf_rating())
 
