@@ -20,10 +20,10 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	@Autowired
 	AuthorizeDao authorizeDaoObj;
 	//By default all employees are having Employee Role
-	String userRole = null;	
+	String userRole = null;
 	private static final String ROLE_ADMIN="ADMIN";
 	private static final String ROLE_HR="HR";
-	
+
 	@Override
 	public Set<GrantedAuthority> getUserRole(String email) {
 		// TODO Auto-generated method stub
@@ -39,11 +39,14 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 		userRole = authorizeDaoObj.findRoleFromEmployee(email);
 		if(userRole!=null){
 			userRoles.add(new SimpleGrantedAuthority(userRole));
+			System.out.println("manager role " );
+
 		}
 		else{
 		userRole = authorizeDaoObj.findRoleFromSelfReporting(email);
 		if(userRole!=null){
 			userRoles.add(new SimpleGrantedAuthority(userRole));
+			System.out.println("assessor role " );
 		}
 		}
 		return userRoles;
@@ -52,9 +55,9 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 	@Override
 	public boolean addNewRole(AccessRole accessRole) {
 		// TODO Auto-generated method stub
-		
+
 		authorizeDaoObj.addNewRole(accessRole);
-		
+
 		return false;
 	}
 }

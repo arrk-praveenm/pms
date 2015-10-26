@@ -11,6 +11,7 @@ import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.pdftableview;
 
 
 public interface ShowReportService {
@@ -29,5 +30,9 @@ public interface ShowReportService {
 
 	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
 	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
+
+	public List<pdftableview> getPdfView();
+
+
 
 }

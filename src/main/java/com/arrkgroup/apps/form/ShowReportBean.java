@@ -76,7 +76,7 @@ public void setAssessee_name(String assessee_name) {
 	this.assessee_name = assessee_name;
 }
 
-public int getManager_id_assessor() {
+public int getManager_id_assessor(){
 	return manager_id_assessor;
 }
 

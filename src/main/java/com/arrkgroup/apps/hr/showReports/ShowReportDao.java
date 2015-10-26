@@ -11,6 +11,7 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.pdftableview;
 
 
 
@@ -29,4 +30,5 @@ public interface ShowReportDao {
     public List<Employee> showAllManager();
 	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
 	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
+	public List<pdftableview> getPdfView();
 }

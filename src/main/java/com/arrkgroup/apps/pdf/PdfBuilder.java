@@ -15,6 +15,7 @@ import com.arrkgroup.apps.form.SectionConsolidatedBean;
 import com.arrkgroup.apps.model.AssesseeObjectives;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.pdftableview;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -271,15 +272,23 @@ System.out.println( "weightage is "+final_weightage);
 	{
 		List assesseinfo = (List) model
 				.get("assesseinfo");
+
+
+		ListIterator assesseinfoiterator = assesseinfo.listIterator();
+
+/*
 		List assesseobjectives = (List) model
-				.get("assessedetail");
-
-
-		ListIterator assesseinfoiterator = assesseinfo
-				.listIterator();
+				.get("pdfdetailsview");
 
 		ListIterator assessedetailiterator = assesseobjectives
 				.listIterator();
+
+
+*/
+
+
+
+
 
 
 
@@ -288,34 +297,134 @@ System.out.println( "weightage is "+final_weightage);
 		while(assesseinfoiterator.hasNext())
 		{
 
+
+
+
+
+
 			AssesseesAssessor assesseesAssessor=(AssesseesAssessor) assesseinfoiterator.next();
 
+
+			List assesseobjectives = (List) model
+					.get("pdfdetailsview");
+
+			ListIterator assessedetailiterator = assesseobjectives
+					.listIterator();
+
+
+
+
+			System.out.println( "assessee id is   "+assesseesAssessor.getId());
 			doc.add(new Paragraph(""));
 
-			doc.add(new Paragraph("project = "+assesseesAssessor.getProjectId().getProject_name()));
-			doc.add(new Paragraph("role = "+assesseesAssessor.getRoleId().getTitle()));
+			Paragraph para_project = new Paragraph();
+			para_project.setAlignment(Element.ALIGN_LEFT);
+			para_project.add( "project = "+assesseesAssessor.getProjectId().getProject_name());
+
+
+			Paragraph para_role = new Paragraph();
+			para_role.setAlignment(Element.ALIGN_LEFT);
+			para_role.add( "role = "+assesseesAssessor.getRoleId().getTitle());
+
+
+
+
 			doc.add(new Paragraph(""));
+			doc.add(para_project);
+			doc.add(para_role);
+			doc.add(new Paragraph("   "));
 
-
-			for (int i = 1; assessedetailiterator.hasNext(); i++)
-			{
-
-
-				AssesseeObjectives objectives=(AssesseeObjectives) assessedetailiterator.next();
-
-
-				doc.add(new Paragraph("section = "+objectives.getSection().getSection()));
-
-                 if(objectives.getAssesseeAssessor().getId()==assesseesAssessor.getId())
-                 {
-                		doc.add(new Paragraph("objective = "+objectives.getDescription()));
+			PdfPTable table = new PdfPTable(10);
 
 
 
-                 }
+			table.setWidthPercentage(100.0f);
+			table.setWidths(new float[] { 2.5f,5.0f,1.5f,1.5f,1.5f,3.5f,1.5f,1.5f,3.5f,1.2f });
+			table.setSpacingBefore(5);
+
+
+
+			// define font for table header row
+					Font font = FontFactory.getFont(FontFactory.HELVETICA);
+					font.setColor(BaseColor.WHITE);
+
+			// define table header cell
+			PdfPCell cell = new PdfPCell();
+			cell.setBackgroundColor(BaseColor.BLUE);
+			cell.setPadding(5);
+
+			// write table header
+			cell.setPhrase(new Phrase("Section Title", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Objective Description", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Weightage", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Self rating", font));
+			table.addCell(cell);
+			cell.setPhrase(new Phrase("Self score", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("Assesse Comments", font));
+			table.addCell(cell);
+			cell.setPhrase(new Phrase("Manager Rating", font));
+			table.addCell(cell);
+
+			cell.setPhrase(new Phrase("manager Score", font));
+			table.addCell(cell);
+
+
+			cell.setPhrase(new Phrase("manager Comments", font));
+			table.addCell(cell);
+
+
+			cell.setPhrase(new Phrase("Max Score", font));
+			table.addCell(cell);
+
+
+
+
+
+
+
+
+
+
+				while(assessedetailiterator.hasNext())
+
+				{
+
+				pdftableview objectives=(pdftableview) assessedetailiterator.next();
+
+
+
+				if(objectives.getId()==assesseesAssessor.getId())
+				{
+         System.out.println("comments is is "+objectives.getManager_comments());
+
+				table.addCell(objectives.getSection());
+
+				table.addCell(objectives.getObjective());
+				table.addCell(String.valueOf(objectives.getWeightage()));
+				table.addCell(String.valueOf(objectives.getSelf_rating()));
+				table.addCell(String.valueOf(objectives.getSelf_score()));
+				table.addCell(objectives.getAssessee_comments());
+				table.addCell(String.valueOf(objectives.getManager_rating()));
+				table.addCell(String.valueOf(objectives.getManager_score()));
+
+				table.addCell(objectives.getManager_comments());
+				table.addCell(String.valueOf(objectives.getMax_score()));
+				}
+
+
 
 
 			}
+
+			doc.add(table);
 
 
 

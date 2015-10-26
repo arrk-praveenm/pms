@@ -141,6 +141,10 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 	public String assesssorshowreport(
 			@ModelAttribute("ShowReportBean") ShowReportBean bean,
 			BindingResult result, Model model) {
+
+		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
+
+
 		log.info(" cycle id is   " + bean.getCycle_id());
 		log.info(" manager  id is   " + bean.getManager_id_assessor());
 
@@ -150,9 +154,8 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 
 		model.addAttribute("allassessor", showReportService
 				.showAssessorByCycleManager(bean.getCycle_id(),
-						bean.getManager_id_assessor()));
+						manager.getId()));
 
-		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
 
 
 		log.info("manager id is "+manager.getId());
@@ -221,8 +224,10 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 
 
     	 model.addAttribute("assesseinfo", showReportService.showAssesseByEmplyee(Integer.parseInt(assessor_id)));
-    	 model.addAttribute("assessedetail", showReportService.showAssesseObjectiveByAssessid(Integer.parseInt(assessor_id)));
 
+    	/* model.addAttribute("assessedetail", showReportService.showAssesseObjectiveByAssessid(Integer.parseInt(assessor_id)));*/
+
+    	 model.addAttribute("pdfdetailsview", showReportService.getPdfView());
 
 
 		// return a view which will be resolved by a pdf view resolver
@@ -310,8 +315,6 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 
 		return SHOW_REPORT__VIEW;
 	}
-
-
 
 
 

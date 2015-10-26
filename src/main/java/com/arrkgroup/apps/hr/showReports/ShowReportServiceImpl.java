@@ -22,6 +22,7 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.pdftableview;
 import com.arrkgroup.apps.service.ModelObjectService;
 
 @Service("ShowReportService")
@@ -153,6 +154,22 @@ System.out.println("size of assesseeObjectives is  "+assesseeObjectives.size());
 
 		return assesseeObjectives;
 
+	}
+
+	@Override
+	public List<pdftableview> getPdfView() {
+
+		List<pdftableview> list=showReportDao.getPdfView();
+
+		for (pdftableview pdftableview : list) {
+
+			System.out.println(" comments "+pdftableview.getManager_comments());
+		}
+
+
+
+		System.out.println("pdfview size is "+list.size());
+return list;
 	}
 
 

@@ -17,24 +17,24 @@ import javax.persistence.Table;
 	@NamedQuery(name = Weightage.GET_Weightage_MAX, query = "select max(w.weightage) FROM Weightage w "),
 	@NamedQuery(name = Weightage.GET_Weightage_ID, query = "FROM Weightage where id=:id "),
 	@NamedQuery(name= Weightage.GET_ALL_Weightage, query = "FROM Weightage where weightage != 0")
-	
+
 })
 public class Weightage {
 
-	
+
 	public static final String GET_Weightage_MAX= "Project.GET_Weightage_MAX";
 	public static final String GET_Weightage_ID= "Project.GET_Weightage_ID";
 	public static final String GET_ALL_Weightage= "Project.GET_ALL_Weightage";
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 int id;	
-	
+	 int id;
+
 	 int weightage;
-	
+
 	String description;
 	Date last_modified_date;
-	
+
 
 	public int getId() {
 		return id;
@@ -68,8 +68,8 @@ public class Weightage {
 		this.last_modified_date = last_modified_date;
 	}
 
-	
-	
-	
-	
+
+
+
+
 }

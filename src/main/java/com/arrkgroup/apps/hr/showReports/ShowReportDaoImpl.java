@@ -21,6 +21,7 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
+import com.arrkgroup.apps.model.pdftableview;
 
 @Repository("ShowReportDao")
 @Transactional
@@ -100,6 +101,16 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.createNamedQuery(AssesseeObjectives.FIND_SECTION_BY_ASSESSOR,
 						AssesseeObjectives.class).setParameter("assesseeAssessorId", id)
 				.getResultList();
+	}
+
+	public List<pdftableview> getPdfView()
+	{
+
+		return entityManager
+				.createNamedQuery(pdftableview.GET_ALL_RECORDS,
+						pdftableview.class)
+				.getResultList();
+
 	}
 
 

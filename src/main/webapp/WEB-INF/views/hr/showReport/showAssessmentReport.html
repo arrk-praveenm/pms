@@ -15,7 +15,7 @@
 
 
 
-
+		 $("#employeeRow").css('display', 'block');
 
 
 		 isHr=[[${isHr}]];
@@ -79,6 +79,7 @@
 				employeeid=managerid;
 			   	$("#header").text('employee - Assessment Report');
 			   	$("#selectPM").hide();
+			   	$("#reportform").attr('action', '/pms-1.0//assessor/assesseeshowReport');
 			   	$("#employeeButtonSpan").show();
 
 			  /*   $("#save").text('view assessment');
@@ -159,6 +160,7 @@
 
 				$("#save").on("click", function() {
 
+
 					if ($("#selectcycle").val() == 0) {
 
 						$("#selectcycle").css({
@@ -187,6 +189,7 @@
 						}
 
 					}
+
 
 				});
 
@@ -467,7 +470,7 @@
 
 	<div  class="panel panel-default">
 
-<div id="employeeRow" class="panel-body padding10"  >
+<div id="employeeRow" class="panel-body padding10"  style="display:none " >
 
 </div>
 </div>
@@ -481,6 +484,10 @@
 							<a
 							href="javascript:viewRating(1)"  id="ratings"
 							class="btn btn-success">View Rating</a>
+
+
+						<!-- 	<a target="_blank" href="../hr/downloadpdfDetail?AsseesseID=603&amp;cycleID=1" name="603" id="summarybtn" class="btn btn-success btn-xs">View Details</a>
+							 -->
 
 
 							</span>
