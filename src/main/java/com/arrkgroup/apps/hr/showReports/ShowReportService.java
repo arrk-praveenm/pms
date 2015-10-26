@@ -33,6 +33,8 @@ public interface ShowReportService {
 
 	public List<pdftableview> getPdfView();
 
+	public List<pdftableview> showAssesseDetailsByEmplyee(int id);
+
 
 
 }

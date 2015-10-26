@@ -82,6 +82,26 @@ public class PdfBuilder extends AbstractITextPdfView {
 		doc.add(new Paragraph(" "));
 
 
+
+
+
+		Font fontSign = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+
+		fontSign.setStyle("bold");
+
+
+		Paragraph managerSign = new Paragraph();
+		managerSign.setAlignment(Element.ALIGN_LEFT);
+		managerSign.setFont(fontSign);
+		managerSign.add( "Manager : ______________________"+"       "+"Assessor : ________________________ "+"       "+"Assessee : ________________________ ");
+
+
+
+
+
+
+
+
 		String report_type=(String) model.get("type");
 		if(report_type.equals("rating"))
 
@@ -122,9 +142,10 @@ public class PdfBuilder extends AbstractITextPdfView {
 				Font font = FontFactory.getFont(FontFactory.HELVETICA);
 				font.setColor(BaseColor.WHITE);
 
+
 		// define table header cell
 		PdfPCell cell = new PdfPCell();
-		cell.setBackgroundColor(BaseColor.BLUE);
+		cell.setBackgroundColor(BaseColor.GRAY);
 		cell.setPadding(5);
 
 		// write table header
@@ -254,6 +275,12 @@ System.out.println( "weightage is "+final_weightage);
 
 
 
+			doc.add(new Paragraph("     "));
+			doc.add(new Paragraph("     "));
+
+			doc.add(managerSign);
+
+
 
 
 
@@ -317,22 +344,31 @@ System.out.println( "weightage is "+final_weightage);
 			System.out.println( "assessee id is   "+assesseesAssessor.getId());
 			doc.add(new Paragraph(""));
 
+
+			Font fontForProjectAndRoleTitle = FontFactory.getFont(FontFactory.HELVETICA);
+
+			fontForProjectAndRoleTitle.setStyle("bold");
+
+
 			Paragraph para_project = new Paragraph();
 			para_project.setAlignment(Element.ALIGN_LEFT);
-			para_project.add( "project = "+assesseesAssessor.getProjectId().getProject_name());
+			para_project.setFont(fontForProjectAndRoleTitle);
+			para_project.add( "Project : "+assesseesAssessor.getProjectId().getProject_name());
 
 
 			Paragraph para_role = new Paragraph();
+			para_role.setFont(fontForProjectAndRoleTitle);
 			para_role.setAlignment(Element.ALIGN_LEFT);
-			para_role.add( "role = "+assesseesAssessor.getRoleId().getTitle());
+			para_role.add( "Role : "+assesseesAssessor.getRoleId().getTitle());
+
+
+			doc.add(new Paragraph(" "));
+			doc.add(new Paragraph(" "));
 
 
 
-
-			doc.add(new Paragraph(""));
 			doc.add(para_project);
 			doc.add(para_role);
-			doc.add(new Paragraph("   "));
 
 			PdfPTable table = new PdfPTable(10);
 
@@ -350,7 +386,7 @@ System.out.println( "weightage is "+final_weightage);
 
 			// define table header cell
 			PdfPCell cell = new PdfPCell();
-			cell.setBackgroundColor(BaseColor.BLUE);
+			cell.setBackgroundColor(BaseColor.GRAY);
 			cell.setPadding(5);
 
 			// write table header
@@ -424,6 +460,9 @@ System.out.println( "weightage is "+final_weightage);
 
 			}
 
+
+
+
 			doc.add(table);
 
 
@@ -433,6 +472,33 @@ System.out.println( "weightage is "+final_weightage);
 
 
 
+
+
+		doc.add(new Paragraph("     "));
+		doc.add(new Paragraph("     "));
+
+		doc.add(managerSign);
+
+/*		Paragraph assessorsign = new Paragraph();
+		assessorsign.setFont(fontSign);
+		assessorsign.setAlignment(Element.ALIGN_CENTER);
+	assessorsign.add( "Assessor : ________________________ ");
+
+
+
+		Paragraph assesseSign = new Paragraph();
+		assesseSign.setFont(fontSign);
+		assesseSign.setAlignment(Element.ALIGN_RIGHT);
+		assesseSign.add( "Assessee : ________________________ ");
+
+		Paragraph assess = new Paragraph();
+		assess.add(managerSign);
+		assess.add(assessorsign);
+		assess.add(assesseSign);
+
+doc.add(assess);
+
+*/
 
 
 

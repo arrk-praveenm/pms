@@ -112,6 +112,16 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.getResultList();
 
 	}
+	public List<pdftableview> getPdfViewByID(int id)
+	{
+
+		return entityManager
+				.createNamedQuery(pdftableview.GET_ALL_RECORDS_BY_ID,
+						pdftableview.class).setParameter("assesseassessorid",id)
+				.getResultList();
+
+	}
+
 
 
 }

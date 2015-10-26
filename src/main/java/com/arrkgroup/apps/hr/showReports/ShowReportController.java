@@ -227,7 +227,7 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 
     	/* model.addAttribute("assessedetail", showReportService.showAssesseObjectiveByAssessid(Integer.parseInt(assessor_id)));*/
 
-    	 model.addAttribute("pdfdetailsview", showReportService.getPdfView());
+    	 model.addAttribute("pdfdetailsview", showReportService.showAssesseDetailsByEmplyee(Integer.parseInt(assessor_id)));
 
 
 		// return a view which will be resolved by a pdf view resolver
@@ -305,7 +305,7 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 		Employee manager=modelObjectService.findEmployeeByEmail(userDetails.getMail());
 
 
- log.info("manager id is "+manager.getId());
+   log.info("manager id is "+manager.getId());
    model.addAttribute("isManager", true);
    model.addAttribute("isEmployee", true);
    model.addAttribute("managerid", manager.getId());

@@ -31,4 +31,5 @@ public interface ShowReportDao {
 	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
 	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
 	public List<pdftableview> getPdfView();
+	public List<pdftableview> getPdfViewByID(int id);
 }

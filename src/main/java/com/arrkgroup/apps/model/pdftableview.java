@@ -15,11 +15,24 @@ import org.hibernate.validator.constraints.Email;
 @Entity
 @Table(name="pdf_report_view")
 
-@NamedQuery(name = pdftableview.GET_ALL_RECORDS, query = "select a from pdftableview a")
+@NamedQueries
+({
+	@NamedQuery(name = pdftableview.GET_ALL_RECORDS_BY_ID, query = "select a from pdftableview a where a.id=:assesseassessorid order by a.id,a.role,a.section"),
+	@NamedQuery(name = pdftableview.GET_ALL_RECORDS, query = "select a from pdftableview a")
+
+})
+
+
+
+
+
 
 public class pdftableview {
 
 	public static final String GET_ALL_RECORDS = "pdftableview.GET_ALL_RECORDS";
+
+	public static final String GET_ALL_RECORDS_BY_ID = "pdftableview.GET_ALL_RECORDS_BY_ID";
+
 
 	 @Id
 	 @Column(name = "uid", nullable = false)

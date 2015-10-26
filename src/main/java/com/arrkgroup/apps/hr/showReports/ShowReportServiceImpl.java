@@ -123,6 +123,7 @@ public class ShowReportServiceImpl implements ShowReportService {
 
 		return showReportDao.showAssesseByEmplyee(id);
 
+
 	}
 
 
@@ -171,6 +172,34 @@ System.out.println("size of assesseeObjectives is  "+assesseeObjectives.size());
 		System.out.println("pdfview size is "+list.size());
 return list;
 	}
+
+
+	public List<pdftableview> showAssesseDetailsByEmplyee(int id)
+	{
+
+		List<AssesseesAssessor> list=showReportDao.showAssesseByEmplyee(id);
+
+		List<pdftableview> pdftableviews=new ArrayList<pdftableview>();
+
+		for (AssesseesAssessor assesseesAssessor : list) {
+
+pdftableviews.addAll(showReportDao.getPdfViewByID(assesseesAssessor.getId()));
+
+
+
+		}
+
+
+
+		return pdftableviews;
+
+
+
+
+
+
+	}
+
 
 
 
