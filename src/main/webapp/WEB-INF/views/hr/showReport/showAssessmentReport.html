@@ -41,11 +41,7 @@
 
 		$("#ratings").on('click',function(event)
 				{
-			//alert($('#selectcycle').val());
-
-
-			
-		if([[${isEmployee}]])
+	if([[${isEmployee}]])
 		{
 
 			if ($("#selectcycle").val() == 0) {
@@ -67,9 +63,10 @@
 			}
 			
 			});
-//../hr/downloadpdfDetail?AsseesseID='+id+'&amp;cycleID='+cycle+'
 
-		 $("#employeeRow").css('display', 'block');
+
+		
+
 
 
 		 isHr=[[${isHr}]];
@@ -82,7 +79,7 @@
     if(allEmployee!=null)
     	{
 
-
+   	 $("#hrDiv").css('display', 'block');
     	var panel = "#" + "employeeRow";
     	  for(assessee in allEmployee)
      	  {
@@ -133,7 +130,7 @@
 				employeeid=managerid;
 			   	$("#header").text('employee - Assessment Report');
 			   	$("#selectPM").hide();
-			   	$("#reportform").attr('action', '/pms//assessor/assesseeshowReport');
+			   	$("#reportform").attr('action', '/pms/assessor/assesseeshowReport');
 			   	$("#employeeButtonSpan").show();
 
 			  /*   $("#save").text('view assessment');
@@ -168,7 +165,8 @@
 
 			$("#errorspanCycle").css('display', 'none');
 
-			 $("#main-accordion").empty();
+			 $("#hrDiv").empty();
+			$("#main-accordion").empty();
 
 		});
 
@@ -519,12 +517,12 @@
 
 				    </div>
 
- <div       class="panel-group">
+ <div   id="hrDiv"    class="panel-group" style="display:none ">
 
 
 	<div  class="panel panel-default">
 
-<div id="employeeRow" class="panel-body padding10"  style="display:none " >
+<div id="employeeRow" class="panel-body padding10"   >
 
 </div>
 </div>
