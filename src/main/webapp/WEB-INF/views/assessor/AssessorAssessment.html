@@ -597,9 +597,10 @@ function ajaxCall(data)
 
              if(data.selectedAsseesseID>0)
         	  {
+           	 // alert(data.assesseeAssessorId+" "+[[${assesseeAssessorId}]])
            	  if([[${assesseeAssessorId}]]==data.assesseeAssessorId)
                	  {
-					//	alert("TEst");
+						
 						//sectionToLoad
 						if([[${errorMessage}]]!=null)
 							  {
@@ -644,10 +645,13 @@ function ajaxCall(data)
 							  }
   			   }else{
 
+  				 if([[${errorMessage}]]!=null)
+  	  				 {
   				 $.map([[${errorMessage}]], function( value, key ) {
   					$('a[name="section'+key+'"]').removeAttr("data-notifications");	
   	  				 });
   	  			   }
+  			   }
            	  
 
           }
@@ -1012,11 +1016,11 @@ function disableSection()
 					
 					
 					    	 pointvalue = parseFloat(value).toFixed(2);
-					
+					    		
 					    	  if(isNaN(pointvalue)) {
 					   			pointvalue = "0.0";
 					   			}
-					
+					    	  
 					
 					
 					         }else
@@ -1037,15 +1041,15 @@ function disableSection()
 					   		$('input[name="' + point + '"]').val(pointvalue);
 					
 					   		section="section_value"+response[row].id;
-					
+				
 					   		section_value=$('#'+section).val();
 					
-					
+					   		
 					
 					       	finalweightage=parseFloat(finalweightage)+parseFloat((section_value*pointvalue));
 
-
-							
+					       
+					       
 					       	finalweightage=parseFloat(finalweightage).toFixed(2);
 					
 					
@@ -1070,6 +1074,7 @@ function disableSection()
 										}
 					        }else
 								{
+								
 					     	   $('input[name="' + point + '"]').val(pointvalue);
 					
 									}
@@ -1104,6 +1109,7 @@ function disableSection()
 										}
 	   				}else
 					{
+	   					
 
 						 $('#weightage_score').val(finalweightage );
 					}
