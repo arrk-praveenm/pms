@@ -12,8 +12,62 @@
 
 
 
+		$("#summarybtn").on('click',function()
+				{
+		if([[${isEmployee}]])
+		{
+			if ($("#selectcycle").val() == 0) {
+
+				$("#selectcycle").css({
+					"border-color" : "#a94442"
+				});
+
+				$("#errorspanCycle").css('display', 'block');
+
+			return false;
+
+			} else{
+			
+			var url=$(this).attr('href');
+			var url1=url.replace("1One", [[${managerid}]]);
+			url=url1.replace("2Two", $('#selectcycle').val());
+			$(this).attr('href',url);
+			}
+			}
+			
+			});
 
 
+
+		$("#ratings").on('click',function(event)
+				{
+			//alert($('#selectcycle').val());
+
+
+			
+		if([[${isEmployee}]])
+		{
+
+			if ($("#selectcycle").val() == 0) {
+
+				$("#selectcycle").css({
+					"border-color" : "#a94442"
+				});
+
+				$("#errorspanCycle").css('display', 'block');
+
+			return false;
+
+			} else{
+			var url=$(this).attr('href');
+			var url1=url.replace("1One", [[${managerid}]]);
+			url=url1.replace("2Two", $('#selectcycle').val());
+			$(this).attr('href',url);
+			}
+			}
+			
+			});
+//../hr/downloadpdfDetail?AsseesseID='+id+'&amp;cycleID='+cycle+'
 
 		 $("#employeeRow").css('display', 'block');
 
@@ -72,14 +126,14 @@
 
 			  $("#manager_id_assessor").val(managerid);
 
-			  $("#reportform").attr('action', '/pms-1.0/assessor/showReport');
+			  $("#reportform").attr('action', '/pms/assessor/showReport');
 
 			  if(employee==true)
 			  {
 				employeeid=managerid;
 			   	$("#header").text('employee - Assessment Report');
 			   	$("#selectPM").hide();
-			   	$("#reportform").attr('action', '/pms-1.0//assessor/assesseeshowReport');
+			   	$("#reportform").attr('action', '/pms//assessor/assesseeshowReport');
 			   	$("#employeeButtonSpan").show();
 
 			  /*   $("#save").text('view assessment');
@@ -479,12 +533,11 @@
 </div>
 						<span id="employeeButtonSpan"  style="display:none " class="pull-left">
 						<a
-							href="javascript:viewDetail(1)" id="summarybtn"
+							href="../hr/downloadpdfDetail?AsseesseID=1One&amp;cycleID=2Two" id="summarybtn"
 							class="btn btn-success">View Details</a>
 							<a
-							href="javascript:viewRating(1)"  id="ratings"
+							href="../hr/downloadpdfRating?AsseesseID=1One&amp;cycleID=2Two"  id="ratings"
 							class="btn btn-success">View Rating</a>
-
 
 						<!-- 	<a target="_blank" href="../hr/downloadpdfDetail?AsseesseID=603&amp;cycleID=1" name="603" id="summarybtn" class="btn btn-success btn-xs">View Details</a>
 							 -->
