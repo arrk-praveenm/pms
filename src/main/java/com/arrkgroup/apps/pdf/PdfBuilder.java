@@ -56,6 +56,9 @@ public class PdfBuilder extends AbstractITextPdfView {
 		List allSectionAssessmentScore = (List) model
 				.get("allSectionAssessmentScore");
 
+		String manager=(String) model.get("manager");
+		System.out.println("manager is "+manager);
+
 		String relativeWebPath = "/resources/images/arrklogo.png";
 		String absoluteDiskPath = getServletContext().getRealPath(
 				relativeWebPath);
@@ -79,6 +82,7 @@ public class PdfBuilder extends AbstractITextPdfView {
 		doc.add(new Paragraph("Employee Name:"+(String) model.get("empname")));
 
 		doc.add(new Paragraph("Cycle :"+(String) model.get("cycle")));
+		doc.add(new Paragraph("Manager :"+manager));
 		doc.add(new Paragraph(" "));
 
 
@@ -100,7 +104,9 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 
 
+		Font fontheader = FontFactory.getFont(FontFactory.HELVETICA);
 
+		fontheader.setStyle("bold");
 
 		String report_type=(String) model.get("type");
 		if(report_type.equals("rating"))
@@ -108,7 +114,11 @@ public class PdfBuilder extends AbstractITextPdfView {
 		{
 
 
-		doc.add(new Paragraph("Organisation weightage of different parameters"));
+Paragraph paraheader=new Paragraph();
+paraheader.setFont(fontheader);
+paraheader.add("Organisation weightage of different parameters");
+
+		doc.add(paraheader);
 
 		// write table row data
 		for (Section section : allSections) {
@@ -120,9 +130,13 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 		//setting summary Ratings
 
+		doc.add(new Paragraph(" "));
 
+Paragraph paraheadersummary=new Paragraph();
+paraheadersummary.setFont(fontheader);
+paraheadersummary.add("Summary Score");
 
-
+doc.add(paraheadersummary);
 
 
 		PdfPTable table = new PdfPTable(2);
@@ -362,13 +376,21 @@ System.out.println( "weightage is "+final_weightage);
 			para_role.add( "Role : "+assesseesAssessor.getRoleId().getTitle());
 
 
+			Paragraph paraAssessor = new Paragraph();
+			paraAssessor.setFont(fontForProjectAndRoleTitle);
+			paraAssessor.setAlignment(Element.ALIGN_LEFT);
+			paraAssessor.add( "Assessor : "+assesseesAssessor.getAssessorId().getFullname());
+
+
+
 			doc.add(new Paragraph(" "));
-			doc.add(new Paragraph(" "));
+
 
 
 
 			doc.add(para_project);
 			doc.add(para_role);
+			doc.add(paraAssessor);
 
 			PdfPTable table = new PdfPTable(10);
 
@@ -439,7 +461,7 @@ System.out.println( "weightage is "+final_weightage);
 
 				if(objectives.getId()==assesseesAssessor.getId())
 				{
-         System.out.println("comments is is "+objectives.getManager_comments());
+
 
 				table.addCell(objectives.getSection());
 
@@ -471,6 +493,18 @@ System.out.println( "weightage is "+final_weightage);
 		}
 
 
+		doc.add(new Paragraph("     "));
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -479,26 +513,6 @@ System.out.println( "weightage is "+final_weightage);
 
 		doc.add(managerSign);
 
-/*		Paragraph assessorsign = new Paragraph();
-		assessorsign.setFont(fontSign);
-		assessorsign.setAlignment(Element.ALIGN_CENTER);
-	assessorsign.add( "Assessor : ________________________ ");
-
-
-
-		Paragraph assesseSign = new Paragraph();
-		assesseSign.setFont(fontSign);
-		assesseSign.setAlignment(Element.ALIGN_RIGHT);
-		assesseSign.add( "Assessee : ________________________ ");
-
-		Paragraph assess = new Paragraph();
-		assess.add(managerSign);
-		assess.add(assessorsign);
-		assess.add(assesseSign);
-
-doc.add(assess);
-
-*/
 
 
 

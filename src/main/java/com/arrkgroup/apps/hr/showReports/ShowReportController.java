@@ -216,6 +216,11 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 		model.addAttribute("allSectionAssessmentScore",
 				allSectionAssessmentScore);
 
+
+
+		String manager=modelObjectService.findEmployeeById(modelObjectService.findEmployeeById(Integer.parseInt(assessor_id)).getReporting_manager()).getFullname();
+
+		 model.addAttribute("manager",manager);
 		model.addAttribute("allSectionAssessmentScore", allSectionAssessmentScore);
 		 model.addAttribute("type", "detail");
     	model.addAttribute("empid", Integer.parseInt(assessor_id));
@@ -248,6 +253,10 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 		for (AssesseesAssessor assesseesAssessor : (List<AssesseesAssessor>) pdfService
 				.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
 						Integer.parseInt(cycleID))) {
+
+
+			System.out.println("assessor id is  "+ assesseesAssessor.getAssessorId());
+
 			List<SectionConsolidatedBean> list = assessorAssessmentService
 					.findById(String.valueOf(assesseesAssessor.getAssessorId()
 							.getId()), String.valueOf(assesseesAssessor
@@ -255,8 +264,14 @@ model.addAttribute("allEmployee", showReportService.showEmployeeByCycle(bean.get
 							.getProjectId().getId(), assesseesAssessor.getId());
 			allSectionAssessmentScore.add(list);
 
+			System.out.println("records are "+list.size());
+
+
 		}
 
+		String manager=modelObjectService.findEmployeeById(modelObjectService.findEmployeeById(Integer.parseInt(assessor_id)).getReporting_manager()).getFullname();
+
+		 model.addAttribute("manager",manager);
 		model.addAttribute("allSectionAssessmentScore",
 				allSectionAssessmentScore);
 		  model.addAttribute("type", "rating");
