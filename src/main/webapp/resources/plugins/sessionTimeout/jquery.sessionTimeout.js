@@ -75,9 +75,9 @@
             stayConnectedBtn : 'Stay connected',
             logoutBtn        : 'Logout',
             closeModals		 : otherModals,
-			keepAliveUrl     : '/pms-1.0/authenticate',
-			redirUrl         : '/pms-1.0/login?logout',
-			logoutUrl        : '/pms-1.0/login?logout',
+			keepAliveUrl     : '/pms/authenticate',
+			redirUrl         : '/pms/login?logout',
+			logoutUrl        : '/pms/login?logout',
 			warnAfter        : 1620000, // 15 minutes
 			redirAfter       : 1800000 // 20 minutes
 		};
