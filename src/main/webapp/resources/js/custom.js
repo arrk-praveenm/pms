@@ -149,14 +149,14 @@ $(function () {
 			});
 
 			$("#forgotuserid").click(function(e) {
-					$.prompt("Please contact network admin for user id", {
+					$.prompt("Please contact IT support service (<a href='mailto:itsupport@arrkgroup.com'>itsupport@arrkgroup.com</a>) for User ID", {
 					buttons: { "OK": true }
 				});
 				 e.preventDefault();
 			});
 
 			$("#forgotpassword").click(function(e) {
-					$.prompt("Please contact network admin for password", {
+					$.prompt("Please contact IT support service (<a href='mailto:itsupport@arrkgroup.com'>itsupport@arrkgroup.com</a>) for Password", {
 					buttons: { "OK": true }
 				});
 				 e.preventDefault();
