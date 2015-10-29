@@ -18,13 +18,13 @@ import javax.persistence.Table;
 @Table(name="section_consolidated")
 @NamedQueries({
 @NamedQuery(name = SectionConsolidated.UPDATE_ASSESSE_SECTON_ASSESSOR, query = "update SectionConsolidated set last_modified_date=:date , section_self_score=:self_score ,section_manager_score=:manager_score, section_max_score=:max_score where section.id = :sectionid and assesseesassessor.id=:assessorid"),
-@NamedQuery(name = SectionConsolidated.FIND_BY_ID, query = "FROM SectionConsolidated e where e.assesseesassessor.id = :id")
+@NamedQuery(name = SectionConsolidated.FIND_BY_ID, query = "FROM SectionConsolidated e where e.assesseesassessor.id = :id order by e.section.id")
 })
 public class SectionConsolidated {
-	
+
 	public static final String UPDATE_ASSESSE_SECTON_ASSESSOR = "SectionConsolidated.UPDATE_ASSESSE_SECTON_ASSESSOR";
 	public static final String FIND_BY_ID = "SectionConsolidated.FIND_BY_ID";
-	
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
@@ -47,12 +47,12 @@ public class SectionConsolidated {
 
 
 
-	
+
 
 	   @ManyToOne(cascade = CascadeType.ALL)
 	    @JoinColumn(name = "section_id")
 	    private Section section;
-	
+
 
 
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -63,7 +63,7 @@ public class SectionConsolidated {
 
 	public SectionConsolidated()
 	{}
-	
+
 	public SectionConsolidated(Date last_modified_date, int section_self_score,
 			float section_manager_score, int section_max_score, Section section,
 			AssesseesAssessor assesseesassessor) {
@@ -159,8 +159,8 @@ public class SectionConsolidated {
 	public void setAssesseesassessor(AssesseesAssessor assesseesassessor) {
 		this.assesseesassessor = assesseesassessor;
 	}
-	
-	
-	
+
+
+
 
 }

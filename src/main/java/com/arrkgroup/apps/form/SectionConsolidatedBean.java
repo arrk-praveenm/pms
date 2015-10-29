@@ -16,10 +16,12 @@ import javax.persistence.Table;
 
 
 public class SectionConsolidatedBean {
-	
+
 
 
 	private int id;
+	private int assesseassessorid;
+
 
 	private String section;
 
@@ -28,8 +30,8 @@ public class SectionConsolidatedBean {
 	private float section_point;
 
 
-	
-	
+
+
 
 	private int section_max_score;
 
@@ -37,6 +39,16 @@ public class SectionConsolidatedBean {
 
 
 
+
+
+
+	public int getAssesseassessorid() {
+		return assesseassessorid;
+	}
+
+	public void setAssesseassessorid(int assesseassessorid) {
+		this.assesseassessorid = assesseassessorid;
+	}
 
 	public int getId() {
 		return id;
@@ -78,7 +90,7 @@ public class SectionConsolidatedBean {
 		this.section_point = section_point;
 	}
 
-	
-	
+
+
 
 }

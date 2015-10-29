@@ -21,7 +21,7 @@ import com.arrkgroup.apps.model.Weightage;
 public class ModelObjectDaoImpl implements ModelObjectDao {
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public Cycle findCycleById(int id) {
 		// TODO Auto-generated method stub
@@ -146,6 +146,13 @@ public class ModelObjectDaoImpl implements ModelObjectDao {
 		// TODO Auto-generated method stub
 		return entityManager.createNamedQuery(Employee.FIND_BY_EMAIl, Employee.class).setParameter("email", email)
 				.getSingleResult();
-	}	
+	}
+
+	public int getMaxRating() {
+		return (int) entityManager
+				.createNamedQuery(Rating.GET_RATING_MAX).getSingleResult();
+	}
+
+
 
 }

@@ -28,11 +28,12 @@ public interface ModelObjectService {
 	public List<Project> getAllProjects();
 	public Weightage findWeightageById(int id);
 	public List<Weightage> getAllWeightages();
-	
+
 	public Rating findRatingById(int id);
 	public List<Rating> getAllRatings();
-	
+
 	public Employee findEmployeeByEmail(String email);
-	
+	public int getMaxRating();
+
 
 }

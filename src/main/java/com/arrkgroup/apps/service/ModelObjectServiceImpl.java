@@ -17,16 +17,17 @@ import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.model.Weightage;
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 @Transactional
 @Service
 public class ModelObjectServiceImpl implements ModelObjectService {
 	@Autowired
 	ModelObjectDao modelObjectDao;
-	
+
 	@Override
 	public Cycle findCycleById(int id) {
-		
+
 		// TODO Auto-generated method stub
 		return modelObjectDao.findCycleById(id);
 	}
@@ -35,9 +36,9 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	public Role findRoleById(int id) {
 		// TODO Auto-generated method stub
 		Role role=new Role();
-		
+
 		role=modelObjectDao.findRoleById(id);
-		
+
 		System.out.println("role is "+role.getTitle());
 	return role;
 	}
@@ -57,10 +58,10 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	@Override
 	public Employee findEmployeeById(int id) {
 		// TODO Auto-generated method stub
-		
+
 		Employee employee=new Employee();
 		employee= modelObjectDao.findEmployeeById(id);
-		
+
 		System.out.println("employee is "+employee.getFullname() +"  "+employee.getId() );
 		return employee;
 	}
@@ -144,6 +145,11 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 		// TODO Auto-generated method stub
 		return modelObjectDao.findEmployeeByEmail(email);
 	}
-	
+
+	public int getMaxRating() {
+
+		return modelObjectDao.getMaxRating();
+	}
+
 
 }

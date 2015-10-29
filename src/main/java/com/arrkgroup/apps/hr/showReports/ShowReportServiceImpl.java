@@ -48,8 +48,7 @@ public class ShowReportServiceImpl implements ShowReportService {
 
 		for (AssesseesAssessor assessor : assessors) {
 
-			log.info(" assesor id is "
-					+ assessor.getAssessorId().getId());
+			log.info(" assesor id is " + assessor.getAssessorId().getId());
 
 			employees.add(modelObjectService.findEmployeeById(assessor
 					.getAssesseeId().getId()));
@@ -81,8 +80,7 @@ public class ShowReportServiceImpl implements ShowReportService {
 
 		for (AssesseesAssessor assessor : assessors) {
 
-			log.info(" assesse id is "
-					+ assessor.getAssesseeId().getId());
+			log.info(" assesse id is " + assessor.getAssesseeId().getId());
 
 			employees.add(modelObjectService.findEmployeeById(assessor
 					.getAssesseeId().getId()));
@@ -113,45 +111,34 @@ public class ShowReportServiceImpl implements ShowReportService {
 
 	public List<Employee> showAllManager() {
 
-
 		return showReportDao.showAllManager();
 	}
 
-	public List<AssesseesAssessor> showAssesseByEmplyee(int id)
-	{
-
+	public List<AssesseesAssessor> showAssesseByEmplyee(int id) {
 
 		return showReportDao.showAssesseByEmplyee(id);
 
-
 	}
 
+	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id) {
 
+		log.info("employee id is " + id);
 
-	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id)
-	{
+		List<AssesseeObjectives> assesseeObjectives = new ArrayList<AssesseeObjectives>();
 
-System.out.println("employee id is "+id);
+		List<AssesseesAssessor> assessors = showAssesseByEmplyee(id);
 
-		List<AssesseeObjectives> assesseeObjectives=new ArrayList<AssesseeObjectives>();
-
-		List<AssesseesAssessor> assessors=showAssesseByEmplyee(id);
-
-System.out.println("size of assesseeis  "+assessors.size());
-
+		log.info("size of assesseeis  " + assessors.size());
 
 		for (AssesseesAssessor assesseesAssessor : assessors) {
 
-
-			assesseeObjectives.addAll(showReportDao.showAssesseObjectiveByAssessid(assesseesAssessor.getId()));
-
+			assesseeObjectives.addAll(showReportDao
+					.showAssesseObjectiveByAssessid(assesseesAssessor.getId()));
 
 		}
 
-
-
-System.out.println("size of assesseeObjectives is  "+assesseeObjectives.size());
-
+		log.info("size of assesseeObjectives is  "
+				+ assesseeObjectives.size());
 
 		return assesseeObjectives;
 
@@ -160,48 +147,33 @@ System.out.println("size of assesseeObjectives is  "+assesseeObjectives.size());
 	@Override
 	public List<pdftableview> getPdfView() {
 
-		List<pdftableview> list=showReportDao.getPdfView();
+		List<pdftableview> list = showReportDao.getPdfView();
 
 		for (pdftableview pdftableview : list) {
 
-			System.out.println(" comments "+pdftableview.getManager_comments());
+			log.info(" comments "
+					+ pdftableview.getManager_comments());
 		}
 
-
-
-		System.out.println("pdfview size is "+list.size());
-return list;
+		log.info("pdfview size is " + list.size());
+		return list;
 	}
 
+	public List<pdftableview> showAssesseDetailsByEmplyee(int id) {
 
-	public List<pdftableview> showAssesseDetailsByEmplyee(int id)
-	{
+		List<AssesseesAssessor> list = showReportDao.showAssesseByEmplyee(id);
 
-		List<AssesseesAssessor> list=showReportDao.showAssesseByEmplyee(id);
-
-		List<pdftableview> pdftableviews=new ArrayList<pdftableview>();
+		List<pdftableview> pdftableviews = new ArrayList<pdftableview>();
 
 		for (AssesseesAssessor assesseesAssessor : list) {
 
-pdftableviews.addAll(showReportDao.getPdfViewByID(assesseesAssessor.getId()));
-
-
+			pdftableviews.addAll(showReportDao.getPdfViewByID(assesseesAssessor
+					.getId()));
 
 		}
 
-
-
 		return pdftableviews;
 
-
-
-
-
-
 	}
-
-
-
-
 
 }

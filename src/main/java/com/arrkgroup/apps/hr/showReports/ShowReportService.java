@@ -13,28 +13,22 @@ import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.model.pdftableview;
 
-
 public interface ShowReportService {
-
-
 
 	public List<Employee> showEmployeeByCycle(int id);
 
 	public List<Employee> showAllManager();
 
+	public List<Employee> showAssessorByCycleManager(int id, int manager_id);
 
-	public List<Employee> showAssessorByCycleManager(int id,int manager_id);
-
-	public List<ShowReportBean> showAssessesByAssessor(int id,int cycle);
-	//public List<ShowReportBean> showAssessesByAssessor(int id,int cycle,int manager_id);
+	public List<ShowReportBean> showAssessesByAssessor(int id, int cycle);
 
 	public List<AssesseesAssessor> showAssesseByEmplyee(int id);
+
 	public List<AssesseeObjectives> showAssesseObjectiveByAssessid(int id);
 
 	public List<pdftableview> getPdfView();
 
 	public List<pdftableview> showAssesseDetailsByEmplyee(int id);
-
-
 
 }

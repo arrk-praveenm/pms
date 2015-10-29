@@ -41,6 +41,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class PdfBuilder extends AbstractITextPdfView {
 
 	List<Section> allSections;
+	List allSectionAssessmentScore;
 
 
 
@@ -53,10 +54,13 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 		// get data model which is passed by the Spring container
 		 allSections = (List<Section>) model.get("allSections");
-		List allSectionAssessmentScore = (List) model
+		 allSectionAssessmentScore = (List) model
 				.get("allSectionAssessmentScore");
 
 		String manager=(String) model.get("manager");
+		int  MAX_RATING=(int) model.get("MAX_RATING");
+
+
 		System.out.println("manager is "+manager);
 
 		String relativeWebPath = "/resources/images/arrklogo.png";
@@ -113,194 +117,29 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 		{
 
+			Paragraph paraheader=new Paragraph();
 
-Paragraph paraheader=new Paragraph();
-paraheader.setFont(fontheader);
-paraheader.add("Organisation weightage of different parameters");
 
-		doc.add(paraheader);
 
-		// write table row data
-		for (Section section : allSections) {
-			doc.add(new Paragraph(section.getSection() + " - "
-					+ section.getSection_weightage()));
+			fontheader.setStyle("bold");
 
-		}
+			paraheader.setFont(fontheader);
+			paraheader.add("Organisation weightage of different parameters");
 
+					doc.add(paraheader);
 
-		//setting summary Ratings
+					// write table row data
+					for (Section section : allSections) {
+						doc.add(new Paragraph(section.getSection() + " - "
+								+ section.getSection_weightage()));
 
-		doc.add(new Paragraph(" "));
+					}
 
-Paragraph paraheadersummary=new Paragraph();
-paraheadersummary.setFont(fontheader);
-paraheadersummary.add("Summary Score");
 
-doc.add(paraheadersummary);
 
 
-		PdfPTable table = new PdfPTable(2);
 
-		PdfPTable table1 = new PdfPTable(2);
-
-		table.setWidthPercentage(100.0f);
-		table.setWidths(new float[] { 6.0f, 5.0f, });
-		table.setSpacingBefore(10);
-
-		table1.setWidthPercentage(100.0f);
-		table1.setWidths(new float[] { 6.0f, 5.0f, });
-		table1.setSpacingBefore(10);
-
-
-		// define font for table header row
-				Font font = FontFactory.getFont(FontFactory.HELVETICA);
-				font.setColor(BaseColor.WHITE);
-
-
-		// define table header cell
-		PdfPCell cell = new PdfPCell();
-		cell.setBackgroundColor(BaseColor.GRAY);
-		cell.setPadding(5);
-
-		// write table header
-		cell.setPhrase(new Phrase("Section Title", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Section Score", font));
-		table.addCell(cell);
-
-
-
-		ListIterator allSectionAssessmentScoreIterator = allSectionAssessmentScore
-				.listIterator();
-		System.out.println(allSectionAssessmentScore.size());
-
-		List<SectionConsolidatedBean> conList=new ArrayList<SectionConsolidatedBean>();
-		for (int i = 1; allSectionAssessmentScoreIterator.hasNext(); i++) {
-
-			List<SectionConsolidatedBean> listSectionConsolidatedBean = (List) allSectionAssessmentScoreIterator
-					.next();
-			System.out.println("test"+ listSectionConsolidatedBean.size());
-
-
-			ListIterator list = listSectionConsolidatedBean.listIterator();
-
-
-
-
-
-			for (int j = 1; list.hasNext(); j++) {
-				SectionConsolidatedBean sectionConsolidatedBean = (SectionConsolidatedBean) list
-						.next();
-				SectionConsolidatedBean consolidatedBean=new SectionConsolidatedBean();
-
-consolidatedBean.setId(sectionConsolidatedBean.getId());
-consolidatedBean.setSection(sectionConsolidatedBean.getSection());
-consolidatedBean.setSection_point(consolidatedBean.getSection_point()+sectionConsolidatedBean.getSection_point());
-
-
-
-	/*			table.addCell(sectionConsolidatedBean.getSection());
-				table.addCell(String.valueOf((sectionConsolidatedBean)
-						.getSection_point()));*/
-
-				System.out.println("table row created");
-				conList.add(consolidatedBean);
-			}
-		}
-
-
-
-		 Map<String, Float> averageSection=new HashMap<String, Float>();
-
-		for (SectionConsolidatedBean sectionConsolidatedBean : conList) {
-
-
-			if( averageSection.get(sectionConsolidatedBean.getSection()) != null)
-			{
-				float temp=0;
-
-				temp=averageSection.get(sectionConsolidatedBean.getSection());
-				temp=temp+sectionConsolidatedBean.getSection_point();
-
-				temp=temp/2;
-temp=(float) Math.round(temp * 100) / 100;
-
-
-
-				averageSection.put(sectionConsolidatedBean.getSection(),temp);
-
-
-			}else
-			{
-				averageSection.put(sectionConsolidatedBean.getSection(),sectionConsolidatedBean.getSection_point());
-
-			}
-
-
-
-
-
-
-		}
-
-
-
-
-
-
-		float final_weightage=0;
-
-		Iterator<Section> sectionIterator = allSections.iterator();
-		for (Entry<String, Float> entry : averageSection.entrySet())
-		{
-			float temp;
-            float sectionWeightage;
-		    System.out.println("after addtion"+entry.getKey() + "/" + entry.getValue());
-
-		    table.addCell(entry.getKey());
-
-			table.addCell(String.valueOf(entry.getValue()));
-			sectionWeightage=sectionIterator.next().getSection_weightage();
-
-			System.out.println("og sectoin points "+sectionWeightage);
-
-
- temp = (sectionWeightage * entry.getValue());
-
- final_weightage=temp+final_weightage;
-
-
-System.out.println( "weightage is "+final_weightage);
-
-
-		}
-	/*	doc.add(new Paragraph("Final weightage is"  + " - "
-				+ final_weightage));*/
-
-		 table1.addCell("Final weightage");
-
-			table1.addCell(String.valueOf((float) Math.round(final_weightage * 100) / 100  ));
-
-
-			doc.add(table);
-			doc.add(table1);
-
-
-
-
-			doc.add(new Paragraph("     "));
-			doc.add(new Paragraph("     "));
-
-			doc.add(managerSign);
-
-
-
-
-
-
-
-
+summaryrating(doc);
 
 
 
@@ -316,16 +155,6 @@ System.out.println( "weightage is "+final_weightage);
 
 
 		ListIterator assesseinfoiterator = assesseinfo.listIterator();
-
-/*
-		List assesseobjectives = (List) model
-				.get("pdfdetailsview");
-
-		ListIterator assessedetailiterator = assesseobjectives
-				.listIterator();
-
-
-*/
 
 
 
@@ -395,9 +224,9 @@ System.out.println( "weightage is "+final_weightage);
 			PdfPTable table = new PdfPTable(10);
 
 
-
+table.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.setWidthPercentage(100.0f);
-			table.setWidths(new float[] { 2.5f,5.0f,1.5f,1.5f,1.5f,3.5f,1.5f,1.5f,3.5f,1.2f });
+			table.setWidths(new float[] { 2.7f,5.5f,2.4f,1.5f,1.5f,3.5f,2.2f,2.2f,3.5f,1.6f });
 			table.setSpacingBefore(5);
 
 
@@ -485,8 +314,138 @@ System.out.println( "weightage is "+final_weightage);
 
 
 
-			doc.add(table);
 
+
+
+
+
+
+
+				PdfPTable summarytable = new PdfPTable(2);
+
+				PdfPTable table1 = new PdfPTable(2);
+
+				summarytable.setWidthPercentage(100.0f);
+				summarytable.setWidths(new float[] { 6.0f, 5.0f, });
+				summarytable.setSpacingBefore(10);
+
+				summarytable.setWidthPercentage(100.0f);
+				summarytable.setWidths(new float[] { 6.0f, 5.0f, });
+				summarytable.setSpacingBefore(10);
+
+
+				// define font for table header row
+						Font pdffont = FontFactory.getFont(FontFactory.HELVETICA);
+
+						pdffont.setColor(BaseColor.WHITE);
+
+
+				// define table header cell
+				PdfPCell pdfcell = new PdfPCell();
+				pdfcell.setBackgroundColor(BaseColor.GRAY);
+				pdfcell.setPadding(5);
+
+				// write table header
+				pdfcell.setPhrase(new Phrase("Section Title", pdffont));
+				summarytable.addCell(pdfcell);
+
+				pdfcell.setPhrase(new Phrase("Section Score", pdffont));
+				summarytable.addCell(pdfcell);
+
+
+
+				ListIterator allSectionAssessmentScoreIterator = allSectionAssessmentScore
+						.listIterator();
+				System.out.println("summary rating sizeee "+allSectionAssessmentScore.size());
+
+				float final_weightage_role=0;
+
+				for (int i = 1; allSectionAssessmentScoreIterator.hasNext(); i++) {
+
+					List<SectionConsolidatedBean> listSectionConsolidatedBean = (List) allSectionAssessmentScoreIterator
+							.next();
+					System.out.println("summary rating individual sizeee"+ listSectionConsolidatedBean.size());
+
+
+					ListIterator list = listSectionConsolidatedBean.listIterator();
+
+
+
+
+
+					for (int j = 1; list.hasNext(); j++) {
+						SectionConsolidatedBean sectionConsolidatedBean = (SectionConsolidatedBean) list
+								.next();
+
+						if(sectionConsolidatedBean.getAssesseassessorid()==assesseesAssessor.getId())
+						{
+
+
+
+
+							summarytable.addCell(sectionConsolidatedBean.getSection());
+
+							summarytable.addCell(String.valueOf(sectionConsolidatedBean.getSection_point()));
+
+
+
+							for (Section section : allSections) {
+
+								if(section.getId()==sectionConsolidatedBean.getId())
+								{
+									final_weightage_role=final_weightage_role+(section.getSection_weightage()*sectionConsolidatedBean.getSection_point());
+								}
+
+
+							}
+
+
+
+						}
+
+
+					}
+
+
+
+				}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				table1.setWidthPercentage(100.0f);
+				table1.setWidths(new float[] { 6.0f, 5.0f, });
+				table1.setSpacingBefore(10);
+
+				 table1.addCell("Weightage");
+
+					table1.addCell(String.valueOf((float) Math.round(final_weightage_role * 100) / 100  ));
+
+
+
+
+
+
+
+
+
+
+
+
+			doc.add(table);
+			doc.add(new Paragraph("     "));
+			doc.add(summarytable);
+			doc.add(table1);
 
 
 
@@ -498,6 +457,7 @@ System.out.println( "weightage is "+final_weightage);
 
 
 
+		summaryrating(doc);
 
 
 
@@ -518,9 +478,193 @@ System.out.println( "weightage is "+final_weightage);
 
 	}
 
-
-
 }
+
+	public Document summaryrating(Document doc)throws Exception
+	{
+
+
+		//setting summary Ratings
+
+		doc.add(new Paragraph(" "));
+		Font fontheader = FontFactory.getFont(FontFactory.HELVETICA);
+		fontheader.setStyle("bold");
+Paragraph paraheadersummary=new Paragraph();
+paraheadersummary.setFont(fontheader);
+
+paraheadersummary.add("Summary Score");
+
+doc.add(paraheadersummary);
+
+
+		PdfPTable table = new PdfPTable(2);
+
+		PdfPTable table1 = new PdfPTable(2);
+
+		table.setWidthPercentage(100.0f);
+		table.setWidths(new float[] { 6.0f, 5.0f, });
+		table.setSpacingBefore(10);
+
+		table1.setWidthPercentage(100.0f);
+		table1.setWidths(new float[] { 6.0f, 5.0f, });
+		table1.setSpacingBefore(10);
+
+
+		// define font for table header row
+				Font font = FontFactory.getFont(FontFactory.HELVETICA);
+				font.setColor(BaseColor.WHITE);
+
+
+		// define table header cell
+		PdfPCell cell = new PdfPCell();
+		cell.setBackgroundColor(BaseColor.GRAY);
+		cell.setPadding(5);
+
+		// write table header
+		cell.setPhrase(new Phrase("Section Title", font));
+		table.addCell(cell);
+
+		cell.setPhrase(new Phrase("Section Score", font));
+		table.addCell(cell);
+
+
+
+		ListIterator allSectionAssessmentScoreIterator = allSectionAssessmentScore
+				.listIterator();
+		System.out.println(allSectionAssessmentScore.size());
+
+		List<SectionConsolidatedBean> conList=new ArrayList<SectionConsolidatedBean>();
+		for (int i = 1; allSectionAssessmentScoreIterator.hasNext(); i++) {
+
+			List<SectionConsolidatedBean> listSectionConsolidatedBean = (List) allSectionAssessmentScoreIterator
+					.next();
+			System.out.println("test"+ listSectionConsolidatedBean.size());
+
+
+			ListIterator list = listSectionConsolidatedBean.listIterator();
+
+
+
+
+
+			for (int j = 1; list.hasNext(); j++) {
+				SectionConsolidatedBean sectionConsolidatedBean = (SectionConsolidatedBean) list
+						.next();
+				SectionConsolidatedBean consolidatedBean=new SectionConsolidatedBean();
+
+consolidatedBean.setId(sectionConsolidatedBean.getId());
+consolidatedBean.setSection(sectionConsolidatedBean.getSection());
+consolidatedBean.setSection_point(consolidatedBean.getSection_point()+sectionConsolidatedBean.getSection_point());
+
+
+
+	/*			table.addCell(sectionConsolidatedBean.getSection());
+				table.addCell(String.valueOf((sectionConsolidatedBean)
+						.getSection_point()));*/
+
+				System.out.println("table row created");
+				conList.add(consolidatedBean);
+
+			}
+		}
+
+
+
+		 Map<String, Float> averageSection=new HashMap<String, Float>();
+
+		for (SectionConsolidatedBean sectionConsolidatedBean : conList) {
+
+
+			if( averageSection.get(sectionConsolidatedBean.getSection()) != null)
+			{
+				float temp=0;
+
+				temp=averageSection.get(sectionConsolidatedBean.getSection());
+				temp=temp+sectionConsolidatedBean.getSection_point();
+
+				temp=temp/2;
+temp=(float) Math.round(temp * 100) / 100;
+
+
+
+				averageSection.put(sectionConsolidatedBean.getSection(),temp);
+
+
+			}else
+			{
+				averageSection.put(sectionConsolidatedBean.getSection(),sectionConsolidatedBean.getSection_point());
+
+			}
+
+
+
+
+
+
+		}
+
+
+
+
+
+
+		float final_weightage=0;
+
+		Iterator<Section> sectionIterator = allSections.iterator();
+		for (Entry<String, Float> entry : averageSection.entrySet())
+		{
+			float temp;
+            float sectionWeightage;
+		    System.out.println("after addtion"+entry.getKey() + "/" + entry.getValue());
+
+		    table.addCell(entry.getKey());
+
+			table.addCell(String.valueOf(String.valueOf((float) Math.round(entry.getValue() * 100) / 100  )));
+
+			sectionWeightage=sectionIterator.next().getSection_weightage();
+
+			System.out.println("og sectoin points "+sectionWeightage);
+
+
+ temp = (sectionWeightage * entry.getValue());
+
+ final_weightage=temp+final_weightage;
+
+
+System.out.println( "weightage is "+final_weightage);
+
+
+		}
+
+
+	/*	doc.add(new Paragraph("Final weightage is"  + " - "
+				+ final_weightage));*/
+
+		table1.getDefaultCell().setBackgroundColor(BaseColor.CYAN);
+
+
+		 table1.addCell("Final weightage");
+
+			table1.addCell(String.valueOf((float) Math.round(final_weightage * 100) / 100  ));
+
+
+			doc.add(table);
+			doc.add(table1);
+
+
+
+
+			doc.add(new Paragraph("     "));
+			doc.add(new Paragraph("     "));
+
+
+
+
+
+return doc;
+
+	}
+
 
 
 }

@@ -44,8 +44,6 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.getResultList();
 	}
 
-
-
 	public List<AssesseesAssessor> showAssessesByAssessor(int id) {
 		return entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSOR,
@@ -68,7 +66,6 @@ public class ShowReportDaoImpl implements ShowReportDao {
 
 	public List<Employee> showAllManager() {
 
-
 		return entityManager.createNamedQuery(Employee.FIND_ALL_MANAGER,
 				Employee.class).getResultList();
 	}
@@ -85,12 +82,12 @@ public class ShowReportDaoImpl implements ShowReportDao {
 		return emp;
 	}
 
-
 	@Override
 	public List<AssesseesAssessor> showAssesseByEmplyee(int id) {
 
 		return entityManager
-				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID,
+				.createNamedQuery(
+						AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID,
 						AssesseesAssessor.class).setParameter("assesseeId", id)
 				.getResultList();
 	}
@@ -99,29 +96,24 @@ public class ShowReportDaoImpl implements ShowReportDao {
 
 		return entityManager
 				.createNamedQuery(AssesseeObjectives.FIND_SECTION_BY_ASSESSOR,
-						AssesseeObjectives.class).setParameter("assesseeAssessorId", id)
-				.getResultList();
+						AssesseeObjectives.class)
+				.setParameter("assesseeAssessorId", id).getResultList();
 	}
 
-	public List<pdftableview> getPdfView()
-	{
+	public List<pdftableview> getPdfView() {
 
-		return entityManager
-				.createNamedQuery(pdftableview.GET_ALL_RECORDS,
-						pdftableview.class)
-				.getResultList();
+		return entityManager.createNamedQuery(pdftableview.GET_ALL_RECORDS,
+				pdftableview.class).getResultList();
 
 	}
-	public List<pdftableview> getPdfViewByID(int id)
-	{
+
+	public List<pdftableview> getPdfViewByID(int id) {
 
 		return entityManager
 				.createNamedQuery(pdftableview.GET_ALL_RECORDS_BY_ID,
-						pdftableview.class).setParameter("assesseassessorid",id)
-				.getResultList();
+						pdftableview.class)
+				.setParameter("assesseassessorid", id).getResultList();
 
 	}
-
-
 
 }

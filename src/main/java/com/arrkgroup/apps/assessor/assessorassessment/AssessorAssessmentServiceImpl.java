@@ -144,7 +144,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 	@Override
 	public boolean saveAssessorAssessment(AssessorAssessmentBean bean) {
-		
+
 
 
 		bean.setSelf_rating(assessorAssessmentDao.getAssesseObjective(bean.getObjectiveid()).getSelf_rating().getId());
@@ -289,6 +289,7 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 			bean.setId(sectionConsolidated.getSection().getId());
 			bean.setSection(sectionConsolidated.getSection().getSection());
 			bean.setSection_point(points);
+			bean.setAssesseassessorid(assesseeAssessorId);
 
 			beans.add(bean);
 		}

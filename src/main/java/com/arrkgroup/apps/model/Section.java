@@ -17,38 +17,38 @@ import javax.persistence.Table;
 @Table(name="section")
 @NamedQueries({
 	@NamedQuery(name = Section.FIND_BY_ID, query = "SELECT e FROM Section e where e.id = :id"),
-@NamedQuery(name = Section.GET_ALL_SECTIONS, query = "select a from Section a "),
+@NamedQuery(name = Section.GET_ALL_SECTIONS, query = "select a from Section a order by a.section desc "),
 
 })
 public class Section {
-	public static final String FIND_BY_ID = "Section.FIND_BY_ID";	
+	public static final String FIND_BY_ID = "Section.FIND_BY_ID";
 	public static final String GET_ALL_SECTIONS = "Section.GET_ALL_SECTIONS";
-	
-	
+
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-	
+
 	@Column(name = "title", nullable = false)
 	private String section;
-	
+
 	@Column(name = "section_weightage")
 	private float section_weightage;
-	
-	
+
+
 	@Column(name = "last_modified_date", nullable = false)
 	private Date lastModifiedDate=new Date();
-	
+
 	public Section(){}
-	
+
 	public Section(int id, String section, Date lastModifiedDate){
 		this.id=id;
 		this.section=section;
 		this.lastModifiedDate=lastModifiedDate;
 	}
-	
-	
-	
+
+
+
 	public float getSection_weightage() {
 		return section_weightage;
 	}
@@ -75,6 +75,6 @@ public class Section {
 	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
-	
+
 
 }
