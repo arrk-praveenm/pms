@@ -282,13 +282,23 @@ List<AssesseeObjectives> list=new ArrayList<AssesseeObjectives>();
 
 		for (SectionConsolidated sectionConsolidated : list) {
 
-			float points=(sectionConsolidated.getSection_manager_score()/sectionConsolidated.getSection_max_score())*MAX_RATING;
-
+			float points=((sectionConsolidated.getSection_manager_score()/sectionConsolidated.getSection_max_score())*MAX_RATING);
+System.out.println(sectionConsolidated.getAssesseesassessor().getId()+" Assesseesassessor "+points);
 
 			SectionConsolidatedBean bean=new SectionConsolidatedBean();
 			bean.setId(sectionConsolidated.getSection().getId());
 			bean.setSection(sectionConsolidated.getSection().getSection());
-			bean.setSection_point(points);
+			
+			if(new Float(points).isNaN())
+			{
+
+				bean.setSection_point(0.0f);
+				
+			}else
+			{
+
+				bean.setSection_point(points);
+			}
 			bean.setAssesseassessorid(assesseeAssessorId);
 
 			beans.add(bean);

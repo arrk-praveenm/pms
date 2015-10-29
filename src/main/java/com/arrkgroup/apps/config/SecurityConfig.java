@@ -97,6 +97,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             	.antMatchers("/admin/**").access("hasRole('ADMIN')")
             	.antMatchers("/ajax/**").access("hasRole('EMPLOYEE')")
+            	.antMatchers("/hr/downloadpdfDetail/**").access("hasRole('EMPLOYEE')")
             	.antMatchers("/hr/**").access("hasRole('HR')")
             	.antMatchers("/report/**").access("hasRole('HR')")
             	.antMatchers("/assessor/**").access("hasAnyRole('ASSESSOR','MANAGER','EMPLOYEE')")

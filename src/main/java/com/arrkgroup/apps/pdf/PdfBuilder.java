@@ -299,10 +299,24 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(String.valueOf(objectives.getSelf_rating()));
 				table.addCell(String.valueOf(objectives.getSelf_score()));
 				table.addCell(objectives.getAssessee_comments());
+				if(assesseesAssessor.getStatus().equalsIgnoreCase("closed")||assesseesAssessor.getStatus().equalsIgnoreCase("agree")||assesseesAssessor.getStatus().equalsIgnoreCase("assessementcompleted"))
+				{
 				table.addCell(String.valueOf(objectives.getManager_rating()));
 				table.addCell(String.valueOf(objectives.getManager_score()));
 
 				table.addCell(objectives.getManager_comments());
+				}else{
+					table.addCell(String.valueOf(0));
+					table.addCell(String.valueOf(0));
+
+					table.addCell("");
+
+				}
+				
+				/*table.addCell(String.valueOf(objectives.getManager_rating()));
+				table.addCell(String.valueOf(objectives.getManager_score()));
+
+				table.addCell(objectives.getManager_comments());*/
 				table.addCell(String.valueOf(objectives.getMax_score()));
 				}
 
@@ -387,7 +401,7 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 							summarytable.addCell(String.valueOf(sectionConsolidatedBean.getSection_point()));
 
-
+System.out.println(sectionConsolidatedBean.getSection_point());
 
 							for (Section section : allSections) {
 
