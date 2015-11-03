@@ -174,7 +174,7 @@ public class ShowReportController {
 		modelObjectService.findCycleById(Integer.parseInt(cycleID))
 			.getDescription());
 
-		model.addAttribute("assesseinfo", showReportService.showAssesseByEmplyee(Integer.parseInt(assessor_id)));
+		model.addAttribute("assesseinfo", pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),Integer.parseInt(cycleID)));
 
 
 

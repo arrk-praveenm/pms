@@ -40,8 +40,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class PdfBuilder extends AbstractITextPdfView {
 
-	List<Section> allSections;
-	List allSectionAssessmentScore;
+	List<Section> allSections=null;
+	List allSectionAssessmentScore=null;
 
 
 
@@ -157,6 +157,8 @@ summaryrating(doc);
 		ListIterator assesseinfoiterator = assesseinfo.listIterator();
 
 
+
+System.out.println("1assesse size is "+assesseinfo.size());
 
 
 
@@ -312,7 +314,7 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 					table.addCell("");
 
 				}
-				
+
 				/*table.addCell(String.valueOf(objectives.getManager_rating()));
 				table.addCell(String.valueOf(objectives.getManager_score()));
 

@@ -14,6 +14,10 @@
 
 		$("#summarybtn").on('click',function()
 				{
+
+
+			$(this).attr('href',$("#hiddenUrl").val());
+
 		if([[${isEmployee}]])
 		{
 			if ($("#selectcycle").val() == 0) {
@@ -27,14 +31,17 @@
 			return false;
 
 			} else{
-			
+
+
+				alert("url   "+$(this).attr('href'));
 			var url=$(this).attr('href');
 			var url1=url.replace("1One", [[${managerid}]]);
 			url=url1.replace("2Two", $('#selectcycle').val());
 			$(this).attr('href',url);
+			alert("url   "+$(this).attr('href'));
 			}
 			}
-			
+
 			});
 
 
@@ -61,11 +68,11 @@
 			$(this).attr('href',url);
 			}
 			}
-			
+
 			});
 
 
-		
+
 
 
 
@@ -530,10 +537,11 @@
 
 </div>
 						<span id="employeeButtonSpan"  style="display:none " class="pull-left">
-						<a
+						<input type="hidden" id="hiddenUrl" value="../hr/downloadpdfDetail?AsseesseID=1One&amp;cycleID=2Two"  />
+						<a target="_blank"
 							href="../hr/downloadpdfDetail?AsseesseID=1One&amp;cycleID=2Two" id="summarybtn"
 							class="btn btn-success">View Details</a>
-							<a
+							<a target="_blank"
 							href="../hr/downloadpdfRating?AsseesseID=1One&amp;cycleID=2Two"  id="ratings"
 							class="btn btn-success">View Rating</a>
 
