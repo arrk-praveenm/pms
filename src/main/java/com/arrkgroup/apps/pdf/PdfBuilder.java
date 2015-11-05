@@ -113,6 +113,18 @@ public class PdfBuilder extends AbstractITextPdfView {
 		fontheader.setStyle("bold");
 
 		String report_type=(String) model.get("type");
+
+		List assesseinfo = (List) model
+				.get("assesseinfo");
+
+
+
+		boolean showFlag=show(assesseinfo);
+
+
+
+
+
 		if(report_type.equals("rating"))
 
 		{
@@ -139,7 +151,7 @@ public class PdfBuilder extends AbstractITextPdfView {
 
 
 
-summaryrating(doc);
+summaryrating(doc,showFlag);
 
 
 
@@ -150,8 +162,6 @@ summaryrating(doc);
 
 	}else
 	{
-		List assesseinfo = (List) model
-				.get("assesseinfo");
 
 
 		ListIterator assesseinfoiterator = assesseinfo.listIterator();
@@ -165,7 +175,7 @@ System.out.println("1assesse size is "+assesseinfo.size());
 
 
 
-
+AssesseesAssessor assesseesAssessor;
 		while(assesseinfoiterator.hasNext())
 		{
 
@@ -174,7 +184,7 @@ System.out.println("1assesse size is "+assesseinfo.size());
 
 
 
-			AssesseesAssessor assesseesAssessor=(AssesseesAssessor) assesseinfoiterator.next();
+			assesseesAssessor=(AssesseesAssessor) assesseinfoiterator.next();
 
 
 			List assesseobjectives = (List) model
@@ -301,8 +311,11 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(String.valueOf(objectives.getSelf_rating()));
 				table.addCell(String.valueOf(objectives.getSelf_score()));
 				table.addCell(objectives.getAssessee_comments());
-				if(assesseesAssessor.getStatus().equalsIgnoreCase("closed")||assesseesAssessor.getStatus().equalsIgnoreCase("agree")||assesseesAssessor.getStatus().equalsIgnoreCase("assessementcompleted"))
+
+
+				if(showFlag)
 				{
+
 				table.addCell(String.valueOf(objectives.getManager_rating()));
 				table.addCell(String.valueOf(objectives.getManager_score()));
 
@@ -310,8 +323,8 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 				}else{
 					table.addCell(String.valueOf(0));
 					table.addCell(String.valueOf(0));
+					table.addCell(String.valueOf(0));
 
-					table.addCell("");
 
 				}
 
@@ -401,9 +414,20 @@ table.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 							summarytable.addCell(sectionConsolidatedBean.getSection());
 
-							summarytable.addCell(String.valueOf(sectionConsolidatedBean.getSection_point()));
 
-System.out.println(sectionConsolidatedBean.getSection_point());
+
+if(showFlag)
+{
+	summarytable.addCell(String.valueOf(sectionConsolidatedBean.getSection_point()));
+}
+else
+{
+	summarytable.addCell(String.valueOf(0));
+}
+
+
+
+
 
 							for (Section section : allSections) {
 
@@ -445,7 +469,18 @@ System.out.println(sectionConsolidatedBean.getSection_point());
 
 				 table1.addCell("Weightage");
 
-					table1.addCell(String.valueOf((float) Math.round(final_weightage_role * 100) / 100  ));
+
+				 if(showFlag)
+				 {
+					 table1.addCell(String.valueOf((float) Math.round(final_weightage_role * 100) / 100  ));
+				 }
+				 else
+				 {
+				 	table1.addCell(String.valueOf(0));
+				 }
+
+
+
 
 
 
@@ -473,7 +508,7 @@ System.out.println(sectionConsolidatedBean.getSection_point());
 
 
 
-		summaryrating(doc);
+		summaryrating(doc,showFlag);
 
 
 
@@ -496,7 +531,7 @@ System.out.println(sectionConsolidatedBean.getSection_point());
 
 }
 
-	public Document summaryrating(Document doc)throws Exception
+	public Document summaryrating(Document doc,boolean showFlag)throws Exception
 	{
 
 
@@ -599,8 +634,7 @@ consolidatedBean.setSection_point(consolidatedBean.getSection_point()+sectionCon
 				temp=temp+sectionConsolidatedBean.getSection_point();
 
 				temp=temp/2;
-temp=(float) Math.round(temp * 100) / 100;
-
+                temp=(float) Math.round(temp * 100) / 100;
 
 
 				averageSection.put(sectionConsolidatedBean.getSection(),temp);
@@ -635,7 +669,30 @@ temp=(float) Math.round(temp * 100) / 100;
 
 		    table.addCell(entry.getKey());
 
-			table.addCell(String.valueOf(String.valueOf((float) Math.round(entry.getValue() * 100) / 100  )));
+
+
+
+
+
+		    if(showFlag)
+		    {
+
+		    	table.addCell(String.valueOf(String.valueOf((float) Math.round(entry.getValue() * 100) / 100  )));
+		    }
+		    else
+		    {
+		    	table.addCell(String.valueOf(0));
+		    }
+
+
+
+
+
+
+
+
+
+
 
 			sectionWeightage=sectionIterator.next().getSection_weightage();
 
@@ -661,8 +718,16 @@ System.out.println( "weightage is "+final_weightage);
 
 		 table1.addCell("Final weightage");
 
-			table1.addCell(String.valueOf((float) Math.round(final_weightage * 100) / 100  ));
 
+if(showFlag)
+{
+
+			table1.addCell(String.valueOf((float) Math.round(final_weightage * 100) / 100  ));
+}
+else
+{
+	table1.addCell(String.valueOf(0));
+}
 
 			doc.add(table);
 			doc.add(table1);
@@ -680,6 +745,55 @@ System.out.println( "weightage is "+final_weightage);
 return doc;
 
 	}
+
+
+
+
+
+	public boolean show(List assesseinfo )
+	{
+
+
+		boolean showFlag = false;
+
+ListIterator assesseinfoiterator = assesseinfo.listIterator();
+
+
+AssesseesAssessor assesseesAssessor;
+
+while(assesseinfoiterator.hasNext())
+{
+assesseesAssessor=(AssesseesAssessor) assesseinfoiterator.next();
+
+if(assesseesAssessor.getStatus().equalsIgnoreCase("closed")||assesseesAssessor.getStatus().equalsIgnoreCase("agree")||assesseesAssessor.getStatus().equalsIgnoreCase("assessementcompleted"))
+{
+showFlag=true;
+
+
+
+
+}else
+{
+	showFlag=false;
+
+}
+
+
+
+
+}
+
+return showFlag;
+
+	}
+
+
+
+
+
+
+
+
 
 
 

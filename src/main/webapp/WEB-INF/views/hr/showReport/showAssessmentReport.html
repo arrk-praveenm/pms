@@ -33,12 +33,12 @@
 			} else{
 
 
-				alert("url   "+$(this).attr('href'));
+
 			var url=$(this).attr('href');
 			var url1=url.replace("1One", [[${managerid}]]);
 			url=url1.replace("2Two", $('#selectcycle').val());
 			$(this).attr('href',url);
-			alert("url   "+$(this).attr('href'));
+
 			}
 			}
 
@@ -86,6 +86,8 @@
     if(allEmployee!=null)
     	{
 
+    	var cycle = $("#selectcycle").val();
+
    	 $("#hrDiv").css('display', 'block');
     	var panel = "#" + "employeeRow";
     	  for(assessee in allEmployee)
@@ -96,9 +98,9 @@
 		.append(
 				'<h4 id="assesseeID" class="panel-title"  name="'+allEmployee[assessee].id+'"><span class="accessrolename pull-left"> '
 						+ allEmployee[assessee].fullname
-						+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+cycle+'" name="'
 						+ allEmployee[assessee].id
-						+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+cycle+'" name="'
 						+allEmployee[assessee].id
 						+ '" id="ratings" class="btn btn-success btn-xs">View Rating</a></span><div class="clearfix"></div></h4> ');
 
@@ -279,7 +281,12 @@
 						function() {
 
 							var value = $(this).attr("id");
+
+
+
 							var cycle = $("#selectcycle").val();
+
+
 
 							$
 									.ajax({
