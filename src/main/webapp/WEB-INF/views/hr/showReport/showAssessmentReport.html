@@ -14,6 +14,10 @@
 
 		$("#summarybtn").on('click',function()
 				{
+
+
+			$(this).attr('href',$("#hiddenUrl").val());
+
 		if([[${isEmployee}]])
 		{
 			if ($("#selectcycle").val() == 0) {
@@ -27,14 +31,17 @@
 			return false;
 
 			} else{
-			
+
+
+
 			var url=$(this).attr('href');
 			var url1=url.replace("1One", [[${managerid}]]);
 			url=url1.replace("2Two", $('#selectcycle').val());
 			$(this).attr('href',url);
+
 			}
 			}
-			
+
 			});
 
 
@@ -61,11 +68,11 @@
 			$(this).attr('href',url);
 			}
 			}
-			
+
 			});
 
 
-		
+
 
 
 
@@ -79,6 +86,8 @@
     if(allEmployee!=null)
     	{
 
+    	var cycle = $("#selectcycle").val();
+
    	 $("#hrDiv").css('display', 'block');
     	var panel = "#" + "employeeRow";
     	  for(assessee in allEmployee)
@@ -89,9 +98,9 @@
 		.append(
 				'<h4 id="assesseeID" class="panel-title"  name="'+allEmployee[assessee].id+'"><span class="accessrolename pull-left"> '
 						+ allEmployee[assessee].fullname
-						+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+ ' </span><span class="pull-right"><a target="_blank" href="../hr/downloadpdfDetail?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+cycle+'" name="'
 						+ allEmployee[assessee].id
-						+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+allEmployee[assessee].cycle+'" name="'
+						+ '" id="summarybtn" class="btn btn-success btn-xs">View Details</a> <a target="_blank" href="../hr/downloadpdfRating?AsseesseID='+allEmployee[assessee].id+'&amp;cycleID='+cycle+'" name="'
 						+allEmployee[assessee].id
 						+ '" id="ratings" class="btn btn-success btn-xs">View Rating</a></span><div class="clearfix"></div></h4> ');
 
@@ -272,7 +281,12 @@
 						function() {
 
 							var value = $(this).attr("id");
+
+
+
 							var cycle = $("#selectcycle").val();
+
+
 
 							$
 									.ajax({
@@ -530,10 +544,11 @@
 
 </div>
 						<span id="employeeButtonSpan"  style="display:none " class="pull-left">
-						<a
+						<input type="hidden" id="hiddenUrl" value="../hr/downloadpdfDetail?AsseesseID=1One&amp;cycleID=2Two"  />
+						<a target="_blank"
 							href="../hr/downloadpdfDetail?AsseesseID=1One&amp;cycleID=2Two" id="summarybtn"
 							class="btn btn-success">View Details</a>
-							<a
+							<a target="_blank"
 							href="../hr/downloadpdfRating?AsseesseID=1One&amp;cycleID=2Two"  id="ratings"
 							class="btn btn-success">View Rating</a>
 

@@ -25,16 +25,16 @@ import org.springframework.security.web.authentication.session.ConcurrentSession
 @EnableWebMvcSecurity
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-	
+
 	@Value("${ldap.url}")
 	private String URL;
-	
+
 	@Value("${ldap.manger.dn}")
 	private String LDAP_MANAGER_DN;
-	
+
 	@Value("${ldap.manager.password}")
 	private String LDAP_MANAGER_PASSWORD;
-	
+
 	@Bean
 	public DatabaseAuthoritiesPopulator authoritiesPopulator(){
 		DatabaseAuthoritiesPopulator authoritiesPopulator = new DatabaseAuthoritiesPopulator(contextSource(),"");
@@ -45,7 +45,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new StandardPasswordEncoder();
 	}
-    
+
 
    @Bean
     public InetOrgPersonContextMapper extendingContextOfLdap() {
@@ -55,7 +55,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
 	protected void configure(AuthenticationManagerBuilder auth)	throws Exception {
     	auth.authenticationProvider(ldapAuthenticationProvider());
-    	
+
 		log.info("In Spring configuration configure()..............");
 	}
 
@@ -66,7 +66,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         contextSource.setPassword(LDAP_MANAGER_PASSWORD);
         return contextSource;
     }
-    
+
     @Bean
     public FilterBasedLdapUserSearch userSearch(){
     	FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch("","(uid={0})",contextSource());
@@ -76,7 +76,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider ldapAuthenticationProvider() {
-        LdapAuthenticationProvider provider = 
+        LdapAuthenticationProvider provider =
             new LdapAuthenticationProvider(ldapAuthenticator(),authoritiesPopulator());
         provider.setUserDetailsContextMapper(extendingContextOfLdap() );
         return provider;
@@ -85,19 +85,20 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LdapAuthenticator ldapAuthenticator() {
         BindAuthenticator authenticator = new BindAuthenticator(contextSource());
-        
+
         authenticator.setUserSearch(userSearch());
         return authenticator;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	
+
         http
             .authorizeRequests()
             	.antMatchers("/admin/**").access("hasRole('ADMIN')")
             	.antMatchers("/ajax/**").access("hasRole('EMPLOYEE')")
             	.antMatchers("/hr/downloadpdfDetail/**").access("hasRole('EMPLOYEE')")
+            	.antMatchers("/hr/downloadpdfRating/**").access("hasRole('EMPLOYEE')")
             	.antMatchers("/hr/**").access("hasRole('HR')")
             	.antMatchers("/report/**").access("hasRole('HR')")
             	.antMatchers("/assessor/**").access("hasAnyRole('ASSESSOR','MANAGER','EMPLOYEE')")
@@ -124,17 +125,17 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
             //.rememberMe()
                 //.rememberMeServices(rememberMeServices())
                 //.key("remember-me-key");
-        
-        
-        
-        
+
+
+
+
     }
-    
-    
+
+
     @SuppressWarnings("deprecation")
 	protected ConcurrentSessionControlStrategy getConcurrentSessionControlStrategy()
     {
-    	
+
 		ConcurrentSessionControlStrategy sessionStartegy= new ConcurrentSessionControlStrategy(getSessionRegistryImpl());
     	sessionStartegy.setMaximumSessions(1);
     	return sessionStartegy;
