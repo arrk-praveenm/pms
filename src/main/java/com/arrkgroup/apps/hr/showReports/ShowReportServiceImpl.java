@@ -175,5 +175,21 @@ public class ShowReportServiceImpl implements ShowReportService {
 		return pdftableviews;
 
 	}
+	
+	@Override
+	public List<Section> getAllSections() {
+		// TODO Auto-generated method stub
+		return showReportDao.getAllSections();
+	}
+	
+	@Override
+	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,
+			int cycleId) {
+		// TODO Auto-generated method stub
+		List<AssesseesAssessor> list=showReportDao.getAssesseesAssessorByCycle(employeeId, cycleId);
+
+		System.out.println(" getAssesseesAssessorByCycle size is "+list.size());
+		return list;
+	}
 
 }

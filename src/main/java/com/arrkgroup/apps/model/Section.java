@@ -17,12 +17,14 @@ import javax.persistence.Table;
 @Table(name="section")
 @NamedQueries({
 	@NamedQuery(name = Section.FIND_BY_ID, query = "SELECT e FROM Section e where e.id = :id"),
-@NamedQuery(name = Section.GET_ALL_SECTIONS, query = "select a from Section a order by a.section desc "),
+@NamedQuery(name = Section.GET_ALL_SECTIONS_WITH_SORTING, query = "select a from Section a order by a.section desc "),
+@NamedQuery(name = Section.GET_ALL_SECTIONS, query = "select a from Section a  "),
 
 })
 public class Section {
 	public static final String FIND_BY_ID = "Section.FIND_BY_ID";
 	public static final String GET_ALL_SECTIONS = "Section.GET_ALL_SECTIONS";
+	public static final String GET_ALL_SECTIONS_WITH_SORTING = "Section.GET_ALL_SECTIONS_WITH_SORTING";
 
 
 	@Id

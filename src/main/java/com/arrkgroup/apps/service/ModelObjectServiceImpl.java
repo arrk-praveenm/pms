@@ -13,11 +13,11 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
 import com.arrkgroup.apps.model.Rating;
+import com.arrkgroup.apps.model.RatingDescription;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
 import com.arrkgroup.apps.model.Weightage;
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 @Transactional
 @Service
@@ -149,6 +149,11 @@ public class ModelObjectServiceImpl implements ModelObjectService {
 	public int getMaxRating() {
 
 		return modelObjectDao.getMaxRating();
+	}
+	
+	public List<RatingDescription> getRatingDescriptionBySectionId(int SectionId)
+	{
+		return modelObjectDao.getRatingDescriptionBySectionId(SectionId);
 	}
 
 

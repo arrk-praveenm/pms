@@ -24,10 +24,7 @@ import com.arrkgroup.apps.form.ShowReportBean;
 import com.arrkgroup.apps.hr.managesections.CreateSectionController;
 import com.arrkgroup.apps.model.AssesseesAssessor;
 import com.arrkgroup.apps.model.Employee;
-import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Section;
-import com.arrkgroup.apps.pdf.Book;
-import com.arrkgroup.apps.pdf.PdfService;
 import com.arrkgroup.apps.service.ModelObjectService;
 
 @Controller
@@ -42,8 +39,7 @@ public class ShowReportController {
 	@Autowired
 	ShowReportService showReportService;
 
-	@Autowired
-	PdfService pdfService;
+
 
 	@Autowired
 	AssessorAssessmentService assessorAssessmentService;
@@ -143,9 +139,9 @@ public class ShowReportController {
 
 		System.out.println(" /hr/downloadpdfDetail  action  - assessor  id is   " + assessor_id + " cycle id is " + cycleID);
 
-		List < Section > allSections = modelObjectService.getAllSections();
+		List < Section > allSections = showReportService.getAllSections();
 		List allSectionAssessmentScore = new ArrayList();
-		for (AssesseesAssessor assesseesAssessor: (List < AssesseesAssessor > ) pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
+		for (AssesseesAssessor assesseesAssessor: (List < AssesseesAssessor > ) showReportService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
 		Integer.parseInt(cycleID))) {
 			List < SectionConsolidatedBean > list = assessorAssessmentService.findById(String.valueOf(assesseesAssessor.getAssessorId()
 				.getId()), String.valueOf(assesseesAssessor.getRoleId().getId()), assesseesAssessor.getProjectId().getId(), assesseesAssessor.getId());
@@ -189,9 +185,9 @@ public class ShowReportController {
 
 		System.out.println(" /hr/downloadpdfRating  action  - assessor  id is   " + assessor_id + " cycle id is " + cycleID);
 
-		List < Section > allSections = modelObjectService.getAllSections();
+		List < Section > allSections = showReportService.getAllSections();
 		List allSectionAssessmentScore = new ArrayList();
-		for (AssesseesAssessor assesseesAssessor: (List < AssesseesAssessor > ) pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
+		for (AssesseesAssessor assesseesAssessor: (List < AssesseesAssessor > ) showReportService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),
 		Integer.parseInt(cycleID))) {
 
 			log.info("assessor id is  " + assesseesAssessor.getAssessorId());

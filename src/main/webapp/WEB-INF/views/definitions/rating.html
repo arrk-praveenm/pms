@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="home/homeSignedIn">
+<head>
+<script th:inline="javascript">
+$(document).ready(function(){
+
+
+	ajaxRequestToLoadDescriptions([[${allSections.get(0).getId()}]]);
+	
+	$(".test").on("click",function(){
+
+		
+		ajaxRequestToLoadDescriptions($(this).attr("id"));
+
+	});
+
+
+	function ajaxRequestToLoadDescriptions(sectionId)
+	{
+		var	sectionLoad={
+	              sectionId:sectionId,
+	             } 
+		 
+		   $.ajax({
+            url: 'loadRating',
+            type: 'GET',
+            data: sectionLoad,
+            success: function(response) {
+	              
+				if(response=="")
+            {
+					 $("#descriptionDiv").empty();
+            }else{
+
+            	 $("#descriptionDiv").empty();
+             jQuery.each( response, function( iterStat, ratingDesc ) {
+           
+        
+             $("#descriptionDiv").append(
+             	'<div class="panel panel-default">'
+					+'<div class="panel-heading">'
+					+'<h3 class="panel-title">'+ratingDesc.rating.description+'</h3>'
+					+'</div>'
+					+'<div class="panel-body custom-panel-heading">'
+					+'<div class="row">'
+					+'<div class="col-sm-2">'
+					+'<span class="label label-default pull-right">Score<em>'+ratingDesc.rating.score+'</em></span>'
+					+'</div>'
+					+'<div class="col-sm-10" >'+ratingDesc.description+'</div>'
+					+'</div>'
+					+'</div>'
+					+'</div>'
+		                );
+          
+					}); 
+            } 
+
+             
+            },
+            error: function(jqXHr, reponse, errorThrown) {
+                // ... Process the result ...
+                alert(errorThrown);
+            }
+			}); 
+		}
+});
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+
+	<!-- Content Header starts -->
+		<section class="content-header">
+			<h1>
+				Definations - Ratings
+				<!--<small>Optional description</small>-->
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="\pms\"><i class="fa fa-home"></i> Home</a></li>
+				<li class="active">Here</li>
+			</ol>
+		</section>
+        <!-- Main content starts -->
+        <section class="content">
+			
+
+			<!-- Manager header panel starts -->
+			<div class="box">
+				<div class="box-body">
+									
+
+					
+					<div class="nav-tabs-custom margintop10 ">
+						
+						<div class="wrapper-tabs">
+							<ul class="nav nav-tabs">
+							<th:block th:each="sectionName, itr:${allSections}">
+							
+								<th:block th:if="${itr.index}==0">
+								<li class="active test" th:id="${sectionName.getId()}"><a data-toggle="tab" href="#prd" th:text="${sectionName.getSection()}">Performance Rating</a></li>
+								</th:block>	
+									<th:block th:if="${itr.index}!=0">
+								<li class=" test" th:id="${sectionName.getId()}"  ><a data-toggle="tab" href="#crd" th:text="${sectionName.getSection()}">Competancy Rating</a></li>
+									</th:block>	
+									</th:block>						
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div id="prd" class="tab-pane active">
+								<div id="descriptionDiv" class="competency-container">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title">Poor</h3>
+										</div>
+										<div class="panel-body custom-panel-heading">
+											<div class="row">
+												<div class="col-sm-2">
+													<span class="label label-default pull-right">Score<em>1</em></span>
+												</div>
+												<div class="col-sm-10">
+													Frequently missing of time and quality targets.  Unable to complete the job on most of the occasions.
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							<!-- 	
+								
+								<div class="competency-container">
+									<div class="panel panel-default">	
+										<div class="panel-heading">
+											<h3 class="panel-title">Outstanding</h3>
+										</div>
+										<div class="panel-body custom-panel-heading">
+											<div class="row">
+												<div class="col-sm-2">
+													<span class="label label-default pull-right">Score<em>6</em></span>
+												</div>
+												<div class="col-sm-10">
+													Possesses the qualities and has the potential to also handle the needs of the next higher role
+												</div>
+											</div>
+										</div>
+									</div>
+								</div> -->
+							</div>
+							
+							
+					
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<!-- Manager header panel ends -->
+			  
+
+        </section>
+</div>
+</body>
+</html>

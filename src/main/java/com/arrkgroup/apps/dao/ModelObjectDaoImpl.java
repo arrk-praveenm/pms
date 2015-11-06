@@ -12,6 +12,7 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
 import com.arrkgroup.apps.model.Rating;
+import com.arrkgroup.apps.model.RatingDescription;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
@@ -151,6 +152,12 @@ public class ModelObjectDaoImpl implements ModelObjectDao {
 	public int getMaxRating() {
 		return (int) entityManager
 				.createNamedQuery(Rating.GET_RATING_MAX).getSingleResult();
+	}
+	
+	public List<RatingDescription> getRatingDescriptionBySectionId(int SectionId){
+		
+		return entityManager.createNamedQuery(RatingDescription.GET_RATING_DESCRIPTION_BY_SECTIONID,RatingDescription.class).setParameter("sectionId", SectionId)
+				.getResultList();
 	}
 
 

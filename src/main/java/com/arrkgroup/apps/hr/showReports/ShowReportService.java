@@ -30,5 +30,8 @@ public interface ShowReportService {
 	public List<pdftableview> getPdfView();
 
 	public List<pdftableview> showAssesseDetailsByEmplyee(int id);
+	public List<Section> getAllSections() ;
 
+	
+	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,int cycleId);
 }

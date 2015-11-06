@@ -106,10 +106,40 @@
 
 				</ul>
 			</li>
+			
+		<!-- 	<li class="treeview main-heading" id="menu_employeemodule">
+				<a href="/definitions/ratingdefinition" th:href="@{/definitions/ratingdefinition}"><i class="fa fa-upload icon-umd"></i><span>Objectives</span> <i class="fa fa-angle-left pull-right"></i></a>
+				
+			</li> -->
+<li class="treeview main-heading" id="menu_employeemodule">
+				<a href="#"><i class='fa fa-upload icon-umd'></i><span>Definitions</span> <i class="fa fa-angle-left pull-right"></i></a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="/definitions/ratingdefinition" th:href="@{/definitions/ratingdefinition}">
+							<em class="fa-stack">
+								<i style="top: 2px; left: 0px;" class="fa fa-user fa-stack-1x"></i>
+								<i style="left: -5px; top: 5px;" class="fa fa-list-alt fa-stack-2x"></i>
+							</em><span>Ratings</span>
+						</a>
+					</li>
 
+					<li>
+						<a href="/definitions/weightagedefinition" th:href="@{/definitions/weightagedefinition}">
+							<em class="fa-stack">
+
+						<i class="fa fa-file-text-o icon-reports">
+						</i>
+							</em><span>Weightage</span>
+						</a>
+					</li>
+
+
+				</ul>
+			</li>
 
 
 		  </ul>
+		  
 
         </section>
       </aside>

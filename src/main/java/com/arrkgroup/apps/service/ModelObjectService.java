@@ -7,6 +7,7 @@ import com.arrkgroup.apps.model.Employee;
 import com.arrkgroup.apps.model.Objective;
 import com.arrkgroup.apps.model.Project;
 import com.arrkgroup.apps.model.Rating;
+import com.arrkgroup.apps.model.RatingDescription;
 import com.arrkgroup.apps.model.Role;
 import com.arrkgroup.apps.model.RoleModel;
 import com.arrkgroup.apps.model.Section;
@@ -34,6 +35,8 @@ public interface ModelObjectService {
 
 	public Employee findEmployeeByEmail(String email);
 	public int getMaxRating();
+	
+	public List<RatingDescription> getRatingDescriptionBySectionId(int SectionId);
 
 
 }

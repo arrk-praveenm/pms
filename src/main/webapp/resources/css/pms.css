@@ -640,7 +640,12 @@ tr.highlight {
 }
 .custom-panel-heading span {
 	font-size: 14px;
-	color: #404040;
+    color: #404040;
+    width: 100%;
+    display: block;
+    word-wrap: break-word;
+    white-space: normal;
+    padding: 5px 5px;
 }
 .custom-panel-heading h3 {
 	width: 80%;

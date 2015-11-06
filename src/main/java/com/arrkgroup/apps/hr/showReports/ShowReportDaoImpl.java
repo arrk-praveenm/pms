@@ -115,5 +115,28 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.setParameter("assesseassessorid", id).getResultList();
 
 	}
+	
+	@Override
+	public List<Section> getAllSections() {
+		// TODO Auto-generated method stub
+		return entityManager
+				.createNamedQuery(Section.GET_ALL_SECTIONS_WITH_SORTING,
+						Section.class)
+				.getResultList();
+	}
+
+	
+	@Override
+	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,
+			int cycleId) {
+		
+		
+		// TODO Auto-generated method stub
+		return  entityManager
+				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID_CYCLEID,
+						AssesseesAssessor.class).setParameter("assesseeId", employeeId)
+						.setParameter("cycleId", cycleId)
+				.getResultList();
+	}
 
 }
