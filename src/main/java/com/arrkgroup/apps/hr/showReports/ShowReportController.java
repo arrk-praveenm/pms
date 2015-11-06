@@ -170,7 +170,7 @@ public class ShowReportController {
 		modelObjectService.findCycleById(Integer.parseInt(cycleID))
 			.getDescription());
 
-		model.addAttribute("assesseinfo", pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),Integer.parseInt(cycleID)));
+		model.addAttribute("assesseinfo", showReportService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),Integer.parseInt(cycleID)));
 
 
 
@@ -219,7 +219,7 @@ public class ShowReportController {
 		modelObjectService.findCycleById(Integer.parseInt(cycleID))
 			.getDescription());
 
-		model.addAttribute("assesseinfo", pdfService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),Integer.parseInt(cycleID)));
+		model.addAttribute("assesseinfo", showReportService.getAssesseesAssessorByCycle(Integer.parseInt(assessor_id),Integer.parseInt(cycleID)));
 
 		// return a view which will be resolved by a pdf view resolver
 		return new ModelAndView("pdfView", "allSections", allSections);
