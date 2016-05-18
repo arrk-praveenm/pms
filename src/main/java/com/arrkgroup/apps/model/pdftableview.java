@@ -34,10 +34,25 @@ public class pdftableview {
 	public static final String GET_ALL_RECORDS_BY_ID = "pdftableview.GET_ALL_RECORDS_BY_ID";
 
 
-
-
-
 	 @Id
+	    @Column(name = "uid", nullable = false)
+		long uid;
+
+
+
+
+ public long getUid() {
+		return uid;
+	}
+
+
+
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+
+
     @Column(name = "id", nullable = false)
 	int id;
 
