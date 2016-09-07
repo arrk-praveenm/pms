@@ -36,9 +36,26 @@ public class pdftableview {
 
 
 
-
 	 @Id
-    @Column(name = "id", nullable = false)
+	    @Column(name = "uid", nullable = false)
+		long uid;
+
+
+
+
+    public long getUid() {
+		return uid;
+	}
+
+
+
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+
+
+	@Column(name = "id", nullable = false)
 	int id;
 
     @Column(name = "fullname", nullable = false)

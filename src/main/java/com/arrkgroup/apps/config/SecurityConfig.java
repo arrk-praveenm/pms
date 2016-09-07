@@ -35,22 +35,10 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${ldap.manager.password}")
 	private String LDAP_MANAGER_PASSWORD;
 
-	@Bean
-	public DatabaseAuthoritiesPopulator authoritiesPopulator(){
-		DatabaseAuthoritiesPopulator authoritiesPopulator = new DatabaseAuthoritiesPopulator(contextSource(),"");
-		return authoritiesPopulator;
-	}
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new StandardPasswordEncoder();
-	}
+	
 
 
-   @Bean
-    public InetOrgPersonContextMapper extendingContextOfLdap() {
-        return new InetOrgPersonContextMapper();
-    }
+
 
     @Override
 	protected void configure(AuthenticationManagerBuilder auth)	throws Exception {
@@ -59,20 +47,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 		log.info("In Spring configuration configure()..............");
 	}
 
-    @Bean
-    public DefaultSpringSecurityContextSource contextSource() {
-        DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(URL);
-        contextSource.setUserDn(LDAP_MANAGER_DN);
-        contextSource.setPassword(LDAP_MANAGER_PASSWORD);
-        return contextSource;
-    }
+  
 
-    @Bean
-    public FilterBasedLdapUserSearch userSearch(){
-    	FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch("","(uid={0})",contextSource());
-    	userSearch.setSearchSubtree(true);
-    	return userSearch;
-    }
+  
 
     @Bean
     public AuthenticationProvider ldapAuthenticationProvider() {
@@ -81,6 +58,16 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsContextMapper(extendingContextOfLdap() );
         return provider;
     }
+    @Bean
+	public DatabaseAuthoritiesPopulator authoritiesPopulator(){
+		DatabaseAuthoritiesPopulator authoritiesPopulator = new DatabaseAuthoritiesPopulator(contextSource(),"");
+		return authoritiesPopulator;
+	}
+    @Bean
+    public InetOrgPersonContextMapper extendingContextOfLdap() {
+        return new InetOrgPersonContextMapper();
+    }
+    
 
     @Bean
     public LdapAuthenticator ldapAuthenticator() {
@@ -89,6 +76,21 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticator.setUserSearch(userSearch());
         return authenticator;
     }
+    @Bean
+    public DefaultSpringSecurityContextSource contextSource() {
+        DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(URL);
+        contextSource.setUserDn(LDAP_MANAGER_DN);
+        contextSource.setPassword(LDAP_MANAGER_PASSWORD);
+        return contextSource;
+    }
+    @Bean
+    public FilterBasedLdapUserSearch userSearch(){
+    	FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch("","(uid={0})",contextSource());
+    	userSearch.setSearchSubtree(true);
+    	return userSearch;
+    }
+    
+    
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -55,7 +55,7 @@ public class SectionConsolidated {
 
 
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	    @ManyToOne(cascade = CascadeType.ALL)
 	    @JoinColumn(name = "employee_assessor_id")
 	    private AssesseesAssessor assesseesassessor;
 

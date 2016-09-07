@@ -36,7 +36,7 @@ $(document).ready(function(){
 			 {
 			 $("#selectRoleRow").hide();
 			 $("#margin").css("display","none");
-				
+
 		     $('.test').removeClass("active test").addClass("test");
 
 	          $('li[name="' + [[${sectionToLoad}]] + '"]').addClass("active test");
@@ -380,7 +380,7 @@ $("#selectAssessee").on('change', function(){
 //on section click
 $(".test").on("click",function(){
 
-	
+
 	$("#current_section_id").val($(this).attr("name"));
 
 	var id = $(selectAssessee).children(":selected").attr("name");
@@ -408,7 +408,7 @@ $(".test").on("click",function(){
 		   	 }else{
 
 		   		var list=[[${allRolesofCurrentUser}]];
-		   		
+
 		   		var data={selectedAsseesseID:0,
 						sectionToLoad:$(this).attr("name"),
 						role_id:list[0].roleId,
@@ -421,8 +421,8 @@ $(".test").on("click",function(){
    		{
 
 	$("#tbody").empty();
-	$('a[name="section'+$(this).attr("name")+'"]').removeAttr("data-notifications");	
-	// $('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
+	$('a[name="section'+$(this).attr("name")+'"]').removeAttr("data-notifications");
+	// $('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");
 	var data={selectedAsseesseID:$("#selectAssessee").val(),
 			sectionToLoad:$(this).attr("name"),
 			role_id:$(selectAssessee).children(":selected").attr("name"),
@@ -501,7 +501,7 @@ function ajaxCall(data)
 					 {
 					 $("#margin").show();
 					 }
-				 
+
 
            	 $("#tbody").empty();
 
@@ -600,47 +600,47 @@ function ajaxCall(data)
            	 // alert(data.assesseeAssessorId+" "+[[${assesseeAssessorId}]])
            	  if([[${assesseeAssessorId}]]==data.assesseeAssessorId)
                	  {
-						
+
 						//sectionToLoad
 						if([[${errorMessage}]]!=null)
 							  {
 						  	 $.map([[${errorMessage}]], function( value, key ) {
-						
+
 							           	  	//errorMessage
 										if(data.sectionToLoad==key){
-											
+
 											var count=0;
 											for( itr in value)
 												{
 												count++;
-						
+
 												$("#"+value[itr].id).addClass("incomplete-row");
 												//section
-												
-												
+
+
 												}
-										//	$('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");	
-											$('a[name="section'+key+'"]').removeAttr("data-notifications");	
-						
+										//	$('li[name="' +$(this).attr("name")+ '"]').removeAttr("data-notifications");
+											$('a[name="section'+key+'"]').removeAttr("data-notifications");
+
 							           	  	}else{
-							           	  	
-							           	 
+
+
 											var count=0;
 											for( itr in value)
 												{
 												count++;
-						
+
 												}
-											
+
 											$('a[name="section'+key+'"]').attr("data-notifications", count);
-											
-											
+
+
 											 $('li[name="' +key+ '"]').addClass("notification");
-							           	 
-										
+
+
 												}
-									
-						
+
+
 						 	 		 });
 							  }
   			   }else{
@@ -648,11 +648,11 @@ function ajaxCall(data)
   				 if([[${errorMessage}]]!=null)
   	  				 {
   				 $.map([[${errorMessage}]], function( value, key ) {
-  					$('a[name="section'+key+'"]').removeAttr("data-notifications");	
+  					$('a[name="section'+key+'"]').removeAttr("data-notifications");
   	  				 });
   	  			   }
   			   }
-           	  
+
 
           }
 
@@ -662,10 +662,10 @@ function ajaxCall(data)
 		    	 $("#errorspan").hide();
 		   	  $("#manager_rating").css({"border-color": "#d2d6de"});
 		   	  $("#selfrating").css({"border-color": "#d2d6de"});
-		   	
+
 		   	 $("#roleid").val($("#selectedRole").val());
 		    $("#assesseeAssessorId").val($(selectedRole).children(":selected").attr("accessKey"));
-		    
+
 		    	  var objective_id='#'+'objective'+$(this).attr("name");
 		    	  var weightage_id='#'+'weightage'+$(this).attr("name");
 		    	  var managerRating_id='#'+'managerRating'+$(this).attr("name");
@@ -712,7 +712,7 @@ function ajaxCall(data)
 		    	  $("#roleid").val($(selectAssessee).children(":selected").attr("name"));
 		    	  $("#projectId").val($(selectAssessee).children(":selected").attr("id"));
 		    	  $("#assesseeAssessorId").val($(selectAssessee).children(":selected").attr("accessKey"));
-		    	  
+
 
 
 		    	  $("#manager_score").val($(managerScore_id).text());
@@ -1006,53 +1006,53 @@ function disableSection()
 
   for (row in response) {
 
-					
+
 					   		      var point="point"+response[row].id;
-					
+
 					   		      var value=response[row].section_point;
 					   		   var pointvalue;
 					     if(value!=0)
 					         {
-					
-					
+
+
 					    	 pointvalue = parseFloat(value).toFixed(2);
-					    		
+
 					    	  if(isNaN(pointvalue)) {
 					   			pointvalue = "0.0";
 					   			}
-					    	  
-					
-					
+
+
+
 					         }else
 					             {
 					        	 pointvalue="0.0";
 					             }
-					
-					
+
+
 					   		 // var pointvalue=value;
-					
-					
-					
-					
-					
-					
-					
-					
+
+
+
+
+
+
+
+
 					   		$('input[name="' + point + '"]').val(pointvalue);
-					
+
 					   		section="section_value"+response[row].id;
-				
+
 					   		section_value=$('#'+section).val();
-					
-					   		
-					
+
+
+
 					       	finalweightage=parseFloat(finalweightage)+parseFloat((section_value*pointvalue));
 
-					       
-					       
+
+
 					       	finalweightage=parseFloat(finalweightage).toFixed(2);
-					
-					
+
+
 					        if(data.selectedAsseesseID==0)
 					        {
 					        	if($("#assesseeAssessorId").val()==data.assesseeAssessorId)
@@ -1060,25 +1060,25 @@ function disableSection()
 								if($("#assesseeAssessorStatus").val()=="assignedObjectives" || $("#assesseeAssessorStatus").val()=="selfRatingCompleted" )
 									{
 									$('input[name="' + point + '"]').val("0.0");
-					
-					
+
+
 									}else
 									{
 										$('input[name="' + point + '"]').val(pointvalue);
-					
+
 										}
 						           }else
 									{
 										$('input[name="' + point + '"]').val(pointvalue);
-					
+
 										}
 					        }else
 								{
-								
+
 					     	   $('input[name="' + point + '"]').val(pointvalue);
-					
+
 									}
-					
+
 
 
 
@@ -1099,17 +1099,17 @@ function disableSection()
 	   					{
 								if($("#assesseeAssessorStatus").val()=="assignedObjectives" || $("#assesseeAssessorStatus").val()=="selfRatingCompleted" )
 									{
-				
+
 									 $('#weightage_score').val("0.0");
-				
+
 									}else
 									{
-				
+
 										 $('#weightage_score').val(finalweightage );
 										}
 	   				}else
 					{
-	   					
+
 
 						 $('#weightage_score').val(finalweightage );
 					}
@@ -1123,14 +1123,14 @@ function disableSection()
 
 
 
-   		         
+
 
    		        	   }
 
 
 
 
-   				 
+
 
 
 
@@ -1154,7 +1154,7 @@ function disableSection()
 
 
 
-  
+
 
 
 
@@ -1469,7 +1469,7 @@ function disableSection()
 							<div class="col-md-12">
 								<div class="form-group">
 									<label class="sr-only">Employee Comments</label>
-									<textarea id="employeeComments" th:field="*{employee_comments}" row="2" class="form-control" Placeholder="Employee Comments"></textarea>
+									<textarea id="employeeComments" th:field="*{employee_comments}" row="2" maxlength="100" class="form-control" Placeholder="Employee Comments"></textarea>
 
 								</div>
 							</div>

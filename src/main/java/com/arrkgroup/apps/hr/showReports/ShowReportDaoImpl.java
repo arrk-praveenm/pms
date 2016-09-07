@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -115,7 +116,7 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.setParameter("assesseassessorid", id).getResultList();
 
 	}
-	
+
 	@Override
 	public List<Section> getAllSections() {
 		// TODO Auto-generated method stub
@@ -125,12 +126,12 @@ public class ShowReportDaoImpl implements ShowReportDao {
 				.getResultList();
 	}
 
-	
+
 	@Override
 	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,
 			int cycleId) {
-		
-		
+
+
 		// TODO Auto-generated method stub
 		return  entityManager
 				.createNamedQuery(AssesseesAssessor.FIND_ASSESSEES_BY_ASSESSEESSID_CYCLEID,

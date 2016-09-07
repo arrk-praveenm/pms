@@ -66,7 +66,7 @@ class HibernateConfig implements TransactionManagementConfigurer {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(configureDataSource());
         entityManagerFactoryBean.setPackagesToScan("com.arrkgroup.apps");
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+       entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);

@@ -46,12 +46,14 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         registration.setInitParameter("defaultHtmlEscape", "true");
         registration.setInitParameter("spring.profiles.active", "default");
     }
-    
+
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+
+    	System.out.println("servlet started");
         super.onStartup(servletContext);
         servletContext.addListener(new SessionListener());
     }
-    
+
 
 }

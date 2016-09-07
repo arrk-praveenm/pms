@@ -39,7 +39,6 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
 
     private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
     private static final String VIEWS = "/WEB-INF/views/";
-
     private static final String RESOURCES_LOCATION = "/resources/";
     private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
 
@@ -68,7 +67,7 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         templateResolver.setCacheable(false);
         return templateResolver;
     }
-    
+
     @Bean
     public ResourceBundleViewResolver resourceviewResolver(){
     	ResourceBundleViewResolver resourceViewResolver = new ResourceBundleViewResolver();
@@ -85,8 +84,8 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         templateEngine.addDialect(new LayoutDialect());
         return templateEngine;
     }
-    
-  
+
+
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
@@ -122,6 +121,6 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
             return "forward:/resources/images/favicon.ico";
         }
     }
-    
+
 
 }

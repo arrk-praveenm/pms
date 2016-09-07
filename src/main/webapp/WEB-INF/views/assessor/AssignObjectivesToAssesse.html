@@ -7,6 +7,46 @@
 
 <script th:inline="javascript">
 	$(document).ready(function(){
+		
+		
+		$(".test").on( "click", function(){
+			
+			var id='#'+'section'+$(this).attr("id");
+			$("#addObjectiveSectionID").val($(id).attr("name"));
+			$("#addObjectiveSectionName").val($(id).text());
+			$("#messageBlock").empty();
+ 		var	sectionLoad={
+              sectionLoad:$(id).attr("name"),
+              assesseeid:$("#assessee").val(),
+              assessmentFromDate: $("#assessmentFromDate").val(),
+              projectName: $("#projectName").val(),
+             assessmentCycle: $("#assessmentCycle").val(),
+            assessmentToDate: $("#assessmentToDate").val(),
+             assessor:  $("#assessor").val(),
+             assesseeRole:  $("#assesseeRole").val()
+
+             }
+
+
+		//Error Message removal for add objective text box
+			$("#hasError").removeClass("has-error");
+			$("#span").empty();
+
+
+			ajaxcall(sectionLoad,true);
+
+
+
+           //making ajax call to laod objectives for selected section
+
+
+
+
+			});
+		
+		
+		
+		
 $("#copyObjectiveBlock").hide();
 		//getting the attributes from request object
 		var allObjectives = [[${allObjectives}]];
@@ -14,23 +54,42 @@ $("#copyObjectiveBlock").hide();
 		var selectedSection =[[${sectionToLoad}]];
 
 
+
 		//making div empty
 		$("#sectionObjectives-prnt").empty();
 
-		
+
 //on Load setting objectives
 
 if(allObjectives!=null)
 	{
+
  $.each( allObjectives, function( iterStat, objectiveDesc ) {
            LodaObjectives(iterStat,objectiveDesc,selectedSection);
+
 });
 
+ if(allObjectives.length>0)
+	 {
+	 showNotification({
+         message: "objective assigned to  assessee successfully",
+         autoClose: true,
+         duration: 2
+     });
+
+
+	 }
+
+
+
 	}else{
+
+		//alert("all objectives null");
+
 		$("#sectionObjectives-prnt").hide();
 		$(".wrapper-tabs").hide();
 		$("#sectionsBody").hide();
-		
+
 		$("#addObjectiveform").hide();
 		}
  //To select active tabs on load
@@ -40,18 +99,33 @@ if(allObjectives!=null)
 
  $("#addObjectiveSectionName").val($('li[name="'+selectedSection+'"]').text());
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
  $("#assessee").on('change',function(){
 	 triggerToObjectives(this);
 		});
-	
-		
+
+
 	$("#projectName").on('change', function(){
-	
+
 		triggerToObjectives(this);
 		});
 
-	
+
 
 	$("#assesseeRole").on('change', function(){
 		triggerToObjectives(this);
@@ -59,9 +133,9 @@ if(allObjectives!=null)
 	$("#assessmentCycle").on('change', function(){
 		triggerToObjectives(this);
 				});
-	
+
 	function triggerToObjectives(event) {
-		
+
 
 		if($(event).val()!="0") {
 
@@ -74,49 +148,61 @@ if(allObjectives!=null)
 						              assessmentToDate: $("#assessmentToDate").val(),
 						              assessor:  $("#assessor").val(),
 						              assesseeRole: $("#assesseeRole").val()
-						             } 
-								  ajaxcall(sectionLoad, false); 
-			
+						             }
+								  ajaxcall(sectionLoad, false);
+
 		}else{
 	 	$("#sectionObjectives-prnt").hide();
 		$(".wrapper-tabs").hide();
 		$("#sectionsBody").hide();
-		$("#addObjectiveform").hide(); 
+		$("#addObjectiveform").hide();
 		}
 	};
 //
  $("#employeeObjectivesss").on('click',function(event){
-		
+
 		 $("#employeeObjective").on('click',function(event){
-			
+
+
 				 submitForm(event,"employeeObjective");
-				}); 
-		
-		}); 
+
+
+		 });
+
+		});
  $("#employeeObjective").on('click',function(event){
-		
+
+
+	 alert("second button clicked");
 	 submitForm(event,"employeeObjective");
-		}); 
-	
+
+
+		});
+
 	$("#roleObjectives").on('click',function(event){
-		
+
+
+
 		 submitForm(event,"roleObjectives");
+
+
+
 		   });
 
 
 	  window.submitForm = function(event, buttonName)
 	 {
-			
+
 			if($("#assessee").val()=="0") {
-				
+
 				event.preventDefault();
-				
+
 				}
 
 			if($("#assessmentToDate").val()==""){
-				
+
 				event.preventDefault();
-				
+
 		    }
 			if($("#assesseeRole").val()=="0") {
 				event.preventDefault();
@@ -132,8 +218,8 @@ if(allObjectives!=null)
 			}
 			if($("#assessmentFromDate").val()=="") {
 				event.preventDefault();
-			}  
-			
+			}
+
 
 			 if($("#"+buttonName).attr("value")=="assessee")
 				{
@@ -144,18 +230,18 @@ if(allObjectives!=null)
 				if($("#otherAssesse").val()==$("#assessee").val()) {
 					event.preventDefault();
 				}
-				} 
+				}
 			 }
  //to Load objectives into div
  function LodaObjectives(iterStat,objectiveDesc,selectedSection)
 {
-	
-	  
+
+
 		var spanDescId="objectiveDesc"+iterStat;
     	var hiddenObjectiveId="objectiveId"+iterStat;
     	var weightageId="weightageId"+iterStat;
     	$("#sectionObjectives-prnt").append('<div id="sectionObjectives" >'
-    			
+
     			+'<form action="#" id="deleteObjective" method="post" onsubmit="button'+objectiveDesc.id+'.disabled = true; return true;"	th:action="@{/assessor/deleteObjective}">'
     			+'<div 	class="panel panel-default marginbottom10 panel-objective" 	id="objective-one">'
     			+'<div class="panel-body">'
@@ -176,19 +262,19 @@ if(allObjectives!=null)
     			+'<button style="padding: 0px 6px;" type="submit" name="button'+objectiveDesc.id+'" data-target="#objective-one" aria-label="Close" class="btn  btn-close btn-danger">'
     			+'<i class="fa fa-times"></i>'
     			+'</button></div></div></div></form></div>');
-    	
 
-    	
-    //setting the data to text areas on click of edit button 	
+
+
+    //setting the data to text areas on click of edit button
     	var valId='#'+'objectiveDesc'+iterStat;
     	$(valId).text(objectiveDesc.objectiveDesc);
 
-    	$.each([[${allWeightages}]], function(key, weight) {   
+    	$.each([[${allWeightages}]], function(key, weight) {
          	//alert(key+""+weight.weightage);
      	     $("#weightage"+iterStat)
      	         .append($("<option></option>")
      	         .attr("value",weight.id)
-     	         .text(weight.weightage)); 
+     	         .text(weight.weightage));
      	});
 
 		$("#weightage"+iterStat).val(objectiveDesc.weightage.id);
@@ -198,7 +284,7 @@ if(allObjectives!=null)
 			var data={
 					weightage:$(this).val(),
 					objectiveId:objectiveDesc.id
-					
+
 					}
 
 			   $.ajax({
@@ -206,7 +292,7 @@ if(allObjectives!=null)
 	                type: 'GET',
 	                data: data,
 	                success: function(response) {
-	                	
+
 	                	 showNotification({
 	                            message: "Weightage assigned to  objective successfully",
 	                            autoClose: true,
@@ -214,17 +300,17 @@ if(allObjectives!=null)
 	                        });
 					console.log(response);
 
-	                 
+
 	                },
 	                error: function(jqXHr, reponse, errorThrown) {
 	                    // ... Process the result ...
 	                    alert(errorThrown);
 	                }
-				}); 
-			
+				});
+
 			});
-    	 
-    	
+
+
     	$(".btn-edit").on( "click", function(){
     		 $("#errorspan").hide();
     		 $("#textAreas").css({"border-color": "#d2d6de"});
@@ -232,24 +318,24 @@ if(allObjectives!=null)
     		var hiddenObjectiveid='#'+'objectiveId'+$(this).attr("id");
     		$("#textAreas").val($(id).text());
     		$("#updateobjectiveId").val($(hiddenObjectiveid).val());
-    		
+
     		$("#updateSectionid").val($('#sectionIdSelected').val());
-    		
+
     		var weightageID='#weightageId'+$(this).attr("id");
-    		
-    		
-    		
+
+
+
     		if($(weightageID).attr('name')==1)
         		{
-    			
+
     		    		$("#weightage").val(0);
         		}else{
-        			
-        			
+
+
         			$("#weightage").val($(weightageID).attr('name'));
             		}
-    		
-    		});	
+
+    		});
 
     	 $("btn-danger").click(function(e){
         	// alert("hello");
@@ -257,20 +343,20 @@ if(allObjectives!=null)
     		  });
 
 
-     	
-	}; 
+
+	};
 
 
-	
+
 		$("#saveSubmit").on( "click", function(){
 
  var val=$("#textAreas").val();
- 
+
 			   if( $.trim(val)=="")
 				   {
 
 				  $("#textAreas").css({"border-color": "#a94442"});
-				  
+
 				  $("#errorspan").show();
 
 				  return false;
@@ -278,14 +364,14 @@ if(allObjectives!=null)
 				   }else
 					   {
 
-					 
+
 
 					   return true;
 
 					   }
 
 			});
-	
+
 		$(".btn-edit").on( "click", function(){
 			$("#errorspan").hide();
 			$("#textAreas").css({"border-color": "#d2d6de"});
@@ -294,60 +380,22 @@ if(allObjectives!=null)
 			$("#textAreas").val($(id).text());
 			$("#updateobjectiveId").val($(hiddenObjectiveid).val());
 	var weightageID='#weightageId'+$(this).attr("id");
-    		
-    		
-    		
+
+
+
     		if($(weightageID).attr('name')==1)
         		{
     			 		    		$("#weightage").val(0);
         		}else{
-        			
+
         			$("#weightage").val($(weightageID).attr('name'));
             		}
-			
+
 			});
 
-		$(".test").on("click",function(){
-			
-			var id='#'+'section'+$(this).attr("id");
 
-			$("#addObjectiveSectionID").val($(id).attr("name"));
-			
-			$("#addObjectiveSectionName").val($(id).text());
-			
-			
-			$("#messageBlock").empty();
-		
-		var	sectionLoad={
-              sectionLoad:$(id).attr("name"),
-              assesseeid:$("#assessee").val(),
-              assessmentFromDate: $("#assessmentFromDate").val(),
-              projectName: $("#projectName").val(),
-             assessmentCycle: $("#assessmentCycle").val(),
-            assessmentToDate: $("#assessmentToDate").val(),
-             assessor:  $("#assessor").val(),
-             assesseeRole:  $("#assesseeRole").val()
-              
-             } 
-        
-		
-		//Error Message removal for add objective text box
-			$("#hasError").removeClass("has-error");
-			$("#span").empty();
-			
-			
-			ajaxcall(sectionLoad,true);
 
-		
-			
-//making ajax call to laod objectives for selected section
-	
-	
 
-		
-			});
-
-		
 
 
 		function ajaxcall(sectionLoad,status)
@@ -357,10 +405,10 @@ if(allObjectives!=null)
 	                type: 'GET',
 	                data: sectionLoad,
 	                success: function(response) {
-		              
+
 					if(response[0]=="")
 	                {
-		                
+
 		                if(!status)
 			                {
 						$("#sectionObjectives-prnt").hide();
@@ -369,42 +417,42 @@ if(allObjectives!=null)
 						$("#addObjectiveform").hide();
 					}
 						 $("#sectionObjectives-prnt").empty();
-						
+
 	                }else{
 	                	$("#copyObjectiveBlock").hide();
-	                	
+
 	                	 $("#sectionObjectives-prnt").empty();
 	                	$("#sectionObjectives-prnt").show();
 	            		$(".wrapper-tabs").show();
 	            		$("#sectionsBody").show();
 	            		$("#addObjectiveform").show();
 	                	 $("#sectionObjectives-prnt").show();
-	                	
+
 	                	 if(response[1]!= "")
 	                	 {
 	                		 $("#assessor").val(response[1].assessorId.id);
-	                		
 
-				
+
+
 	                		 $("#assessmentFromDate").val(convertJsonDateToString(response[1].start_date));
 	                			$("#assessmentToDate").val(convertJsonDateToString(response[1].end_date));
 		                	 }
-	                	 
+
 	                jQuery.each( response[0], function( iterStat, objectiveDesc ) {
                     var section=sectionLoad.sectionLoad;
-	                
-	                    LodaObjectives(iterStat,objectiveDesc, section);
-	              
-				}); 
-	                } 
 
-	                 
+	                    LodaObjectives(iterStat,objectiveDesc, section);
+
+				});
+	                }
+
+
 	                },
 	                error: function(jqXHr, reponse, errorThrown) {
 	                    // ... Process the result ...
 	                    alert(errorThrown);
 	                }
-				}); 
+				});
 			};
 
 
@@ -413,11 +461,11 @@ if(allObjectives!=null)
 					{
 
 
-				$("#inputAssessmentCycle").val($("#assessmentCycle").val()); 
-				 $("#inputAssesseeRole").val($("#assesseeRole").val()); 
-				 $("#inputAssessor").val($("#assessor").val()); 
-				 $("#inputProjectName").val($("#projectName").val()); 
-				 $("#inputAssessmentToDate").val($("#assessmentToDate").val()); 
+				$("#inputAssessmentCycle").val($("#assessmentCycle").val());
+				 $("#inputAssesseeRole").val($("#assesseeRole").val());
+				 $("#inputAssessor").val($("#assessor").val());
+				 $("#inputProjectName").val($("#projectName").val());
+				 $("#inputAssessmentToDate").val($("#assessmentToDate").val());
 				 $("#inputAssessmentFromDate").val($("#assessmentFromDate").val());//
 				 $("#inputAssessee").val($("#assessee").val());
 						});
@@ -428,11 +476,11 @@ if(allObjectives!=null)
        		  var myNewDate = new Date(JSON.parse(myDateJson));
       		return $.datepicker.formatDate('dd/mm/yy', myNewDate, 'en');
 				};
-			
+
 });
 
-	
-	
+
+
 </script>
 </head>
 <body>
@@ -455,7 +503,7 @@ if(allObjectives!=null)
 			<!-- Manager header panel starts -->
 			<div class="box">
 				<div class="box-body">
-			
+
 					<form  id="myForm" method="post" action="#"
       th:action="@{/assessor/copyobjectives}"
       th:object="${copyObjectivesBean}">
@@ -512,19 +560,19 @@ if(allObjectives!=null)
 										Name</label> <input type="text" id="projectName"
 										th:field="*{projectName}" class="form-control"
 										placeholder="Project Name" /> -->
-										
-										
+
+
 										<label for="managerprojectname" class="sr-only">Project
 											Name</label> <select class="form-control" id="projectName"
 											th:field="*{projectName}"
 											style="padding-left: 0px; padding-right: 5px;">
-											<option selected="selected" value="0">Project Name 
+											<option selected="selected" value="0">Project Name
 												</option>
 											<option th:each="projects : ${projectList}"
 												th:text="${projects.project_name}" th:value="${projects.id}">PMS
 												</option>
 										</select>
-									
+
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -572,18 +620,18 @@ if(allObjectives!=null)
 									<i class="fa fa-files-o"></i> Copy Role Objectives
 								</button>
 							</div>
-							
+
 							<div class="form-group">
 								<!--  <button class="btn btn-info btn-green btn-lg" name="type" value="assessee" type="submit" id="employeeObjectives">
 									<i class="fa fa-files-o"></i> Copy From Other Employee
 								</button>-->
-								
-								
+
+
 								<button class="btn btn-info btn-green btn-lg popper" type="button" id="employeeObjectivesss" data-toggle="popover" data-pop="#popper-content" data-trigger="click">
 									<i class="fa fa-files-o"></i> Copy From Other Employee
 								</button>
-								
-								
+
+
 								<div class="popper-content" id="popper-content">
 								<div class="form-group marginbottom5 pull-right">
 									<button type="button" class="close btn-popclose" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -598,13 +646,13 @@ if(allObjectives!=null)
 											one</option>
 									</select>
 								</div>
-								 <div class="form-group margintop10"> 
+								 <div class="form-group margintop10">
 								 	<!--onClick="submitForm(this,'employeeObjective');"  -->
 									<button id="employeeObjective" name="type" value="assessee" type="submit"  class="btn btn-primary "><i class="fa fa-files-o"></i> Copy</button>
-							 	</div> 
+							 	</div>
 							</div>
-								
-								
+
+
 							</div>
 						</div>
 					</form>
@@ -626,26 +674,26 @@ if(allObjectives!=null)
 								<ul class="nav nav-tabs list" id="myTab">
 										<th:block th:each="sectionName, iterStat  : ${allSections}">
 									<!-- th:each= "sectionName : ${allSections}"  th:text="${sectionName.getSection()}"	-->
-	
-	
-	
+
+
+
 									<th:block th:if="${iterStat.index}==0">
-	
+
 										<li class="active test" th:id="${iterStat.index}" th:name="${sectionName.getId()}"><a
 											data-toggle="tab" th:text="${sectionName.getSection()}"
 											th:id="'section'+${iterStat.index}" href="#par"
 											th:name="${sectionName.getId()}">Performance</a></li>
-	
+
 									</th:block>
 									<th:block th:if="${iterStat.index}!=0">
-	
+
 										<li class=" test" th:id="${iterStat.index}" th:name="${sectionName.getId()}"><a
 											data-toggle="tab" th:text="${sectionName.getSection()}"
 											th:id="'section'+${iterStat.index}" href="#par"
 											th:name="${sectionName.getId()}">Competancy</a></li>
-	
+
 									</th:block>
-	
+
 								</th:block>
 								</ul>
 							</div>
@@ -663,7 +711,7 @@ if(allObjectives!=null)
 								<input type="hidden"  	class="form-control" id="inputAssessor" 	name="assessor" th:value="1" />
 								<input type="hidden"  	class="form-control" id="inputAssesseeRole" 	name="assesseeRole" th:value="1" />
 								<input type="hidden"  	class="form-control" id="inputAssessee" 	name="assessee" th:value="1" />
-								
+
 										<div id="hasError" class="form-group margintop10 marginbottom30"
 											th:classappend="${#fields.hasErrors('objectiveDesc')}? 'has-error'">
 											<div class="input-group input-group-lg">
@@ -673,8 +721,8 @@ if(allObjectives!=null)
 													 <input type="hidden"
 													placeholder="Add objectives" class="form-control"
 													id="addObjectiveSectionID" name="addObjectiveSectionID"
-													th:value="${sectionToLoad}" /> <span class="input-group-btn"> 
-										
+													th:value="${sectionToLoad}" /> <span class="input-group-btn">
+
 													<input
 													type="hidden" placeholder="Add objectives"
 													class="form-control" id="addObjectiveSectionName"
@@ -754,8 +802,8 @@ if(allObjectives!=null)
 								</div>
 								</div>
 							</div>
-							
-							
+
+
 						</div>
 
 						<div class="row">
@@ -773,8 +821,8 @@ if(allObjectives!=null)
 
 		</section>
 		<!-- Main content ends -->
-		
-		
+
+
 
 		<!-- Modal Starts -->
 		<div class="modal fade" id="editobjective" tabindex="-1" role="dialog"
@@ -798,7 +846,7 @@ if(allObjectives!=null)
 										<label class="sr-only">Edit Objective</label>
 										<textarea id="textAreas" name="textAreas" th:row="2"
 											class="form-control"></textarea>
-											
+
 										<input type="hidden" id="updateSectionid"
 											name="updateSectionid" value="text" />
 										<span id="errorspan" style="color: #a94442"> Objective should not be empty </span>
@@ -808,7 +856,7 @@ if(allObjectives!=null)
 									 	<select class="form-control" id="weightage" name="weightage">
 											<option selected="selected" value="0">Select Weightage</option>
 											<option th:each="weight : ${allWeightages}" th:text="${weight.weightage}" th:value="${weight.id}">1</option>
-												
+
 										</select>
 									</div> -->
 								 	<input type="hidden" id="updateobjectiveId" name="updateobjectiveId" value="text" />
@@ -825,7 +873,7 @@ if(allObjectives!=null)
 			</div>
 		</div>
 		<!-- Modal ends -->
-		
+
 		<!-- Alert popup starts -->
 
 		<div class="modal fade" id="modal_alert_messages" tabindex="-1" role="dialog"
@@ -842,12 +890,12 @@ if(allObjectives!=null)
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Alert popup ends -->
-		
-		
-		
-		
+
+
+
+
 	</div>
 </body>
 </html>

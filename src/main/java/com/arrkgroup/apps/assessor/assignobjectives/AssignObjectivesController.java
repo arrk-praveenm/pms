@@ -46,33 +46,33 @@ public class AssignObjectivesController {
 	private final String ASSIGNONJECTIVESTOASSESSE="/assessor/AssignObjectivesToAssesse";
 	private final String LOGIN="login/login";
 	private static final int DEFAULT_WEIGHTAGE_ID = 1;
-	
+
 	@Autowired
 	AssignObjectivesService assignObjectivesService;
-	
+
 	@Autowired
 	ModelObjectService modelObjectService;
-	
+
 
 	@Autowired
 	AddObjectiveValidator addObjectiveValidator;
-	
-	
+
+
 	@RequestMapping(value = "/assessor/assignobjectives", method = RequestMethod.GET)
 	public String showAssignObjectives(Map<String, Object> model,Principal principal) {
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
 		List<Employee> assesses = assignObjectivesService.getAllAssesses();
 		List<Role> roles = assignObjectivesService.getAllRoles();
-		
+
 		List<Section> allSections = modelObjectService.getAllSections();
 		model.put("allSections", allSections);
 		int sectionIDtoLoad=0;
 		if (sectionIDtoLoad == 0) {
 			sectionIDtoLoad = ((Section) allSections.get(0)).getId();
 		}
-		
+
 		model.put("allObjectives",null);
-		
+
 		model.put("addObjectiveBean", new AddObjectiveBean());
 		model.put("assessmentcycles", assessmentCycles);
 		model.put("assesses", assesses);
@@ -82,20 +82,20 @@ public class AssignObjectivesController {
 		List<Project> projectList=modelObjectService.getAllProjects();
 		model.put("projectList", projectList);
 		model.put("allWeightages", modelObjectService.getAllWeightages());
-		
-		
+
+
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
 	}
-	
+
 	@RequestMapping(value = "/assessor/copyobjectives", method = RequestMethod.POST)
 	public String copyObjectives(
 			@ModelAttribute("copyObjectivesBean") CopyObjectivesBean copyObjectivesBean,
 			@ModelAttribute("addObjectiveBean") AddObjectiveBean addObjectiveBean,
 			BindingResult result, Map<String, Object> model,
-			HttpServletRequest request, Principal principal, Errors errors, 
+			HttpServletRequest request, Principal principal, Errors errors,
 			@RequestParam(value="type", required=true) String type) {
 		log.info("action performed...........:"+ type);
-		
+
 		log.info("inside copy role objectives........");
 		log.info("Assessor: "+copyObjectivesBean.getAssessor());
 		log.info("Assessee: "+copyObjectivesBean.getAssessee());
@@ -103,18 +103,18 @@ public class AssignObjectivesController {
 		log.info("Project: "+copyObjectivesBean.getProjectName());
 		log.info("from_date is: "+copyObjectivesBean.getAssessmentFromDate());
 		log.info("end_date is: "+copyObjectivesBean.getAssessmentToDate());
-		
+
 		if(type.equals("role")){
 			assignObjectivesService.copyRoleObjectives(copyObjectivesBean);
 		}
 		if(type.equals("assessee")){
-			
+
 			log.info("Assessee: "+copyObjectivesBean.getAssessee());
 			log.info("OtherAssessee: "+copyObjectivesBean.getOtherAssessee());
 			//copyObjectivesBean.setAssessee(copyObjectivesBean.getOtherAssessee());
 			assignObjectivesService.copyAssesseObjectives(copyObjectivesBean);
 		}
-		
+
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
 		List<Employee> assesses = assignObjectivesService.getAllAssesses();
 		List<Role> roles = assignObjectivesService.getAllRoles();
@@ -123,14 +123,14 @@ public class AssignObjectivesController {
 		model.put("roles", roles);
 		model.put("copyObjectivesBean", copyObjectivesBean);
 		log.info("after copy role objectives........");
-		
+
 		setModelWithDefaultLoad(model,0,copyObjectivesBean);
-		
+
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
-		
+
 	}
-	
-	
+
+
 
 	// Adding New Objective to section specified
 	@RequestMapping(value = "/assessor/addObjective", method = RequestMethod.POST)
@@ -169,17 +169,17 @@ public class AssignObjectivesController {
 
 		if (errors.hasErrors()) {
 			setModelWithDefaultLoad(model, Integer.parseInt(addObjectiveSectionID), copyObjectivesBean);
-			
+
 
 			return ASSIGNONJECTIVESTOASSESSE;
 		}
 		log.info("Request to add Objective 2");
-	
-		
+
+
 		boolean addobjectiveStatus = assignObjectivesService.addAssesseeObjective(copyObjectivesBean, addObjectiveSectionID,addObjectiveBean.getObjectiveDesc());
 		System.out.println("copyObjectivesBean "+copyObjectivesBean.getAssessmentFromDate());
 		loadAssesseObjectives(copyObjectivesBean,model,Integer.parseInt(addObjectiveSectionID));
-		
+
 		model.put("createSectionBean", new CreateSectionBean());
 		model.put("addObjectiveBean", new AddObjectiveBean());
 
@@ -187,18 +187,18 @@ public class AssignObjectivesController {
 				+ addObjectiveSectionID);
 
 		setModelWithDefaultLoad(model, Integer.parseInt(addObjectiveSectionID),copyObjectivesBean);
-		
 
-		
-		
+
+
+
 		if (addobjectiveStatus) {
-			
+
 			model.put("objectiveMessage",setMessageStatus(SUCCESS,"addobjective.success",""));
 		} else {
-				
-			model.put("objectiveMessage", setMessageStatus(DANGER,"addobjective.failure",""));	
+
+			model.put("objectiveMessage", setMessageStatus(DANGER,"addobjective.failure",""));
 		}
-		
+
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
 	}
 
@@ -223,14 +223,14 @@ public class AssignObjectivesController {
 			assesseeObjectives.setWeightage(modelObjectService.findWeightageById(DEFAULT_WEIGHTAGE_ID));
 		}
 		assesseeObjectives.setId(Integer.parseInt(saveObjectiveId));
-		
+
 		log.info("edited objective for section id  " + updateSectionid);
 		log.info("save objective for objective id  " + saveObjectiveId);
 		assignObjectivesService.saveAssesseeObjectivebySection(assesseeObjectives);
 	 assesseeObjectives = 	assignObjectivesService.getAssesseeAssessorId(Integer.parseInt(saveObjectiveId));
-	
+
 	 model.put("copyObjectivesBean", setcopyObjectivesBean(copyObjectivesBean,assesseeObjectives));
-		
+
 
 		setModelLoad(model, Integer.parseInt(updateSectionid),assesseeObjectives);
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
@@ -246,22 +246,22 @@ public class AssignObjectivesController {
 			@ModelAttribute("sectionIdSelected") String sectionIdSelected,
 			Principal principal,
 			BindingResult result, Map<String, Object> model) {
-	
+
 
 		log.info("Delete objective for  section ID " + deleteObjectiveId);
 		boolean deleteObjectiveStatus = false;
 		AssesseeObjectives assesseeObjectives = 	assignObjectivesService.getAssesseeAssessorId(Integer.parseInt(deleteObjectiveId));
 		try {
 
-			
-			
-			
-			
+
+
+
+
 			model.put("copyObjectivesBean", setcopyObjectivesBean(copyObjectivesBean,assesseeObjectives));
-			
+
 			deleteObjectiveStatus = assignObjectivesService.deleteAssesseeObjectivebySection(Integer
 							.parseInt(deleteObjectiveId));
-			
+
 		} catch (Exception e) {
 			log.error("You delete the record " + e);
 		}
@@ -273,7 +273,7 @@ public class AssignObjectivesController {
 			} else {
 				model.put("objectiveMessage",setMessageStatus(DANGER,"deleteObjectiveStatus.failure",""));
 		}
-	
+
 		// Load Sections and Objectives
 	//	setModelWithDefaultLoad(model, Integer.parseInt(sectionIdSelected));
 		return principal != null ? ASSIGNONJECTIVESTOASSESSE : LOGIN;
@@ -281,7 +281,7 @@ public class AssignObjectivesController {
 	}
 
 
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/assessor/ajax/sectionLoad", method = RequestMethod.GET)
 	public @ResponseBody
@@ -293,8 +293,8 @@ public class AssignObjectivesController {
 			@RequestParam("assessmentToDate") String assessmentToDate,
 			@RequestParam("assessor") String assessor,
 			@RequestParam("assesseeRole") String assesseeRole) {
-		
-		
+
+
 		System.out.println(assesseeid);
 		System.out.println(assessmentFromDate);
 		System.out.println(projectName);
@@ -303,7 +303,7 @@ public class AssignObjectivesController {
 		System.out.println(assessor);
 		System.out.println(sectionId);
 		System.out.println(assesseeRole);
-		
+
 		CopyObjectivesBean copyObjectivesBean =new CopyObjectivesBean();
 		copyObjectivesBean.setAssessee(Integer.parseInt(assesseeid));
 		copyObjectivesBean.setAssessmentCycle(Integer.parseInt(assessmentCycle));
@@ -312,7 +312,7 @@ public class AssignObjectivesController {
 		copyObjectivesBean.setAssesseeRole(Integer.parseInt(assesseeRole));
 		copyObjectivesBean.setAssessmentToDate(assessmentToDate);
 		copyObjectivesBean.setAssessor(Integer.parseInt(assessor));
-		
+
 		List<Section> allSections = modelObjectService.getAllSections();
 		int sectionToLoad=Integer.parseInt(sectionId);
 		if ( sectionToLoad== 0) {
@@ -322,7 +322,7 @@ public class AssignObjectivesController {
 		List<AssesseeObjectives> allsectionObjectives = assignObjectivesService.getAssesseObjectives(copyObjectivesBean, sectionToLoad);
 		log.info(" request for objectives to load for section id and the size of Objectives is "
 				+ allsectionObjectives.size());
-		
+
 		List list=new ArrayList();
 		System.out.println("Test");
 		list.add(allsectionObjectives);
@@ -335,14 +335,14 @@ public class AssignObjectivesController {
 		}catch(Exception ex){
 			list.add(asseess);
 		}
-		
-		
+
+
 
 		return list;
 
 	}
-	
-	
+
+
 	@RequestMapping(value = "/assessor/ajax/saveWeightage", method = RequestMethod.GET)
 	public @ResponseBody
 	boolean saveWeightage(@RequestParam("weightage") String weightageId,
@@ -350,16 +350,16 @@ public class AssignObjectivesController {
 			{
 		log.info("Weightage "+weightageId);
 		log.info("objectiveId "+objectiveId);
-		
+
 		if(Integer.parseInt(weightageId)!=0)
 		{
 			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), Integer.parseInt(weightageId));
-	
+
 		}else{
 			assignObjectivesService.saveWeightage(Integer.parseInt(objectiveId), DEFAULT_WEIGHTAGE_ID);
-	
+
 		}
-		
+
 		return true;
 			}
 //	convertStringToDate(assessmentFromDate.substring(0, 10))
@@ -376,7 +376,7 @@ public class AssignObjectivesController {
 		}
 		return date;
 	}
-	
+
 	private CopyObjectivesBean setcopyObjectivesBean(CopyObjectivesBean copyObjectivesBean, AssesseeObjectives assesseeObjectives)
 	{
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -387,7 +387,7 @@ public class AssignObjectivesController {
 		copyObjectivesBean.setAssessmentToDate(df.format(assesseeObjectives.getAssesseeAssessor().getEnd_date()));
 		copyObjectivesBean.setAssessor(assesseeObjectives.getAssesseeAssessor().getAssessorId().getId());
 		copyObjectivesBean.setProjectName(assesseeObjectives.getAssesseeAssessor().getProjectId().getId());
-		
+
 		return copyObjectivesBean;
 		}
 
@@ -405,10 +405,10 @@ public class AssignObjectivesController {
 			allAssesseeObjectives=assignObjectivesService.getAssesseObjectives(copyObjectivesBean, sectionIDtoLoad);
 		}
 		model.put("sectionToLoad", sectionIDtoLoad);
-		
+		System.out.println("****************  allAssesseeObjectives  size is  -"+allAssesseeObjectives.size()+"--**************");
 		model.put("copyObjectivesBean", copyObjectivesBean);
 		model.put("allObjectives", allAssesseeObjectives);
-		
+
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
 		List<Employee> assesses = assignObjectivesService.getAllAssesses();
 		List<Role> roles = assignObjectivesService.getAllRoles();
@@ -422,8 +422,8 @@ public class AssignObjectivesController {
 		model.put("allWeightages", modelObjectService.getAllWeightages());
 
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	private void setModelLoad(Map model, int sectionIDtoLoad, AssesseeObjectives assesseeObjectives ) {
 		List<AssesseeObjectives> allAssesseeObjectives = null;
@@ -437,7 +437,7 @@ public class AssignObjectivesController {
 		if (sectionIDtoLoad != 0) {
 		 allAssesseeObjectives =assignObjectivesService.getALLAssesseObjectivesBySectionId(assesseeObjectives);
 		}
-		
+
 		List<Cycle> assessmentCycles = assignObjectivesService.getAllAssessmentCycles();
 		List<Employee> assesses = assignObjectivesService.getAllAssesses();
 		List<Role> roles = assignObjectivesService.getAllRoles();
@@ -445,7 +445,7 @@ public class AssignObjectivesController {
 		model.put("assessmentcycles", assessmentCycles);
 		model.put("assesses", assesses);
 		model.put("roles", roles);
-		
+
 		model.put("sectionToLoad", sectionIDtoLoad);
 		model.put("allObjectives", allAssesseeObjectives);
 		List<Project> projectList=modelObjectService.getAllProjects();
@@ -453,15 +453,15 @@ public class AssignObjectivesController {
 		model.put("allWeightages", modelObjectService.getAllWeightages());
 
 	}
-	
+
 	private Messages setMessageStatus(String type,String text, String name)
 	{
-		
+
 		Messages msg=new Messages();
 		msg.setType(type);
 		msg.setText(text);
 		msg.setName(name);
-		
+
 		return msg;
 	}
 
@@ -469,11 +469,11 @@ public class AssignObjectivesController {
 	private void loadAssesseObjectives(CopyObjectivesBean copyObjectivesBean,Map model,int sectionId)
 	{
 		log.info("loadAssessee Objective " );
-		
+
 	List<AssesseeObjectives> assesseeObjectives	=assignObjectivesService.getAssesseObjectives(copyObjectivesBean, sectionId);
-	
+
 	model.put("assesseeObjectives", assesseeObjectives);
-		
+
 	}
 
 }

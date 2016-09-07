@@ -160,28 +160,32 @@ public class ShowReportServiceImpl implements ShowReportService {
 	}
 
 	public List<pdftableview> showAssesseDetailsByEmplyee(int id) {
-
+		System.out.println("in showAssesseDetailsByEmplyee " +id);
 		List<AssesseesAssessor> list = showReportDao.showAssesseByEmplyee(id);
 
 		List<pdftableview> pdftableviews = new ArrayList<pdftableview>();
 
 		for (AssesseesAssessor assesseesAssessor : list) {
 
+			System.out.println("id   "+assesseesAssessor
+					.getId());
+
 			pdftableviews.addAll(showReportDao.getPdfViewByID(assesseesAssessor
 					.getId()));
+
 
 		}
 
 		return pdftableviews;
 
 	}
-	
+
 	@Override
 	public List<Section> getAllSections() {
 		// TODO Auto-generated method stub
 		return showReportDao.getAllSections();
 	}
-	
+
 	@Override
 	public List<AssesseesAssessor> getAssesseesAssessorByCycle(int employeeId,
 			int cycleId) {
