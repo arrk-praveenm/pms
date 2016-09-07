@@ -25,6 +25,7 @@ import javax.persistence.Table;
 	@NamedQuery(name = Objective.findAll, query = "select c from Objective c "),
 	@NamedQuery(name = Objective.GET_BY_ID, query = "FROM Objective e where e.id = :id"),
 @NamedQuery(name = Objective.GET_ALL_SECTION_OBJECTIVES, query = "from Objective a where a.section.id=:section ORDER BY a.objectiveDesc ASC"),//ORDER BY a.objectiveDesc ASC
+
 @NamedQuery(name = Objective.DELETE_OBJECTIVE_BY_OBJECTIVEID, query = "delete from Objective a where a.id = :objectiveId"),
 @NamedQuery(name = Objective.UPDATE_OBJECTIVE_BY_OBJECTIVEID, query = "update Objective set objectiveDesc=:description  where id = :objectiveId"),
 @NamedQuery(name = Objective.FIND_BY_SECTION_ID_NOT_PRESENT , query = "SELECT e FROM Objective e where  e.section.id = :section_id AND e.id  not in ( SELECT objectives.id FROM RoleModel e2 where e2.role.id = :role_id AND e2.section.id = :section_id)")

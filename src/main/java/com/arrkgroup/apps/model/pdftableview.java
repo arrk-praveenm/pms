@@ -34,8 +34,6 @@ public class pdftableview {
 	public static final String GET_ALL_RECORDS_BY_ID = "pdftableview.GET_ALL_RECORDS_BY_ID";
 
 
-
-
 	 @Id
 	    @Column(name = "uid", nullable = false)
 		long uid;
@@ -43,7 +41,7 @@ public class pdftableview {
 
 
 
-    public long getUid() {
+ public long getUid() {
 		return uid;
 	}
 
@@ -55,7 +53,7 @@ public class pdftableview {
 
 
 
-	@Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false)
 	int id;
 
     @Column(name = "fullname", nullable = false)
